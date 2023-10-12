@@ -1,6 +1,6 @@
 {
   "name": "sfmc-jb-custom-activity-example",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "main": "app.js",
   "author": "Salesforce Marketing Cloud",
   "description": "Journey Builder Custom Activities",
