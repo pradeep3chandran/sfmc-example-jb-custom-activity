@@ -17,11 +17,7 @@ module.exports = function configJSON(req) {
     arguments: {
       execute: {
         // See: https://developer.salesforce.com/docs/atlas.en-us.mc-apis.meta/mc-apis/how-data-binding-works.htm
-        inArguments: [
-          {
-            discount: 10
-          }
-        ],
+        inArguments: [],
         outArguments: [],
         // Fill in the host with the host that this is running on.
         // It must run under HTTPS
@@ -48,7 +44,7 @@ module.exports = function configJSON(req) {
       }
     },
     userInterfaces: {
-      configurationSupportsReadOnlyMode : true,
+      configurationSupportsReadOnlyMode: true,
       configInspector: {
         size: 'scm-lg',
         emptyIframe: true
