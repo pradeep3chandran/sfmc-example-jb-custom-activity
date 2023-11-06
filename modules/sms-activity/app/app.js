@@ -60,7 +60,7 @@ module.exports = function discountCodeExample(app, options) {
     app.get('/modules/sms-activity/src/postmonger.js', function (req, res) {
         // Journey Builder looks for config.json when the canvas loads.
         // We'll dynamically generate the config object with a function
-        return res.sendFile(`${options.rootDirectory}/js/postmonger.js`);
+        return res.sendFile(`${moduleDirectory}/src/postmonger.js`);
     });
 
     // ```````````````````````````````````````````````````````

@@ -46,6 +46,11 @@
                 class="slds-card__body slds-card__body_inner"
                 style="height: 350px"
               >
+                <label class="slds-form-element__label" for="mid">MID</label
+                ><br />
+                <input class="slds-input" type="text" id="mid" />
+                <br /><br />
+
                 <label class="slds-form-element__label" for="clientid"
                   >Client Id</label
                 ><br />
@@ -65,14 +70,11 @@
                   >REST Base URI</label
                 ><br />
                 <input type="text" id="resturi" class="slds-input" />
-                <br /><br />
-                <label class="slds-form-element__label" for="soapuri"
-                  >SOAP Base URI</label
-                ><br />
-                <input type="text" id="soapuri" class="slds-input" />
               </div>
               <footer class="slds-card__footer">
-                <button class="slds-button slds-button_brand">Connect</button>
+                <button id="connect" class="slds-button slds-button_brand">
+                  Connect
+                </button>
               </footer>
             </article>
           </main>
