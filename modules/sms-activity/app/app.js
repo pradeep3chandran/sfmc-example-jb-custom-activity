@@ -13,6 +13,9 @@
 
 const express = require('express');
 const configJSON = require('../config/config-json');
+const requireJS = require('../src/require');
+const jquery = require('../src/jquery.min');
+
 // setup the discount-code example app
 module.exports = function discountCodeExample(app, options) {
     const moduleDirectory = `${options.rootDirectory}/modules/sms-activity`;
@@ -35,7 +38,7 @@ module.exports = function discountCodeExample(app, options) {
     app.get('/modules/sms-activity/config.json', function (req, res) {
         // Journey Builder looks for config.json when the canvas loads.
         // We'll dynamically generate the config object with a function
-        return res.sendFile(`${moduleDirectory}/html/index.html`);
+        return res.status(200).json(configJSON(req));
     });
 
     app.get('/modules/sms-activity/src/require.js', function (req, res) {
