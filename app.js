@@ -1,7 +1,6 @@
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
-var fs = require("fs");
 
 const submodules = [
     require('./modules/discount-code/app/app'),
@@ -23,9 +22,7 @@ submodules.forEach((sm) => sm(app, {
     rootDirectory: __dirname,
 }));
 
-fs.readFile("/data/customer_data.csvs", function (err, buf) {
-    console.log(buf.toString());
-});
+
 
 app.listen(app.get('port'), function () {
     console.log(`Express is running at localhost: ${app.get('port')}`);
