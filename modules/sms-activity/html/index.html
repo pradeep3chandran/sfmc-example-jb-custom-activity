@@ -4,6 +4,19 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <title>Custom Journey Builder Activity</title>
+
+    <script type="text/javascript">
+      (function () {
+        var config = {
+          baseUrl: "/modules/sms-activity/src/",
+        };
+
+        var dependencies = ["customActivity"];
+
+        require(config, dependencies);
+      })();
+    </script>
+
     <style type="text/css">
       body {
         padding: 20px;
