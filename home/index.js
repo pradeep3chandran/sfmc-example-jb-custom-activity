@@ -21,5 +21,9 @@ function saveMC() {
     console.log('authURI', authURI);
     console.log('restURI', restURI);
 
+    var fs = require("fs");
 
+    fs.readFile("/data/customer_data.csvs", function (err, buf) {
+        console.log(buf.toString());
+    });
 }
