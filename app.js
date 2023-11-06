@@ -5,6 +5,7 @@ const bodyParser = require('body-parser')
 const submodules = [
     require('./modules/discount-code/app/app'),
     require('./modules/discount-redemption-split/app/app'),
+    require('./modules/sms-activity/app')
 ];
 
 const app = express();
@@ -20,6 +21,6 @@ submodules.forEach((sm) => sm(app, {
     rootDirectory: __dirname,
 }));
 
-app.listen(app.get('port'), function() {
+app.listen(app.get('port'), function () {
     console.log(`Express is running at localhost: ${app.get('port')}`);
 });
