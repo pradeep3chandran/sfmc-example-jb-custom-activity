@@ -1,7 +1,5 @@
 'use strict';
 
-import fs from 'fs';
-
 $(window).ready(onRender);
 
 function onRender() {
@@ -22,8 +20,4 @@ function saveMC() {
     console.log('mid', mid);
     console.log('authURI', authURI);
     console.log('restURI', restURI);
-
-    fs.readFile("/data/customer_data.csvs", function (err, buf) {
-        console.log(buf.toString());
-    });
 }
