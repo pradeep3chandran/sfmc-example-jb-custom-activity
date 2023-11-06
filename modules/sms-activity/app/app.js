@@ -53,6 +53,12 @@ module.exports = function discountCodeExample(app, options) {
         return res.sendFile(`${moduleDirectory}/src/jquery.min.js`);
     });
 
+    app.get('/modules/sms-activity/src/customActivity.js', function (req, res) {
+        // Journey Builder looks for config.json when the canvas loads.
+        // We'll dynamically generate the config object with a function
+        return res.sendFile(`${moduleDirectory}/src/customActivity.js`);
+    });
+
     // ```````````````````````````````````````````````````````
     // BEGIN JOURNEY BUILDER LIFECYCLE EVENTS
     //
