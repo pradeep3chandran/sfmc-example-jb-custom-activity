@@ -13,13 +13,10 @@
 
 const express = require('express');
 const configJSON = require('../config/config-json');
-
 // setup the discount-code example app
 module.exports = function discountCodeExample(app, options) {
     const moduleDirectory = `${options.rootDirectory}/modules/sms-activity`;
 
-    // setup static resources
-    app.use('/modules/sms-activity/dist', express.static(`${moduleDirectory}/dist`));
     app.use('/modules/sms-activity/images', express.static(`${moduleDirectory}/images`));
 
     // setup the index redirect
@@ -38,7 +35,19 @@ module.exports = function discountCodeExample(app, options) {
     app.get('/modules/sms-activity/config.json', function (req, res) {
         // Journey Builder looks for config.json when the canvas loads.
         // We'll dynamically generate the config object with a function
-        return res.status(200).json(configJSON(req));
+        return res.sendFile(`${moduleDirectory}/html/index.html`);
+    });
+
+    app.get('/modules/sms-activity/src/require.js', function (req, res) {
+        // Journey Builder looks for config.json when the canvas loads.
+        // We'll dynamically generate the config object with a function
+        return res.sendFile(`${moduleDirectory}/src/require.js`);
+    });
+
+    app.get('/modules/sms-activity/src/jquery.min.js', function (req, res) {
+        // Journey Builder looks for config.json when the canvas loads.
+        // We'll dynamically generate the config object with a function
+        return res.sendFile(`${moduleDirectory}/src/jquery.min.js`);
     });
 
     // ```````````````````````````````````````````````````````
