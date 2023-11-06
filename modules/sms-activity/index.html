@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Custom Journey Builder Activity</title>
+
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/require.js"></script>
+    <script type="text/javascript">
+      (function () {
+        var config = {
+          baseUrl: "/js/",
+        };
+
+        var dependencies = ["customActivity"];
+
+        require(config, dependencies);
+      })();
+    </script>
+
+    <!--Styles-->
+    <style type="text/css">
+      body {
+        padding: 20px;
+        margin: 0;
+      }
+      .step {
+        display: none;
+      }
+      #step1 {
+        display: block;
+      }
+      input,select {
+        position: relative;
+        cursor: text;
+        font-size: 14px;
+        line-height: 20px;
+        padding: 0 16px;
+        height: 38px;
+        width: 90%;
+        background-color: #fff;
+        border: 1px solid #d6d6e7;
+        border-radius: 3px;
+        color: rgb(35, 38, 59);
+        box-shadow: inset 0 1px 4px 0 rgb(119 122 175 / 30%);
+        overflow: hidden;
+        transition: all 100ms ease-in-out;
+        :focus {
+          border-color: #3c4fe0;
+          box-shadow: 0 1px 0 0 rgb(35 38 59 / 5%);
+        }
+      }
+      select{
+        width: 94%;
+      }
+      textarea {
+        position: relative;
+        cursor: text;
+        font-size: 14px;
+        line-height: 20px;
+        padding: 0 16px;
+        width: 90%;
+        min-height: 90px;
+        background-color: #fff;
+        border: 1px solid #d6d6e7;
+        border-radius: 3px;
+        color: rgb(35, 38, 59);
+        box-shadow: inset 0 1px 4px 0 rgb(119 122 175 / 30%);
+        overflow: hidden;
+        transition: all 100ms ease-in-out;
+        :focus {
+          border-color: #3c4fe0;
+          box-shadow: 0 1px 0 0 rgb(35 38 59 / 5%);
+        }
+    </style>
+  </head>
+  <body>
+    <!--div id="step1" class="step">
+      <label for="clientid">Client Id</label><br />
+      <input type="text" id="clientid" />
+      <br /><br />
+      <label for="clientsecret">Client Secret</label><br />
+      <input type="text" id="clientsecret" />
+      <br /><br />
+      <label for="authuri">Authentication Base URI</label><br />
+      <input type="text" id="authuri" />
+      <br /><br />
+      <label for="resturi">REST Base URI</label><br />
+      <input type="text" id="resturi" />
+      <br /><br />
+      <label for="soapuri">SOAP Base URI</label><br />
+      <input type="text" id="soapuri" />
+    </div>
+    <div id="step2" class="step">
+      <label for="username">Username</label><br />
+      <input type="text" id="username" />
+      <br /><br />
+      <label for="password">Password</label><br />
+      <input type="text" id="password" />
+      <br /><br />
+      <label for="dlr">DLR</label><br />
+      <input type="text" id="dlr" />
+    </div-->
+    <div id="step1" class="step">
+      <label for="sendername">Sender Name</label><br />
+      <input type="text" id="sendername" />
+      <br /><br />
+      <label for="sendername">Select Phone Number Field</label><br />
+      <select name="phonefield" id="phonefield"></select>
+      <br /><br />
+      <label for="message">Message</label><br />
+      <textarea id="message"></textarea>
+      <br />
+      <select name="dataattributes" id="dataattributes"></select>
+    </div>
+  </body>
+</html>
