@@ -44,13 +44,13 @@ module.exports = function discountCodeExample(app, options) {
     app.get('/modules/sms-activity/src/require.js', function (req, res) {
         // Journey Builder looks for config.json when the canvas loads.
         // We'll dynamically generate the config object with a function
-        return res.sendFile(`${moduleDirectory}/src/require.js`);
+        return res.sendFile(`${options.rootDirectory}/js/require.js`);
     });
 
     app.get('/modules/sms-activity/src/jquery.min.js', function (req, res) {
         // Journey Builder looks for config.json when the canvas loads.
         // We'll dynamically generate the config object with a function
-        return res.sendFile(`${moduleDirectory}/src/jquery.min.js`);
+        return res.sendFile(`${options.rootDirectory}/js/jquery.min.js`);
     });
 
     app.get('/modules/sms-activity/src/customActivity.js', function (req, res) {
@@ -62,7 +62,7 @@ module.exports = function discountCodeExample(app, options) {
     app.get('/modules/sms-activity/src/postmonger.js', function (req, res) {
         // Journey Builder looks for config.json when the canvas loads.
         // We'll dynamically generate the config object with a function
-        return res.sendFile(`${moduleDirectory}/src/postmonger.js`);
+        return res.sendFile(`${options.rootDirectory}/js/postmonger.js`);
     });
 
     // ```````````````````````````````````````````````````````
