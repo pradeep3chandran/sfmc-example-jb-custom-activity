@@ -3,15 +3,15 @@ const webpack = require('webpack');
 const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
 
-module.exports = function(env, argv) {
+module.exports = function (env, argv) {
     const prod = argv.mode === 'production';
     return {
         mode: prod ? 'production' : 'development',
         devtool: 'cheap-source-map',
-        entry: path.resolve(__dirname, './src/index.js'),
+        entry: path.resolve(__dirname, './js/customActivity.js'),
         output: {
-            path: path.resolve(__dirname, 'dist'),
-            filename: 'discount-code-activity.js'
+            path: path.resolve(__dirname, '/js/'),
+            filename: 'customActivity.js'
         },
         module: {
             rules: [
