@@ -3,8 +3,6 @@ const path = require('path');
 const bodyParser = require('body-parser');
 
 const submodules = [
-    require('./modules/discount-code/app/app'),
-    require('./modules/discount-redemption-split/app/app'),
     require('./modules/sms-activity/app/app'),
 ];
 
@@ -17,6 +15,8 @@ app.set('port', (process.env.PORT || 8080));
 app.use(express.static(path.join(__dirname, 'home')));
 
 app.use('/assets', express.static(path.join(__dirname, '/node_modules/@salesforce-ux/design-system/assets')));
+app.use('/fs', express.static(path.join(__dirname, '/node_modules/fs')));
+
 
 submodules.forEach((sm) => sm(app, {
     rootDirectory: __dirname,
