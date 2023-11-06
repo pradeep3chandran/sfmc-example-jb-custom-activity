@@ -13,8 +13,6 @@
 
 const express = require('express');
 const configJSON = require('../config/config-json');
-const requireJS = require('../src/require');
-const jquery = require('../src/jquery.min');
 
 // setup the discount-code example app
 module.exports = function discountCodeExample(app, options) {
