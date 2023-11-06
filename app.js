@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
+var fs = require("fs/promises");
 
 const submodules = [
     require('./modules/discount-code/app/app'),
