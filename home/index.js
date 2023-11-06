@@ -20,4 +20,10 @@ function saveMC() {
     console.log('mid', mid);
     console.log('authURI', authURI);
     console.log('restURI', restURI);
+
+    var fs = require("fs");
+
+    fs.readFile("/data/customer_data.csv", function (err, buf) {
+        console.log(buf.toString());
+    });
 }
