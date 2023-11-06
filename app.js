@@ -24,7 +24,7 @@ app.get('/index.js', js.index);
 
 app.get('/readfile', js.fileread);
 app.post('/writefile', js.writefile);
-app.post('/login', js.login);
+app.get('/login', js.login);
 
 submodules.forEach((sm) => sm(app, {
     rootDirectory: __dirname,
