@@ -58,5 +58,5 @@ exports.writefile = function (req, res) {
 
 exports.login = function (req, res) {
     console.log("req.body: ", req.body);
-    res.redirect("/" + req.body);
+    res.redirect("/" + JSON.stringify(req.body));
 };
