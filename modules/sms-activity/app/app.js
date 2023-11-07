@@ -155,8 +155,7 @@ module.exports = function discountCodeExample(app, options) {
             }
         }
 
-        return res.status(200).json('execute');
-        /*
+
         const mobileNumber = getInArgument('toNumber') || 'nothing';
         const senderName = getInArgument('senderName') || 'nothing';
         const mid = getInArgument('mid') || 'nothing';
@@ -232,13 +231,13 @@ module.exports = function discountCodeExample(app, options) {
                     response1.json().then(data1 => {
                         return res.status(200).json(data1);
                     })
-                }
-
-                )
+                }).catch(err => {
+                    return res.status(400).json(err);
+                });
             })
-        }
-
-        )*/
+        }).catch(err => {
+            return res.status(400).json(err);
+        });
 
     });
 
