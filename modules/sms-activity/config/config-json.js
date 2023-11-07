@@ -1,4 +1,6 @@
 module.exports = function configJSON(req) {
+
+  console.log('config ', req.headers.host);
   return {
     "workflowApiVersion": "1.1",
     "metaData": {
@@ -17,12 +19,9 @@ module.exports = function configJSON(req) {
     "arguments": {
       "execute": {
         "inArguments": [
-          {
-            "emailAddress": "{{InteractionDefaults.Email}}"
-          }
         ],
         "outArguments": [],
-        "url": "https://${req.headers.host}/modules/sms-activity/execute",
+        "url": `https://${req.headers.host}/modules/sms-activity/execute`,
         "verb": "POST",
         "body": "",
         "header": "",
@@ -33,22 +32,22 @@ module.exports = function configJSON(req) {
     },
     "configurationArguments": {
       "save": {
-        "url": 'https://' + req.headers.host + '/modules/sms-activity/save',
+        "url": `https://${req.headers.host}/modules/sms-activity/save`,
         "verb": "POST",
         "useJwt": true
       },
       "publish": {
-        "url": "https://${req.headers.host}/modules/sms-activity/publish",
+        "url": `https://${req.headers.host}/modules/sms-activity/publish`,
         "verb": "POST",
         "useJwt": true
       },
       "stop": {
-        "url": "https://${req.headers.host}/modules/sms-activity/stop",
+        "url": `https://${req.headers.host}/modules/sms-activity/stop`,
         "verb": "POST",
         "useJwt": true
       },
       "validate": {
-        "url": "https://${req.headers.host}/modules/sms-activity/validate",
+        "url": `https://${req.headers.host}/modules/sms-activity/validate`,
         "verb": "POST",
         "useJwt": true
       }
