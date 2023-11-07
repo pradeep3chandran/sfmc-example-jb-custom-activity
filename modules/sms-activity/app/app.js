@@ -129,14 +129,6 @@ module.exports = function smsActivityApp(app, options) {
         return res.status(200).json({});
     });
 
-    /**
-     * Called when a contact is flowing through the Journey.
-     * @return {[type]}
-     * 200 - Processed OK
-     * 3xx - Contact is ejected from the Journey.
-     * 4xx - Contact is ejected from the Journey.
-     * 5xx - Contact is ejected from the Journey.
-     */
     app.post('/modules/sms-activity/execute', function (req, res) {
         console.log('debug: /modules/sms-activity/execute');
 
@@ -226,8 +218,8 @@ module.exports = function smsActivityApp(app, options) {
         fetch('https://api.myvfirst.com/psms/api/messages/token?action=generate', {
             method: 'POST', headers: { "Authorization": 'Basic ' + Buffer.from('demosfdc:f{(|p@nE4~').toString('base64') }
         }).then(response => {
-            //return res.status(200).json(response);
-            console.log(response);
+            return res.status(200).json(response);
+            /*console.log(response);
 
             response.json().then(data => {
 
@@ -247,7 +239,7 @@ module.exports = function smsActivityApp(app, options) {
                 }).catch(err => {
                     return res.status(400).json(err);
                 });
-            })
+            })*/
         }).catch(err => {
             return res.status(400).json(err);
         });
