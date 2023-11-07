@@ -140,6 +140,8 @@ module.exports = function discountCodeExample(app, options) {
     app.post('/modules/sms-activity/execute', function (req, res) {
         console.log('debug: /modules/sms-activity/execute');
 
+        return res.status(200).json('execute');
+
         /*const request = req.body;
         // Find the in argument
         function getInArgument(k) {
