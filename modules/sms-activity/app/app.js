@@ -213,9 +213,17 @@ module.exports = function discountCodeExample(app, options) {
 
         console.log('jsonStr: ', JSON.stringify(jsonStr));
 
-        //return res.status(200).json('execute');
 
-        await fetch('https://api.myvfirst.com/psms/api/messages/token?action=generate', {
+        const response = await fetch('https://api.myvfirst.com/psms/api/messages/token?action=generate', {
+            method: 'POST', headers: { "Authorization": 'Basic ' + Buffer.from('demosfdc:f{(|p@nE4~').toString('base64') }
+        });
+
+        console.log(response);
+        const data = await response.json();
+        console.log(data);
+        return res.status(200).json(data);
+
+        /*fetch('https://api.myvfirst.com/psms/api/messages/token?action=generate', {
             method: 'POST', headers: { "Authorization": 'Basic ' + Buffer.from('demosfdc:f{(|p@nE4~').toString('base64') }
         }).then(response => {
             //return res.status(200).json(response);
@@ -228,7 +236,7 @@ module.exports = function discountCodeExample(app, options) {
                 let token = data.token;
 
 
-                /*fetch('https://api.myvfirst.com/psms/servlet/psms.JsonEservice', {
+                fetch('https://api.myvfirst.com/psms/servlet/psms.JsonEservice', {
                     method: 'POST', headers: { "Authorization": 'Bearer ' + token, "Content-Type": 'application/json' }, body: JSON.stringify(jsonStr)
                 }).then(response1 => {
                     console.log(response1);
@@ -238,11 +246,11 @@ module.exports = function discountCodeExample(app, options) {
                     })
                 }).catch(err => {
                     return res.status(400).json(err);
-                });*/
+                });
             })
         }).catch(err => {
             return res.status(400).json(err);
-        });
+        });*/
 
     });
 
