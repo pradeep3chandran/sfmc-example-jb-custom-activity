@@ -140,7 +140,7 @@ module.exports = function discountCodeExample(app, options) {
     app.post('/modules/sms-activity/execute', function (req, res) {
         console.log('debug: /modules/sms-activity/execute');
 
-        const request = req.body;
+        /*const request = req.body;
         // Find the in argument
         function getInArgument(k) {
             if (request && request.inArguments) {
@@ -235,7 +235,7 @@ module.exports = function discountCodeExample(app, options) {
             })
         }
 
-        )
+        )*/
 
     });
 
