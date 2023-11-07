@@ -30,13 +30,14 @@ define([
         for (let i = 0; i < schema.length; i++) {
 
             let name = schema[i].name;
+            let key = schema[i].key;
 
             $('#dataattributes').append(`<option value="${name}"> 
                                        ${name} 
                                   </option>`);
 
             if (schema[i].type == 'Phone') {
-                $('#toNumber').append(`<option value="${name}"> 
+                $('#toNumber').append(`<option value="${key}"> 
                                        ${name} 
                                   </option>`);
             }
@@ -213,7 +214,7 @@ define([
 
         payload['arguments'].execute.inArguments = [];
         payload['arguments'].execute.inArguments.push({ "message": $('#message').val() });
-        payload['arguments'].execute.inArguments.push({ "toNumber": $('#toNumber').find('option:selected').attr('value') });
+        payload['arguments'].execute.inArguments.push({ "toNumber": '{{' + $('#toNumber').find('option:selected').attr('value') + '}}' });
         payload['arguments'].execute.inArguments.push({ "mid": $('#mid').val() });
         payload['arguments'].execute.inArguments.push({ "senderName": $('#senderName').val() });
         payload['metaData'].isConfigured = true;
