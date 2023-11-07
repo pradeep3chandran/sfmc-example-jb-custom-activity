@@ -1,6 +1,52 @@
 'use strict';
 
-const https = require('https');
+exports.appredirect = function (req, res) {
+    return res.redirect('/modules/sms-activity/index.html');
+}
+
+exports.appredirectAsfile = function (req, res) {
+    return res.sendFile('/modules/sms-activity/index.html');
+}
+
+exports.configJS = function (req, res) {
+    return res.status(200).json(configJSON(req));
+}
+
+exports.reqjs = function (req, res) {
+    return res.redirect('/modules/sms-activity/src/require.js');
+}
+
+exports.jsmin = function (req, res) {
+    return res.redirect('/modules/sms-activity/src/jquery.min.js');
+}
+
+exports.customActivity = function (req, res) {
+    return res.redirect('/modules/sms-activity/src/customActivity.js');
+}
+
+exports.postmongerjs = function (req, res) {
+    return res.redirect('/modules/sms-activity/src/postmonger.js');
+}
+
+exports.save = function (req, res) {
+    console.log('debug: /modules/sms-activity/save');
+    return res.status(200).json('save');
+}
+
+exports.publish = function (req, res) {
+    console.log('debug: /modules/sms-activity/publish');
+    return res.status(200).json('publish');
+}
+
+exports.validate = function (req, res) {
+    console.log('debug: /modules/sms-activity/validate');
+    return res.status(200).json('validate');
+}
+
+exports.stop = function (req, res) {
+    console.log('debug: /modules/sms-activity/stop');
+    return res.status(200).json('stop');
+}
 
 exports.execute = function (req, res) {
     console.log('debug: /modules/sms-activity/execute');
