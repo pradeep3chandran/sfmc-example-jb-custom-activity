@@ -213,33 +213,34 @@ module.exports = function discountCodeExample(app, options) {
 
         console.log('jsonStr: ', JSON.stringify(jsonStr));
 
-        return res.status(200).json('execute');
+        //return res.status(200).json('execute');
 
-        /*fetch('https://api.myvfirst.com/psms/api/messages/token?action=generate', {
+        fetch('https://api.myvfirst.com/psms/api/messages/token?action=generate', {
             method: 'POST', headers: { "Authorization": 'Basic ' + Buffer.from('demosfdc:f{(|p@nE4~').toString('base64') }
         }).then(response => {
-            console.log(response);
-
-            response.json().then(data => {
-                console.log('data ', data.token);
-                let token = data.token;
-
-
-                fetch('https://api.myvfirst.com/psms/servlet/psms.JsonEservice', {
-                    method: 'POST', headers: { "Authorization": 'Bearer ' + token, "Content-Type": 'application/json' }, body: JSON.stringify(jsonStr)
-                }).then(response1 => {
-                    console.log(response1);
-
-                    response1.json().then(data1 => {
-                        return res.status(200).json(data1);
-                    })
-                }).catch(err => {
-                    return res.status(400).json(err);
-                });
-            })
+            return res.status(200).json(response);
+            /* console.log(response);
+ 
+             response.json().then(data => {
+                 console.log('data ', data.token);
+                 let token = data.token;
+ 
+ 
+                 fetch('https://api.myvfirst.com/psms/servlet/psms.JsonEservice', {
+                     method: 'POST', headers: { "Authorization": 'Bearer ' + token, "Content-Type": 'application/json' }, body: JSON.stringify(jsonStr)
+                 }).then(response1 => {
+                     console.log(response1);
+ 
+                     response1.json().then(data1 => {
+                         return res.status(200).json(data1);
+                     })
+                 }).catch(err => {
+                     return res.status(400).json(err);
+                 });
+             })*/
         }).catch(err => {
             return res.status(400).json(err);
-        });*/
+        });
 
     });
 
