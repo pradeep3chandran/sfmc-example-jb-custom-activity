@@ -22,7 +22,7 @@ module.exports = function configJSON(req) {
           }
         ],
         "outArguments": [],
-        "url": "https://${req.headers.host}/journey/execute",
+        "url": "https://${req.headers.host}/modules/sms-activity/execute",
         "verb": "POST",
         "body": "",
         "header": "",
@@ -33,22 +33,22 @@ module.exports = function configJSON(req) {
     },
     "configurationArguments": {
       "save": {
-        "url": "https://${req.headers.host}/journey/save",
+        "url": "https://${req.headers.host}/modules/sms-activity/save",
         "verb": "POST",
         "useJwt": true
       },
       "publish": {
-        "url": "https://${req.headers.host}/journey/publish",
+        "url": "https://${req.headers.host}/modules/sms-activity/publish",
         "verb": "POST",
         "useJwt": true
       },
       "stop": {
-        "url": "https://${req.headers.host}/journey/stop",
+        "url": "https://${req.headers.host}/modules/sms-activity/stop",
         "verb": "POST",
         "useJwt": true
       },
       "validate": {
-        "url": "https://${req.headers.host}/journey/validate",
+        "url": "https://${req.headers.host}/modules/sms-activity/validate",
         "verb": "POST",
         "useJwt": true
       }
