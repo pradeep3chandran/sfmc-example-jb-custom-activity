@@ -1,5 +1,7 @@
 'use strict';
 
+const https = require('https');
+
 exports.execute = function (req, res) {
     console.log('debug: /modules/sms-activity/execute');
 
