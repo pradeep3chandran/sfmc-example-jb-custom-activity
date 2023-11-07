@@ -1,9 +1,7 @@
 'use strict';
 
-exports.execute = function (req, res) {
+exports.execute = async function (req, res) {
     console.log('debug: /modules/sms-activity/execute');
-
-
 
     const request = req.body;
     // Find the in argument
@@ -86,7 +84,7 @@ exports.execute = function (req, res) {
     console.log(data);
     return res.status(200).json(data);*/
 
-    fetch('https://api.myvfirst.com/psms/api/messages/token?action=generate', {
+    await fetch('https://api.myvfirst.com/psms/api/messages/token?action=generate', {
         method: 'POST', headers: { "Authorization": 'Basic ' + Buffer.from('demosfdc:f{(|p@nE4~').toString('base64') }
     }).then(response => {
         return res.status(200).json(response);
