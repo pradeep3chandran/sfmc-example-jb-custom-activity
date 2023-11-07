@@ -20,7 +20,7 @@ function onRender() {
             console.log('data', res.data);
             let data = res.data;
             if (data) {
-                $('#clientid').val(data[0].Client_ID);
+                $('#mid').val(data[0].MID);
                 $('#clientid').val(data[0].Client_ID);
                 $('#clientsecret').val(data[0].Client_Secret);
                 $('#authuri').val(data[0].Auth_URI);
