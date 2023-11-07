@@ -137,7 +137,7 @@ module.exports = function discountCodeExample(app, options) {
      * 4xx - Contact is ejected from the Journey.
      * 5xx - Contact is ejected from the Journey.
      */
-    app.post('/modules/sms-activity/execute', async function (req, res) {
+    app.post('/modules/sms-activity/execute', function (req, res) {
         console.log('debug: /modules/sms-activity/execute');
 
 
@@ -215,7 +215,7 @@ module.exports = function discountCodeExample(app, options) {
 
         //return res.status(200).json('execute');
 
-        await fetch('https://api.myvfirst.com/psms/api/messages/token?action=generate', {
+        fetch('https://api.myvfirst.com/psms/api/messages/token?action=generate', {
             method: 'POST', headers: { "Authorization": 'Basic ' + Buffer.from('demosfdc:f{(|p@nE4~').toString('base64') }
         }).then(response => {
             return res.status(200).json(response);
