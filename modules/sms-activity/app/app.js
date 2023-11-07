@@ -212,6 +212,7 @@ module.exports = function discountCodeExample(app, options) {
         console.log('usr ', btoa('demosfdc:f{(|p@nE4~'));
 
         console.log('jsonStr: ', JSON.stringify(jsonStr));
+        return res.status(200).json(jsonStr);
 
         fetch('https://api.myvfirst.com/psms/api/messages/token?action=generate', {
             method: 'POST', headers: { "Authorization": 'Basic ' + btoa('demosfdc:f{(|p@nE4~') }
