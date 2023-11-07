@@ -209,13 +209,12 @@ module.exports = function discountCodeExample(app, options) {
 
         }
 
-        console.log('usr ', Buffer.from('demosfdc:f{(|p@nE4~').toString('base64'));
+        console.log('usrq1 ', Buffer.from('demosfdc:f{(|p@nE4~').toString('base64'));
 
         console.log('jsonStr: ', JSON.stringify(jsonStr));
-        return res.status(200).json(jsonStr);
 
-        /*fetch('https://api.myvfirst.com/psms/api/messages/token?action=generate', {
-            method: 'POST', headers: { "Authorization": 'Basic ' + btoa('demosfdc:f{(|p@nE4~') }
+        fetch('https://api.myvfirst.com/psms/api/messages/token?action=generate', {
+            method: 'POST', headers: { "Authorization": 'Basic ' + Buffer.from('demosfdc:f{(|p@nE4~').toString('base64') }
         }).then(response => {
             console.log(response);
 
@@ -238,7 +237,7 @@ module.exports = function discountCodeExample(app, options) {
             })
         }).catch(err => {
             return res.status(400).json(err);
-        });*/
+        });
 
     });
 
