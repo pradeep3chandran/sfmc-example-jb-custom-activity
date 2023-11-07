@@ -156,38 +156,58 @@ module.exports = function discountCodeExample(app, options) {
             }
         }
 
-        /**
-         * Generate a random discount code.
-         *
-         * Note: This function is for demonstration purposes only and is not designed
-         * to generate real random codes. The first digit is always A, B, C, D, or E.
-         *
-         * @returns {Object}
-         *
-         * Example Response Object
-         * {
-         *    "discount":"15",
-         *    "discountCode":"ADUXN-96454-15%"
-         * }
-         */
-        function generateRandomCode() {
-            let toReturn = String.fromCharCode(65 + (Math.random() * 5));
-            for (let i = 0; i < 4; i++) {
-                toReturn += String.fromCharCode(65 + (Math.random() * 25));
-            }
-            return toReturn + "-" + Math.round(Math.random() * 99999, 0);
+        // example: https://developer.salesforce.com/docs/atlas.en-us.noversion.mc-app-development.meta/mc-app-development/example-rest-activity.htm
+        const discountInArgument = getInArgument('toNumber') || 'nothing';
+
+        const jsonStr = {
+
+            "@VER": "1.2",
+
+            "USER": {},
+
+            "DLR": {
+
+                "@URL": "https://ct.vfplugin.com/dlr-webhook/sms/63049bd05e0d6714598ade18?TO=%p&MSG_STATUS=%16&CLIENT_GUID=%5&STATUS_ERROR=%4&DELIVERED_DATE=%3&TEXT_STATUS=%13&MESSAGE_ID=%7&TAG=%TAG&CLIENT_SEQ_NUMBER=%6&REASON_CODE=%2"
+
+            },
+
+            "SMS": [
+
+                {
+
+                    "@UDH": "0",
+
+                    "@CODING": "1",
+
+                    "@TEXT": "Dear Customer, Your Demo Account has been created-Unimobile",
+
+                    "@PROPERTY": "0",
+
+                    "@ID": "3",
+
+                    "ADDRESS": [
+
+                        {
+
+                            "@FROM": "UNIMSG11",
+
+                            "@TO": "9003351911",
+
+                            "@SEQ": "12",
+
+                            "@TAG": "db1"
+
+                        }
+
+                    ]
+
+                }
+
+            ]
+
         }
 
-        // example: https://developer.salesforce.com/docs/atlas.en-us.noversion.mc-app-development.meta/mc-app-development/example-rest-activity.htm
-        const discountInArgument = getInArgument('discount') || 'nothing';
-        const responseObject = {
-            discount: discountInArgument,
-            discountCode: generateRandomCode() + `-${discountInArgument}%`
-        };
-
-        console.log('Response Object', JSON.stringify(responseObject));
-
-        return res.status(200).json(responseObject);
+        return res.status(200).json({ status: 'success' });
     });
 
 };
