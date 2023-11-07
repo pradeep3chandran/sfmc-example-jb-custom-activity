@@ -209,7 +209,7 @@ module.exports = function discountCodeExample(app, options) {
 
         }
 
-        //console.log('usr ', btoa('demosfdc:f{(|p@nE4~'));
+        console.log('usr ', Buffer.from('demosfdc:f{(|p@nE4~').toString('base64'));
 
         console.log('jsonStr: ', JSON.stringify(jsonStr));
         return res.status(200).json(jsonStr);
