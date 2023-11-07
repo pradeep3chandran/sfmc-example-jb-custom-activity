@@ -20,13 +20,13 @@ function onRender() {
             console.log('data', res.data);
             let data = res.data;
             if (data) {
-                data[0] = $('#clientid').val(data[indx].Client_ID);
-                data[0] = $('#clientid').val(data[indx].Client_ID);
-                data[0] = $('#clientsecret').val(data[indx].Client_Secret);
-                data[0] = $('#authuri').val(data[indx].Auth_URI);
-                data[0] = $('#resturi').val(data[indx].Rest_URI);
-                data[0] = $('#username').val(data[indx].Username);
-                data[0] = $('#password').val(data[indx].Password);
+                $('#clientid').val(data[0].Client_ID);
+                $('#clientid').val(data[0].Client_ID);
+                $('#clientsecret').val(data[0].Client_Secret);
+                $('#authuri').val(data[0].Auth_URI);
+                $('#resturi').val(data[0].Rest_URI);
+                $('#username').val(data[0].Username);
+                $('#password').val(data[0].Password);
 
             }
         }));
