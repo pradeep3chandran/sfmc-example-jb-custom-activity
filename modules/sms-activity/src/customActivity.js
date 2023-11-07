@@ -208,9 +208,9 @@ define([
         // may be overridden as desired.
         console.log('save');
 
-        payload.name = name;
+        payload.name = 'SMS Activity';
 
-        payload['arguments'].execute.inArguments = [{ "message": '' }];
+        payload['arguments'].execute.inArguments = [{ "message": $('#message').val(), "toNumber": $('#phonefield').find('option:selected').attr('value'), "mid": $('#mid').val(), "senderName": $('#sendername').val() }];
 
         payload['metaData'].isConfigured = true;
 
