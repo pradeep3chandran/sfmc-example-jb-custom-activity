@@ -218,7 +218,7 @@ define([
         payload['arguments'].execute.inArguments.push({ "senderName": $('#senderName').val() });
         payload['metaData'].isConfigured = true;
 
-        console.log('payload: ', payload);
+        console.log('payload: ', JSON.stringify(payload));
 
 
         connection.trigger('updateActivity', payload);

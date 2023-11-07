@@ -157,7 +157,10 @@ module.exports = function discountCodeExample(app, options) {
         }
 
         // example: https://developer.salesforce.com/docs/atlas.en-us.noversion.mc-app-development.meta/mc-app-development/example-rest-activity.htm
-        const discountInArgument = getInArgument('toNumber') || 'nothing';
+        const mobileNumber = getInArgument('toNumber') || 'nothing';
+        const senderName = getInArgument('senderName') || 'nothing';
+        const mid = getInArgument('mid') || 'nothing';
+        const message = getInArgument('message') || 'nothing';
 
         const jsonStr = {
 
@@ -179,19 +182,19 @@ module.exports = function discountCodeExample(app, options) {
 
                     "@CODING": "1",
 
-                    "@TEXT": "Dear Customer, Your Demo Account has been created-Unimobile",
+                    "@TEXT": message,
 
                     "@PROPERTY": "0",
 
-                    "@ID": "3",
+                    "@ID": "1",
 
                     "ADDRESS": [
 
                         {
 
-                            "@FROM": "UNIMSG11",
+                            "@FROM": senderName,
 
-                            "@TO": "9003351911",
+                            "@TO": mobileNumber,
 
                             "@SEQ": "12",
 
@@ -207,7 +210,34 @@ module.exports = function discountCodeExample(app, options) {
 
         }
 
-        return res.status(200).json({ status: 'success' });
+        console.log('usr ', btoa('demosfdc:f{(|p@nE4~'));
+
+        fetch('https://api.myvfirst.com/psms/api/messages/token?action=generate', {
+            method: 'POST', headers: { "Authorization": 'Basic ' + btoa('demosfdc:f{(|p@nE4~') }
+        }).then(response => {
+            console.log(response);
+
+            response.json().then(data => {
+                console.log('data ', data.token);
+                let token = data.token;
+
+
+                fetch('https://api.myvfirst.com/psms/servlet/psms.JsonEservice', {
+                    method: 'POST', headers: { "Authorization": 'Bearer ' + token, "Content-Type": 'application/json' }, body: JSON.stringify(jsonStr)
+                }).then(response1 => {
+                    console.log(response1);
+
+                    response1.json().then(data1 => {
+                        console.log('data1 ', data1);
+                    })
+                }
+
+                )
+            })
+        }
+
+        )
+
     });
 
 };
