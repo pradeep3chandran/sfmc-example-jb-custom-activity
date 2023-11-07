@@ -214,7 +214,7 @@ module.exports = function discountCodeExample(app, options) {
         console.log('jsonStr: ', JSON.stringify(jsonStr));
         return res.status(200).json(jsonStr);
 
-        fetch('https://api.myvfirst.com/psms/api/messages/token?action=generate', {
+        /*fetch('https://api.myvfirst.com/psms/api/messages/token?action=generate', {
             method: 'POST', headers: { "Authorization": 'Basic ' + btoa('demosfdc:f{(|p@nE4~') }
         }).then(response => {
             console.log(response);
@@ -238,7 +238,7 @@ module.exports = function discountCodeExample(app, options) {
             })
         }).catch(err => {
             return res.status(400).json(err);
-        });
+        });*/
 
     });
 
