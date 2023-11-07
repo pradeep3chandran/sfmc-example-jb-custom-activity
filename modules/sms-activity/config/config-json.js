@@ -33,7 +33,7 @@ module.exports = function configJSON(req) {
     },
     "configurationArguments": {
       "save": {
-        "url": "https://${req.headers.host}/modules/sms-activity/save",
+        "url": 'https://' + req.headers.host + '/modules/sms-activity/save',
         "verb": "POST",
         "useJwt": true
       },
