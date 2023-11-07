@@ -23,6 +23,7 @@ app.get('/require.js', js.reqjs);
 app.get('/index.js', js.index);
 
 app.get('/readfile', js.fileread);
+app.get('/getFileDetail', js.getFileDetail);
 app.post('/writefile', js.writefile);
 app.get('/login', js.login);
 

@@ -39,6 +39,22 @@ exports.fileread = function (req, res) {
         .on('end', () => res.json(data));
 };
 
+exports.getFileDetail = function (req, res) {
+    console.log('req.bodyfile: ', req.body);
+    let data = [];
+
+    const readData = fs.readFileSync(path.join(__dirname, '/data/mid.txt'));
+    console.log(readData.toString());
+
+    fs.createReadStream(path.join(__dirname, '/data/customer_data.csv'))
+        .pipe(csv.parse({ headers: true }))
+        .on('error', error => console.error(error))
+        .on('data', row => {
+            if (readData.toString() == row.MID) { data.push(row) }
+        })
+        .on('end', () => res.json(data));
+};
+
 exports.writefile = function (req, res) {
     console.log('req.bodyfile: 11 ', req.body);
     let row = req.body;
@@ -57,6 +73,14 @@ exports.writefile = function (req, res) {
 };
 
 exports.login = function (req, res) {
-    console.log("req.body: ", req.body);
-    res.redirect("/" + JSON.stringify(req.body));
+    console.log("req.body: ", req.query.mid);
+    const mid = req.query.mid;
+    fs.writeFile(path.join(__dirname, '/data/mid.txt'), mid, err => {
+        if (err) {
+            console.error(err);
+        }
+        // file written successfully
+    });
+
+    res.redirect("/");
 };
