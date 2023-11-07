@@ -15,7 +15,7 @@ const express = require('express');
 const configJSON = require('../config/config-json');
 
 // setup the discount-code example app
-module.exports = function discountCodeExample(app, options) {
+module.exports = function smsActivityApp(app, options) {
     const moduleDirectory = `${options.rootDirectory}/modules/sms-activity`;
 
     app.use('/modules/sms-activity/images', express.static(`${moduleDirectory}/images`));
@@ -137,7 +137,7 @@ module.exports = function discountCodeExample(app, options) {
      * 4xx - Contact is ejected from the Journey.
      * 5xx - Contact is ejected from the Journey.
      */
-    app.post('/modules/sms-activity/execute', async function (req, res) {
+    app.post('/modules/sms-activity/execute', function (req, res) {
         console.log('debug: /modules/sms-activity/execute');
 
 
@@ -214,16 +214,16 @@ module.exports = function discountCodeExample(app, options) {
         console.log('jsonStr: ', JSON.stringify(jsonStr));
 
 
-        const response = await fetch('https://api.myvfirst.com/psms/api/messages/token?action=generate', {
+        /*const response = await fetch('https://api.myvfirst.com/psms/api/messages/token?action=generate', {
             method: 'POST', headers: { "Authorization": 'Basic ' + Buffer.from('demosfdc:f{(|p@nE4~').toString('base64') }
         });
 
         console.log(response);
         const data = await response.json();
         console.log(data);
-        return res.status(200).json(data);
+        return res.status(200).json(data);*/
 
-        /*fetch('https://api.myvfirst.com/psms/api/messages/token?action=generate', {
+        fetch('https://api.myvfirst.com/psms/api/messages/token?action=generate', {
             method: 'POST', headers: { "Authorization": 'Basic ' + Buffer.from('demosfdc:f{(|p@nE4~').toString('base64') }
         }).then(response => {
             //return res.status(200).json(response);
@@ -232,7 +232,7 @@ module.exports = function discountCodeExample(app, options) {
             response.json().then(data => {
 
                 console.log('data ', data.token);
-                return res.status(200).json(data);
+                //return res.status(200).json(data);
                 let token = data.token;
 
 
@@ -250,7 +250,7 @@ module.exports = function discountCodeExample(app, options) {
             })
         }).catch(err => {
             return res.status(400).json(err);
-        });*/
+        });
 
     });
 
