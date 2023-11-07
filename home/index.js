@@ -10,7 +10,7 @@ function onRender() {
 }
 
 async function saveMC() {
-    var clientId = $('#clientid').val();
+    var mid = $('#mid').val();
 
     var rowData = {
         MID: mid,
@@ -22,11 +22,6 @@ async function saveMC() {
         Password: $('#password').val()
     }
 
-    console.log('clientId', clientId);
-    console.log('clientSecret', clientSecret);
-    console.log('mid', mid);
-    console.log('authURI', authURI);
-    console.log('restURI', restURI);
 
 
     fetch('readfile/', { method: 'GET' }).then(response =>
