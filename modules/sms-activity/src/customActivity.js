@@ -36,7 +36,7 @@ define([
                                   </option>`);
 
             if (schema[i].type == 'Phone') {
-                $('#phonefield').append(`<option value="${name}"> 
+                $('#toNumber').append(`<option value="${name}"> 
                                        ${name} 
                                   </option>`);
             }
@@ -98,6 +98,7 @@ define([
             $.each(inArgument, function (key, val) {
 
                 console.log('inArgument ', key, val);
+                $('#' + key).val(val);
             });
         });
 
@@ -210,8 +211,11 @@ define([
 
         payload.name = 'SMS Activity';
 
-        payload['arguments'].execute.inArguments = [{ "message": $('#message').val(), "toNumber": $('#phonefield').find('option:selected').attr('value'), "mid": $('#mid').val(), "senderName": $('#sendername').val() }];
-
+        payload['arguments'].execute.inArguments = [];
+        payload['arguments'].execute.inArguments.push({ "message": $('#message').val() });
+        payload['arguments'].execute.inArguments.push({ "toNumber": $('#toNumber').find('option:selected').attr('value') });
+        payload['arguments'].execute.inArguments.push({ "mid": $('#mid').val() });
+        payload['arguments'].execute.inArguments.push({ "senderName": $('#senderName').val() });
         payload['metaData'].isConfigured = true;
 
         console.log('payload: ', payload);
