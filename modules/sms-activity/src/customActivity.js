@@ -214,7 +214,7 @@ define([
 
         payload['arguments'].execute.inArguments = [];
         payload['arguments'].execute.inArguments.push({ "message": $('#message').val() });
-        payload['arguments'].execute.inArguments.push({ "toNumber": '9003351911' });
+        payload['arguments'].execute.inArguments.push({ "toNumber": '{{' + $('#toNumber').find('option:selected').attr('value') + '}}' });
         payload['arguments'].execute.inArguments.push({ "mid": $('#mid').val() });
         payload['arguments'].execute.inArguments.push({ "senderName": $('#senderName').val() });
         payload['metaData'].isConfigured = true;

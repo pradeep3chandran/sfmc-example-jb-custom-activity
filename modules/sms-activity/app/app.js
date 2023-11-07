@@ -81,7 +81,7 @@ module.exports = function discountCodeExample(app, options) {
      */
     app.post('/modules/sms-activity/save', function (req, res) {
         console.log('debug: /modules/sms-activity/save');
-        return res.status(200).json({});
+        return res.status(200).json('save');
     });
 
     /**
