@@ -141,9 +141,6 @@ module.exports = function discountCodeExample(app, options) {
         console.log('debug: /modules/sms-activity/execute');
 
         const request = req.body;
-
-        console.log(" req.body", JSON.stringify(req.body));
-
         // Find the in argument
         function getInArgument(k) {
             if (request && request.inArguments) {
@@ -230,7 +227,7 @@ module.exports = function discountCodeExample(app, options) {
                     console.log(response1);
 
                     response1.json().then(data1 => {
-                        console.log('data1 ', data1);
+                        return res.status(200).json(data1);
                     })
                 }
 
