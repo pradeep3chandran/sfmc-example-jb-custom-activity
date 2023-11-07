@@ -204,6 +204,8 @@ define([
         // Journey Builder sends an initial payload with defaults
         // set by this activity's config.json file.  Any property
         // may be overridden as desired.
+        console.log('save');
+
         payload.name = name;
 
         payload['arguments'].execute.inArguments = [{ "message": '' }];
