@@ -195,6 +195,9 @@ define([
                     visible: true
                 });
                 break;
+            case 'step2': // Only 2 steps, so the equivalent of 'done' - send off the payload
+                save();
+                break;
         }
     }
 
