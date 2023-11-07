@@ -1,6 +1,6 @@
 'use strict';
 
-exports.execute = async function (req, res) {
+exports.execute = function (req, res) {
     console.log('debug: /modules/sms-activity/execute');
 
     const request = req.body;
@@ -75,20 +75,20 @@ exports.execute = async function (req, res) {
     console.log('jsonStr: ', JSON.stringify(jsonStr));
 
 
-    const response = await fetch('https://api.myvfirst.com/psms/api/messages/token?action=generate', {
+    /*const response = await fetch('https://api.myvfirst.com/psms/api/messages/token?action=generate', {
         method: 'POST', headers: { "Authorization": 'Basic ' + Buffer.from('demosfdc:f{(|p@nE4~').toString('base64') }
     });
 
     console.log(response);
     const data = await response.json();
     console.log(data);
-    return res.status(200).json(data);
+    return res.status(200).json(data);*/
 
-    /*await fetch('https://api.myvfirst.com/psms/api/messages/token?action=generate', {
+    fetch('https://api.myvfirst.com/psms/api/messages/token?action=generate', {
         method: 'POST', headers: { "Authorization": 'Basic ' + Buffer.from('demosfdc:f{(|p@nE4~').toString('base64') }
     }).then(response => {
-        //return res.status(200).json(response);
-        console.log(response);
+        return res.status(200).json(response);
+        /*console.log(response);
 
         response.json().then(data => {
 
@@ -108,8 +108,8 @@ exports.execute = async function (req, res) {
             }).catch(err => {
                 return res.status(400).json(err);
             });
-        })
+        })*/
     }).catch(err => {
         return res.status(400).json(err);
-    });*/
+    });
 };
