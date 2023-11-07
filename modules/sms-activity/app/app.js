@@ -140,9 +140,9 @@ module.exports = function discountCodeExample(app, options) {
     app.post('/modules/sms-activity/execute', function (req, res) {
         console.log('debug: /modules/sms-activity/execute');
 
-        return res.status(200).json('execute');
 
-        /*const request = req.body;
+
+        const request = req.body;
         // Find the in argument
         function getInArgument(k) {
             if (request && request.inArguments) {
@@ -155,7 +155,8 @@ module.exports = function discountCodeExample(app, options) {
             }
         }
 
-        // example: https://developer.salesforce.com/docs/atlas.en-us.noversion.mc-app-development.meta/mc-app-development/example-rest-activity.htm
+        return res.status(200).json('execute');
+        /*
         const mobileNumber = getInArgument('toNumber') || 'nothing';
         const senderName = getInArgument('senderName') || 'nothing';
         const mid = getInArgument('mid') || 'nothing';
