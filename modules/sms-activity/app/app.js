@@ -132,7 +132,7 @@ module.exports = function smsActivityApp(app, options) {
     });
 
 
-    app.post('/modules/sms-activity/deliveryreport', function (req, res) {
+    app.get('/modules/sms-activity/deliveryreport', function (req, res) {
         console.log('delivery report');
         console.log(req);
         return res.status(200).json(req);
