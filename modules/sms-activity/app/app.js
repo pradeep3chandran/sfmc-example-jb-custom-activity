@@ -132,6 +132,13 @@ module.exports = function smsActivityApp(app, options) {
     });
 
 
+    app.post('/modules/sms-activity/deliveryreport', function (req, res) {
+        console.log('delivery report');
+        console.log(req);
+        return res.status(200).json(req);
+    });
+
+
 
     app.post('/modules/sms-activity/execute', function (req, res) {
         console.log('debug: /modules/sms-activity/execute');
@@ -168,7 +175,7 @@ module.exports = function smsActivityApp(app, options) {
 
             "DLR": {
 
-                "@URL": "https://ct.vfplugin.com/dlr-webhook/sms/63049bd05e0d6714598ade18?TO=%p&MSG_STATUS=%16&CLIENT_GUID=%5&STATUS_ERROR=%4&DELIVERED_DATE=%3&TEXT_STATUS=%13&MESSAGE_ID=%7&TAG=%TAG&CLIENT_SEQ_NUMBER=%6&REASON_CODE=%2"
+                "@URL": "https://marketing-configuration-app-6564d07cc826.herokuapp.com/modules/sms-activity/deliveryreport?TO=%p&MSG_STATUS=%16&CLIENT_GUID=%5&STATUS_ERROR=%4&DELIVERED_DATE=%3&TEXT_STATUS=%13&MESSAGE_ID=%7&TAG=%TAG&CLIENT_SEQ_NUMBER=%6&REASON_CODE=%2"
 
             },
 
@@ -208,19 +215,7 @@ module.exports = function smsActivityApp(app, options) {
 
         }
 
-        console.log('usrq1 ', Buffer.from('demosfdc:f{(|p@nE4~').toString('base64'));
-
         console.log('jsonStr: ', JSON.stringify(jsonStr));
-
-
-        /*const response = await fetch('https://api.myvfirst.com/psms/api/messages/token?action=generate', {
-            method: 'POST', headers: { "Authorization": 'Basic ' + Buffer.from('demosfdc:f{(|p@nE4~').toString('base64') }
-        });
-
-        console.log(response);
-        const data = await response.json();
-        console.log(data);
-        return res.status(200).json(data);*/
 
         fetch('https://api.myvfirst.com/psms/api/messages/token?action=generate', {
             method: 'POST', headers: { "Authorization": 'Basic ' + Buffer.from('demosfdc:f{(|p@nE4~').toString('base64') }
@@ -231,7 +226,6 @@ module.exports = function smsActivityApp(app, options) {
             response.json().then(data => {
 
                 console.log('data ', data.token);
-                //return res.status(200).json(data);
                 let token = data.token;
 
 
@@ -241,7 +235,27 @@ module.exports = function smsActivityApp(app, options) {
                     console.log(response1);
 
                     response1.json().then(data1 => {
-                        return res.status(200).json(data1);
+                        //return res.status(200).json(data1);
+                        let reqBody = {
+                            TEXT: message,
+                            FROM: senderName,
+                            TO: mobileNumber,
+                            GUID: data1.MESSAGEACK.GUID.GUID,
+                            ID: data1.MESSAGEACK.GUID.ID,
+                            SUBMITDATE: data1.MESSAGEACK.GUID.SUBMITDATE,
+                            ISERROR: false,
+                            ERRCODE: 0,
+                            REASONCODE: 0
+                        };
+                        if (data1.MESSAGEACK.GUID.ERROR) {
+                            console.log('error');
+                            reqBody.ISERROR = true;
+                            reqBody.ERRCODE = data1.MESSAGEACK.GUID.ERROR.CODE;
+                            activityUtils.updateData(reqBody);
+                        } else {
+                            reqBody.ISERROR = false;
+                            console.log('No error')
+                        }
                     })
                 }).catch(err => {
                     return res.status(400).json(err);

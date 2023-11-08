@@ -1,4 +1,4 @@
-var util = require('util');
+'use strict';
 
 exports.logExecuteData = [];
 
@@ -22,23 +22,54 @@ exports.logData = function (req) {
         secure: req.secure,
         originalUrl: req.originalUrl
     });
-    /*
-    console.log( "body: " + util.inspect( req.body ) );
-    console.log( "headers: " + req.headers );
-    console.log( "trailers: " + req.trailers );
-    console.log( "method: " + req.method );
-    console.log( "url: " + req.url );
-    console.log( "params: " + util.inspect( req.params ) );
-    console.log( "query: " + util.inspect( req.query ) );
-    console.log( "route: " + req.route );
-    console.log( "cookies: " + req.cookies );
-    console.log( "ip: " + req.ip );
-    console.log( "path: " + req.path );
-    console.log( "host: " + req.host );
-    console.log( "fresh: " + req.fresh );
-    console.log( "stale: " + req.stale );
-    console.log( "protocol: " + req.protocol );
-    console.log( "secure: " + req.secure );
-    console.log( "originalUrl: " + req.originalUrl );
-    */
+
+    exports.updateData = function (req, res) {
+        console.log('updateData', req);
+        let reqBody = [];
+        reqBody.push({
+            "keys": {
+                "GUID": req.GUID
+            },
+            "values": {
+                ID: req.ID,
+                SUBMITDATE: req.SUBMITDATE,
+                FROM: req.FROM,
+                TO: req.TO,
+                TEXT: req.TEXT,
+                STATUS: 'Failed'
+            }
+        });
+
+        let accessRequest = {
+            "grant_type": "client_credentials",
+            "client_id": "kduzi47837sertymgtd515v6",
+            "client_secret": "vP3OMwdzW46qSWXQXnPeJ4Bw",
+            "account_id": "546001145"
+        };
+
+        fetch('https://mcv3d4v2fm7d1rqg9-fkxts8swqq.auth.marketingcloudapis.com/v2/token', {
+            method: 'POST', body: JSON.stringify(accessRequest), headers: { 'Content-Type': 'application/json' }
+        }).then(response => {
+
+            response.json().then(data => {
+                console.log(data);
+                console.log(reqBody);
+                fetch('https://mcv3d4v2fm7d1rqg9-fkxts8swqq.rest.marketingcloudapis.com/hub/v1/dataevents/key:CA054127-E2A5-494F-83EF-230B180A0F8E/rowset', {
+                    method: 'POST', body: JSON.stringify(reqBody), headers: { 'Authorization': 'Bearer ' + data.access_token, 'Content-Type': 'application/json' }
+                }).then(response1 => {
+
+                    response1.json().then(data1 => {
+                        console.log(data1);
+
+                        //return res.status(200).json(data1);
+                    })
+                }).catch(err1 => {
+                    console.log(err1);
+                });
+                //return res.status(200).json(data1);
+            })
+        }).catch(err => {
+            console.log(err);
+        });
+    }
 };
