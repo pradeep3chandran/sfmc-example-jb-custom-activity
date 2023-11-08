@@ -217,6 +217,10 @@ define([
         payload['arguments'].execute.inArguments.push({ "toNumber": '{{' + $('#toNumber').find('option:selected').attr('value') + '}}' });
         payload['arguments'].execute.inArguments.push({ "mid": $('#mid').val() });
         payload['arguments'].execute.inArguments.push({ "senderName": $('#senderName').val() });
+
+        let primaryKey = schema[schema.findIndex(obj => obj.isPrimaryKey)].key;
+        payload['arguments'].execute.inArguments.push({ "primaryKey": primaryKey });
+
         payload['metaData'].isConfigured = true;
 
         console.log('payload: ', JSON.stringify(payload));
