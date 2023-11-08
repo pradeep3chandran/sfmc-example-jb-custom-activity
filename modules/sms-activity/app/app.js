@@ -133,8 +133,11 @@ module.exports = function smsActivityApp(app, options) {
         console.log('debug: /modules/sms-activity/execute');
 
 
+        console.log('req ', req);
 
         const request = req.body;
+
+        console.log('request ', request);
         // Find the in argument
         function getInArgument(k) {
             if (request && request.inArguments) {
