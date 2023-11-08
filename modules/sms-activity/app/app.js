@@ -13,11 +13,13 @@
 
 const express = require('express');
 const configJSON = require('../config/config-json');
+const bodyParser = require('body-parser');
 
 // setup the discount-code example app
 module.exports = function smsActivityApp(app, options) {
     const moduleDirectory = `${options.rootDirectory}/modules/sms-activity`;
 
+    app.use(bodyParser.json());
     app.use('/modules/sms-activity/images', express.static(`${moduleDirectory}/images`));
 
     // setup the index redirect
