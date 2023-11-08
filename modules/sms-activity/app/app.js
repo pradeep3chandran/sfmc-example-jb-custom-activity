@@ -135,11 +135,6 @@ module.exports = function smsActivityApp(app, options) {
 
         console.log('req ', req);
 
-        req.json().then(data1 => {
-
-            console.log('data1 ', data1);
-        })
-
         const request = req.body;
 
         console.log('request ', request);

@@ -18,7 +18,9 @@ module.exports = function configJSON(req) {
     },
     "arguments": {
       "execute": {
-        "inArguments": [
+        "inArguments": [{
+          Mobile_Number: 9003351911
+        }
         ],
         "outArguments": [],
         "url": `https://${req.headers.host}/modules/sms-activity/execute`,
