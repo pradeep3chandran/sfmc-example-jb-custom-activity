@@ -134,8 +134,8 @@ module.exports = function smsActivityApp(app, options) {
 
     app.get('/modules/sms-activity/deliveryreport', function (req, res) {
         console.log('delivery report');
-        console.log(req);
-        return res.status(200).json(req);
+        console.log(req.query);
+        return res.status(200).json('delivery report success');
     });
 
 
