@@ -18,14 +18,6 @@ module.exports = function configJSON(req) {
     },
     "arguments": {
       "execute": {
-        "inArguments": [{
-          "emailAddress": "{{InteractionDefaults.Email}}"
-        },
-        {
-          "phoneNumber": "{{Contact.Default.PhoneNumber}}"
-        }
-        ],
-        "outArguments": [],
         "url": `https://${req.headers.host}/modules/sms-activity/execute`,
         "verb": "POST",
         "body": "",
