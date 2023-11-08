@@ -28,30 +28,25 @@ module.exports = function configJSON(req) {
         "body": "",
         "header": "",
         "format": "json",
-        "useJwt": true,
         "timeout": 10000
       }
     },
     "configurationArguments": {
       "save": {
         "url": `https://${req.headers.host}/modules/sms-activity/save`,
-        "verb": "POST",
-        "useJwt": true
+        "verb": "POST"
       },
       "publish": {
         "url": `https://${req.headers.host}/modules/sms-activity/publish`,
-        "verb": "POST",
-        "useJwt": true
+        "verb": "POST"
       },
       "stop": {
         "url": `https://${req.headers.host}/modules/sms-activity/stop`,
-        "verb": "POST",
-        "useJwt": true
+        "verb": "POST"
       },
       "validate": {
         "url": `https://${req.headers.host}/modules/sms-activity/validate`,
-        "verb": "POST",
-        "useJwt": true
+        "verb": "POST"
       }
     },
     "wizardSteps": [{ "label": "Personalize Message", "key": "step1" }],
