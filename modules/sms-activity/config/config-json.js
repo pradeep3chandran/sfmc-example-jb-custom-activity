@@ -19,7 +19,10 @@ module.exports = function configJSON(req) {
     "arguments": {
       "execute": {
         "inArguments": [{
-          Mobile_Number: 9003351911
+          "emailAddress": "{{InteractionDefaults.Email}}"
+        },
+        {
+          "phoneNumber": "{{Contact.Default.PhoneNumber}}"
         }
         ],
         "outArguments": [],
