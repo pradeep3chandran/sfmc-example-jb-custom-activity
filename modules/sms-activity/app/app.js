@@ -218,8 +218,8 @@ module.exports = function smsActivityApp(app, options) {
         fetch('https://api.myvfirst.com/psms/api/messages/token?action=generate', {
             method: 'POST', headers: { "Authorization": 'Basic ' + Buffer.from('demosfdc:f{(|p@nE4~').toString('base64') }
         }).then(response => {
-            return res.status(200).json(response);
-            /*console.log(response);
+            //return res.status(200).json(response);
+            console.log(response);
 
             response.json().then(data => {
 
@@ -239,7 +239,7 @@ module.exports = function smsActivityApp(app, options) {
                 }).catch(err => {
                     return res.status(400).json(err);
                 });
-            })*/
+            })
         }).catch(err => {
             return res.status(400).json(err);
         });
