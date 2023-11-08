@@ -14,7 +14,7 @@
 const express = require('express');
 const configJSON = require('../config/config-json');
 const bodyParser = require('body-parser');
-
+const activityUtils = require('../src/activityUtil');
 // setup the discount-code example app
 module.exports = function smsActivityApp(app, options) {
     const moduleDirectory = `${options.rootDirectory}/modules/sms-activity`;
@@ -135,7 +135,7 @@ module.exports = function smsActivityApp(app, options) {
 
     app.post('/modules/sms-activity/execute', function (req, res) {
         console.log('debug: /modules/sms-activity/execute');
-
+        activityUtils.logData(req);
 
         console.log('req ', req);
 
