@@ -4,7 +4,7 @@
   "description": "Journey Builder Activity Template",
   "main": "index.js",
   "engines": {
-    "node": "16.15.1"
+    "node": "18.16.0"
   },
   "scripts": {
     "start": "node app.js"
