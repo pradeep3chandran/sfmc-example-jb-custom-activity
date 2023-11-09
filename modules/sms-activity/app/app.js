@@ -15,6 +15,41 @@ const express = require('express');
 const configJSON = require('../config/config-json');
 const bodyParser = require('body-parser');
 const activityUtils = require('../src/activityUtil');
+
+const errorObject = {
+    52992: "Username / Password incorrect",
+    52995: "Daily Credit limit Reached",
+    57089: "Contract expired",
+    57090: "User credit expired",
+    57091: "User disabled",
+    65280: "Service is temporarily unavailable",
+    65535: "The specified message does not conform to DTD",
+    28673: "Destination number not numeric",
+    28674: "Destination number empty",
+    28675: "Sender address empty",
+    28676: "Template mismatch",
+    28677: "UDH is invalid / SPAM message",
+    28678: "Coding is invalid",
+    28679: "SMS text is empty",
+    28680: "Invalid sender ID",
+    28681: "Invalid message, Duplicate message, Submit failed",
+    28682: "Invalid Receiver ID (Will validate Indian mobile numbers only.)",
+    28683: "Invalid Date time for message Schedule (If the date specified in message post for schedule delivery is less than current date or more than expiry date or more than 1 year)",
+    28684: "Invalid SMS Block",
+    28692: "Invalid Split Count",
+    28694: "Invalid/Incomplete details in TEMPLATEINFO tag of request. If occurred any error , related to TEMPLATEINFO parameter, which include like invalid template id is provided, variables count mismatch than the template Text variables count, template text not found for the given template id",
+    28695: "Template matched but invalid variables in template",
+    28696: "Media ID, type, content type cannot be null or blank in case of two waymedia message. If text have data, it should be in base64 format",
+    28697: "Incorrect User Route",
+    28698: "Invalid/Blank Media data or type(In case of Push Media Message)",
+    28699: "MSGTYPE in WhatsApp Data Request Packet is empty",
+    28700: "WhatsApp Data Request Packet is Empty / Media type in WhatsApp data request packet does not match with the MSGTYPE received in the request.",
+    28702: "Invalid DLT Parameters",
+    28703: "Invalid DLT Content Type",
+    28704: "Invalid Authorization Type(If message is rejected due to authorizationscheme other than Authorization header)",
+    8448: "Message delivered successfully",
+    8449: "Message failed"
+};
 // setup the discount-code example app
 module.exports = function smsActivityApp(app, options) {
     const moduleDirectory = `${options.rootDirectory}/modules/sms-activity`;
@@ -143,7 +178,7 @@ module.exports = function smsActivityApp(app, options) {
             },
             "values": {
                 "STATUS": req.query.MSG_STATUS,
-                "DELIVEREDDATE": req.query.DELIVERED_DATE
+                "DELIVERED_DATE": req.query.DELIVERED_DATE
             }
         });
 
@@ -286,15 +321,17 @@ module.exports = function smsActivityApp(app, options) {
                             },
                             "values": {
                                 ID: data1.MESSAGEACK.GUID.ID,
-                                SUBMITDATE: data1.MESSAGEACK.GUID.SUBMITDATE,
+                                SUBMIT_DATE: data1.MESSAGEACK.GUID.SUBMITDATE,
                                 FROM: senderName,
                                 TO: mobileNumber,
-                                TEXT: message
+                                TEXT: message,
+                                STATUS: 'Submitted'
                             }
                         });
                         if (data1.MESSAGEACK.GUID.ERROR) {
                             console.log('error');
-                            reqBody[0].values.STATUS = 'FAILED';
+                            reqBody[0].values.STATUS = 'Failed';
+                            reqBody[0].values.ERROR_REASON = errorObject[data1.MESSAGEACK.GUID.ERROR.CODE];
                         }
                         activityUtils.updateData(reqBody, res);
                     })
