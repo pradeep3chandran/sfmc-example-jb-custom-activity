@@ -135,7 +135,50 @@ module.exports = function smsActivityApp(app, options) {
     app.get('/modules/sms-activity/deliveryreport', function (req, res) {
         console.log('delivery report');
         console.log(req.query);
-        return res.status(200).json('delivery report success');
+
+        let reqBody = [];
+        reqBody.push({
+            "keys": {
+                "GUID": req.CLIENT_GUID
+            },
+            "values": {
+                "STATUS": req.MSG_STATUS,
+                "DELIVERED_DATE": req.DELIVERED_DATE
+            }
+        });
+
+        let accessRequest = {
+            "grant_type": "client_credentials",
+            "client_id": "kduzi47837sertymgtd515v6",
+            "client_secret": "vP3OMwdzW46qSWXQXnPeJ4Bw",
+            "account_id": "546001145"
+        };
+
+        fetch('https://mcv3d4v2fm7d1rqg9-fkxts8swqq.auth.marketingcloudapis.com/v2/token', {
+            method: 'POST', body: JSON.stringify(accessRequest), headers: { 'Content-Type': 'application/json' }
+        }).then(response => {
+
+            response.json().then(data => {
+                console.log(data);
+                console.log(reqBody);
+                fetch('https://mcv3d4v2fm7d1rqg9-fkxts8swqq.rest.marketingcloudapis.com/hub/v1/dataevents/key:CA054127-E2A5-494F-83EF-230B180A0F8E/rowset', {
+                    method: 'POST', body: JSON.stringify(reqBody), headers: { 'Authorization': 'Bearer ' + data.access_token, 'Content-Type': 'application/json' }
+                }).then(response1 => {
+
+                    response1.json().then(data1 => {
+                        console.log(data1);
+
+                        return res.status(200).json('Success');
+                    })
+                }).catch(err1 => {
+                    console.log(err1);
+                });
+                //return res.status(200).json(data1);
+            })
+        }).catch(err => {
+            console.log(err);
+        });
+        //return res.status(200).json('delivery report success');
     });
 
 
@@ -236,26 +279,24 @@ module.exports = function smsActivityApp(app, options) {
 
                     response1.json().then(data1 => {
                         //return res.status(200).json(data1);
-                        let reqBody = {
-                            TEXT: message,
-                            FROM: senderName,
-                            TO: mobileNumber,
-                            GUID: data1.MESSAGEACK.GUID.GUID,
-                            ID: data1.MESSAGEACK.GUID.ID,
-                            SUBMITDATE: data1.MESSAGEACK.GUID.SUBMITDATE,
-                            ISERROR: false,
-                            ERRCODE: 0,
-                            REASONCODE: 0
-                        };
+                        let reqBody = [];
+                        reqBody.push({
+                            "keys": {
+                                "GUID": data1.MESSAGEACK.GUID.GUID
+                            },
+                            "values": {
+                                ID: data1.MESSAGEACK.GUID.ID,
+                                SUBMITDATE: data1.MESSAGEACK.GUID.SUBMITDATE,
+                                FROM: senderName,
+                                TO: mobileNumber,
+                                TEXT: message
+                            }
+                        });
                         if (data1.MESSAGEACK.GUID.ERROR) {
                             console.log('error');
-                            reqBody.ISERROR = true;
-                            reqBody.ERRCODE = data1.MESSAGEACK.GUID.ERROR.CODE;
-                            activityUtils.updateData(reqBody);
-                        } else {
-                            reqBody.ISERROR = false;
-                            console.log('No error')
+                            reqBody[0].values.STATUS = 'FAILED';
                         }
+                        activityUtils.updateData(reqBody);
                     })
                 }).catch(err => {
                     return res.status(400).json(err);

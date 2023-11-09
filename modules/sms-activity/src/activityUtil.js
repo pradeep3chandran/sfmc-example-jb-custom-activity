@@ -61,7 +61,7 @@ exports.logData = function (req) {
                     response1.json().then(data1 => {
                         console.log(data1);
 
-                        //return res.status(200).json(data1);
+                        return res.status(200).json('Success');
                     })
                 }).catch(err1 => {
                     console.log(err1);
