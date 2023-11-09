@@ -139,11 +139,11 @@ module.exports = function smsActivityApp(app, options) {
         let reqBody = [];
         reqBody.push({
             "keys": {
-                "GUID": req.CLIENT_GUID
+                "GUID": req.query.CLIENT_GUID
             },
             "values": {
-                "STATUS": req.MSG_STATUS,
-                "DELIVERED_DATE": req.DELIVERED_DATE
+                "STATUS": req.query.MSG_STATUS,
+                "DELIVERED_DATE": req.query.DELIVERED_DATE
             }
         });
 
