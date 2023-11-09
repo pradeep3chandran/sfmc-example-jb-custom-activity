@@ -143,7 +143,7 @@ module.exports = function smsActivityApp(app, options) {
             },
             "values": {
                 "STATUS": req.query.MSG_STATUS,
-                "DELIVERED_DATE": req.query.DELIVERED_DATE
+                "DELIVEREDDATE": req.query.DELIVERED_DATE
             }
         });
 
