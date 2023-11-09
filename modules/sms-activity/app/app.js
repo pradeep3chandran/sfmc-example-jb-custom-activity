@@ -296,7 +296,7 @@ module.exports = function smsActivityApp(app, options) {
                             console.log('error');
                             reqBody[0].values.STATUS = 'FAILED';
                         }
-                        activityUtils.updateData(reqBody);
+                        activityUtils.updateData(reqBody, res);
                     })
                 }).catch(err => {
                     return res.status(400).json(err);
