@@ -244,6 +244,7 @@ module.exports = function smsActivityApp(app, options) {
         const senderName = getInArgument('senderName') || 'nothing';
         const mid = getInArgument('mid') || 'nothing';
         const message = getInArgument('message') || 'nothing';
+        const primaryKey = getInArgument('primaryKey') || 'nothing';
 
         const jsonStr = {
 
@@ -269,7 +270,7 @@ module.exports = function smsActivityApp(app, options) {
 
                     "@PROPERTY": "0",
 
-                    "@ID": "1",
+                    "@ID": primaryKey,
 
                     "ADDRESS": [
 
