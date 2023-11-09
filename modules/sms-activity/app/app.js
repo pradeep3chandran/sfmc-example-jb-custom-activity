@@ -183,7 +183,7 @@ module.exports = function smsActivityApp(app, options) {
 
 
 
-    app.post('/modules/sms-activity/execute', function (req, res) {
+    app.post('/modules/sms-activity/execute', async function (req, res) {
         console.log('debug: /modules/sms-activity/execute');
         activityUtils.logData(req);
 
@@ -260,7 +260,7 @@ module.exports = function smsActivityApp(app, options) {
 
         console.log('jsonStr: ', JSON.stringify(jsonStr));
 
-        fetch('https://api.myvfirst.com/psms/api/messages/token?action=generate', {
+        await fetch('https://api.myvfirst.com/psms/api/messages/token?action=generate', {
             method: 'POST', headers: { "Authorization": 'Basic ' + Buffer.from('demosfdc:f{(|p@nE4~').toString('base64') }
         }).then(response => {
             //return res.status(200).json(response);
