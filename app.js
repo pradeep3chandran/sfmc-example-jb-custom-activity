@@ -10,7 +10,6 @@ const submodules = [
 
 const app = express();
 
-// parse application/json
 app.use(bodyParser.json())
 
 app.set('port', (process.env.PORT || 8080));
@@ -27,13 +26,9 @@ app.get('/getFileDetail', js.getFileDetail);
 app.post('/writefile', js.writefile);
 app.get('/login', js.login);
 
-
-
 submodules.forEach((sm) => sm(app, {
     rootDirectory: __dirname,
 }));
-
-
 
 app.listen(app.get('port'), function () {
     console.log(`Express is running at localhost: ${app.get('port')}`);

@@ -12,6 +12,8 @@ const options = {
     renameHeaders: false,
 };
 
+var midConst;
+
 exports.jsmin = function (req, res) {
     console.log('req: ', req.headers.host);
     console.log('req.body: ', req.body);
@@ -43,14 +45,13 @@ exports.getFileDetail = function (req, res) {
     console.log('req.bodyfile: ', req.body);
     let data = [];
 
-    const readData = fs.readFileSync(path.join(__dirname, '/data/mid.txt'));
-    console.log(readData.toString());
+    console.log('midConst: ', midConst);
 
     fs.createReadStream(path.join(__dirname, '/data/customer_data.csv'))
         .pipe(csv.parse({ headers: true }))
         .on('error', error => console.error(error))
         .on('data', row => {
-            if (readData.toString() == row.MID) { data.push(row) }
+            if (midConst == row.MID) { data.push(row) }
         })
         .on('end', () => res.json(data));
 };
@@ -75,12 +76,7 @@ exports.writefile = function (req, res) {
 exports.login = function (req, res) {
     console.log("req.body: ", req.query.mid);
     const mid = req.query.mid;
-    fs.writeFile(path.join(__dirname, '/data/mid.txt'), mid, err => {
-        if (err) {
-            console.error(err);
-        }
-        // file written successfully
-    });
+    midConst = mid;
 
     res.redirect("/");
 };
