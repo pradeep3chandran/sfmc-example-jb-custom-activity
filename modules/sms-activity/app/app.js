@@ -132,7 +132,7 @@ module.exports = function smsActivityApp(app, options) {
     });
 
 
-    app.get('/modules/sms-activity/deliveryreport', function (req, res) {
+    app.get('/modules/sms-activity/deliveryreport', async function (req, res) {
         console.log('delivery report');
         console.log(req.query);
 
@@ -154,7 +154,7 @@ module.exports = function smsActivityApp(app, options) {
             "account_id": "546001145"
         };
 
-        fetch('https://mcv3d4v2fm7d1rqg9-fkxts8swqq.auth.marketingcloudapis.com/v2/token', {
+        await fetch('https://mcv3d4v2fm7d1rqg9-fkxts8swqq.auth.marketingcloudapis.com/v2/token', {
             method: 'POST', body: JSON.stringify(accessRequest), headers: { 'Content-Type': 'application/json' }
         }).then(response => {
 
