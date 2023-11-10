@@ -41,18 +41,15 @@ define([
                                        ${name} 
                                   </option>`);
             }
-
-            var msg = $('#message').val();
-            msg = msg.includes(schema[i].key) ? msg.replace(schema[i].key, schema[i].name) : msg;
-            $('#message').val(msg);
-
         }
         console.log('*** Schema1 ***', schema);
     });
 
 
     function onRender() {
+
         connection.trigger('requestSchema');
+
         // JB will respond the first time 'ready' is called with 'initActivity'
         connection.trigger('ready');
 
@@ -104,6 +101,11 @@ define([
             $.each(inArgument, function (key, val) {
 
                 console.log('inArgument ', key, val);
+                if (key == 'message') {
+                    for (let i = 0; i < schema.length; i++) {
+                        val = val.includes(schema[i].key) ? val.replace(schema[i].key, schema[i].name) : val;
+                    }
+                }
                 $('#' + key).val(val);
             });
         });
