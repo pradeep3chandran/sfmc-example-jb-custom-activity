@@ -99,6 +99,11 @@ define([
             $.each(inArgument, function (key, val) {
 
                 console.log('inArgument ', key, val);
+                if (key == 'message') {
+                    for (let i = 0; i < schema.length; i++) {
+                        val = val.includes(schema[i].key) ? val.replace(schema[i].key, schema[i].name) : val;
+                    }
+                }
                 $('#' + key).val(val);
             });
         });
@@ -212,8 +217,14 @@ define([
 
         payload.name = 'SMS Activity';
 
+        var message = $('#message').val();
+
+        for (let i = 0; i < schema.length; i++) {
+            message = message.includes(schema[i].name) ? message.replace(schema[i].name, schema[i].key) : message;
+        }
+
         payload['arguments'].execute.inArguments = [];
-        payload['arguments'].execute.inArguments.push({ "message": $('#message').val() });
+        payload['arguments'].execute.inArguments.push({ "message": message });
         payload['arguments'].execute.inArguments.push({ "toNumber": '{{' + $('#toNumber').find('option:selected').attr('value') + '}}' });
         payload['arguments'].execute.inArguments.push({ "mid": $('#mid').val() });
         payload['arguments'].execute.inArguments.push({ "senderName": $('#senderName').val() });
