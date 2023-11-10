@@ -52,12 +52,12 @@ define([
 
 
     function onRender() {
+        connection.trigger('requestSchema');
         // JB will respond the first time 'ready' is called with 'initActivity'
         connection.trigger('ready');
 
         connection.trigger('requestTokens');
         connection.trigger('requestEndpoints');
-        connection.trigger('requestSchema');
 
         $('#dataattributes').change(function () {
             var value = $('#dataattributes').find('option:selected').attr('value');
