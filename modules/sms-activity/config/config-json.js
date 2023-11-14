@@ -51,6 +51,30 @@ module.exports = function configJSON(req) {
         "width": 800,
         "fullscreen": false
       }
+    },
+    "schema": {
+      "arguments": {
+        "execute": {
+          "inArguments": [],
+          "outArguments": [{
+            "errorCode": {
+              "dataType": 'Text',
+              "direction": 'out',
+              "access": 'visible'
+            },
+            "status": {
+              "dataType": 'Text',
+              "direction": 'out',
+              "access": 'visible'
+            },
+            "GUID": {
+              "dataType": 'Text',
+              "direction": 'out',
+              "access": 'visible'
+            }
+          }]
+        }
+      }
     }
   };
 };

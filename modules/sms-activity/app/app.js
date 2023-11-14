@@ -246,24 +246,41 @@ module.exports = function smsActivityApp(app, options) {
                     response1.json().then(data1 => {
                         //return res.status(200).json(data1);
                         let reqBody = [];
-                        reqBody.push({
-                            "keys": {
-                                "GUID": data1.MESSAGEACK.GUID.GUID
-                            },
-                            "values": {
-                                ID: data1.MESSAGEACK.GUID.ID,
-                                SUBMIT_DATE: data1.MESSAGEACK.GUID.SUBMITDATE,
-                                FROM: senderName,
-                                TO: mobileNumber,
-                                TEXT: message,
-                                STATUS: 'Submitted'
+                        if (data1.MESSAGEACK.GUID) {
+                            reqBody.push({
+                                "keys": {
+                                    "GUID": data1.MESSAGEACK.GUID.GUID
+                                },
+                                "values": {
+                                    ID: data1.MESSAGEACK.GUID.ID,
+                                    SUBMIT_DATE: data1.MESSAGEACK.GUID.SUBMITDATE,
+                                    FROM: senderName,
+                                    TO: mobileNumber,
+                                    TEXT: message,
+                                    STATUS: 'Submitted'
+                                }
+                            });
+                            if (data1.MESSAGEACK.GUID.ERROR) {
+                                console.log('error');
+                                reqBody[0].values.STATUS = 'Failed';
+                                reqBody[0].values.ERROR_REASON = errorObject[data1.MESSAGEACK.GUID.ERROR.CODE];
                             }
-                        });
-                        if (data1.MESSAGEACK.GUID.ERROR) {
-                            console.log('error');
-                            reqBody[0].values.STATUS = 'Failed';
-                            reqBody[0].values.ERROR_REASON = errorObject[data1.MESSAGEACK.GUID.ERROR.CODE];
+                        } else {
+                            reqBody.push({
+                                "keys": {
+                                    "GUID": data1.MESSAGEACK.GUID.GUID
+                                },
+                                "values": {
+                                    ID: data1.MESSAGEACK.GUID.ID,
+                                    SUBMIT_DATE: data1.MESSAGEACK.GUID.SUBMITDATE,
+                                    FROM: senderName,
+                                    TO: mobileNumber,
+                                    TEXT: message,
+                                    STATUS: 'Submitted'
+                                }
+                            });
                         }
+
                         activityUtils.updateData(reqBody, res);
                     })
                 }).catch(err => {
