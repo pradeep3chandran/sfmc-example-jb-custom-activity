@@ -150,11 +150,11 @@ module.exports = function smsActivityApp(app, options) {
 
     app.post('/modules/sms-activity/execute', function (req, res) {
         console.log('debug: /modules/sms-activity/execute');
-        //activityUtils.logData(req);
+        activityUtils.logData(req);
 
-        return res.status(200).json({ errorCode: '12345', status: 'success', GUID: 'sms-activity' });
+        console.log('req ', req);
 
-        /*const request = req.body;
+        const request = req.body;
 
         console.log('request ', request);
         // Find the in argument
@@ -182,6 +182,12 @@ module.exports = function smsActivityApp(app, options) {
             "@VER": "1.2",
 
             "USER": {},
+
+            "DLR": {
+
+                "@URL": "https://marketing-configuration-app-6564d07cc826.herokuapp.com/modules/sms-activity/deliveryreport?TO=%p&MSG_STATUS=%16&CLIENT_GUID=%5&STATUS_ERROR=%4&DELIVERED_DATE=%3&TEXT_STATUS=%13&MESSAGE_ID=%7&TAG=%TAG&CLIENT_SEQ_NUMBER=%6&REASON_CODE=%2"
+
+            },
 
             "SMS": [
 
@@ -293,7 +299,7 @@ module.exports = function smsActivityApp(app, options) {
             })
         }).catch(err => {
             return res.status(400).json(err);
-        });*/
+        });
 
     });
 
