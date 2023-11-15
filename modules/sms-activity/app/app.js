@@ -150,11 +150,12 @@ module.exports = function smsActivityApp(app, options) {
 
     app.post('/modules/sms-activity/execute', function (req, res) {
         console.log('debug: /modules/sms-activity/execute');
-        activityUtils.logData(req);
+        //activityUtils.logData(req);
 
         console.log('req ', req);
+        return res.status(200).json('Success');
 
-        const request = req.body;
+        /*const request = req.body;
 
         console.log('request ', request);
         // Find the in argument
@@ -293,7 +294,7 @@ module.exports = function smsActivityApp(app, options) {
             })
         }).catch(err => {
             return res.status(400).json(err);
-        });
+        });*/
 
     });
 
