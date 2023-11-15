@@ -246,6 +246,8 @@ module.exports = function smsActivityApp(app, options) {
 
                     response1.json().then(data1 => {
                         //return res.status(200).json(data1);
+                        const date1 = new Date();
+
                         let reqBody = [];
                         if (data1.MESSAGEACK.GUID) {
                             reqBody.push({
@@ -254,7 +256,7 @@ module.exports = function smsActivityApp(app, options) {
                                 },
                                 "values": {
                                     ID: data1.MESSAGEACK.GUID.ID,
-                                    SUBMIT_DATE: data1.MESSAGEACK.GUID.SUBMITDATE,
+                                    SUBMIT_DATE: date1,
                                     FROM: senderName,
                                     TO: mobileNumber,
                                     TEXT: message,
