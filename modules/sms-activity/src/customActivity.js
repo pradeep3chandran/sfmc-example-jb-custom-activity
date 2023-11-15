@@ -15,6 +15,7 @@ define([
     ];
     var currentStep = steps[0].key;
     var schema = [];
+    var eventData = {};
 
     $(window).ready(onRender);
 
@@ -27,6 +28,7 @@ define([
     connection.on('gotoStep', onGotoStep);
     connection.on('requestedTriggerEventDefinition', function (data) {
         console.log('event def', data);
+        eventData = data;
     })
     connection.on('requestedSchema', function (data) {
         schema = data.schema;
@@ -232,6 +234,7 @@ define([
         payload['arguments'].execute.inArguments.push({ "toNumber": '{{' + $('#toNumber').find('option:selected').attr('value') + '}}' });
         payload['arguments'].execute.inArguments.push({ "mid": $('#mid').val() });
         payload['arguments'].execute.inArguments.push({ "senderName": $('#senderName').val() });
+        payload['arguments'].execute.inArguments.push({ "campaignName": eventData.name });
 
         let primaryKey = schema[schema.findIndex(obj => obj.isPrimaryKey)].key;
         payload['arguments'].execute.inArguments.push({ "primaryKey": '{{' + primaryKey + '}}' });
