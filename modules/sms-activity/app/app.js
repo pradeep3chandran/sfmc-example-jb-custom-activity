@@ -263,20 +263,23 @@ module.exports = function smsActivityApp(app, options) {
                             if (data1.MESSAGEACK.GUID.ERROR) {
                                 console.log('error');
                                 reqBody[0].values.STATUS = 'Failed';
+                                reqBody[0].values.ERROR_CODE = data1.MESSAGEACK.GUID.ERROR.CODE;
                                 reqBody[0].values.ERROR_REASON = errorObject[data1.MESSAGEACK.GUID.ERROR.CODE];
                             }
                         } else {
                             reqBody.push({
                                 "keys": {
-                                    "GUID": data1.MESSAGEACK.GUID.GUID
+                                    "GUID": primaryKey + Date.now()
                                 },
                                 "values": {
-                                    ID: data1.MESSAGEACK.GUID.ID,
-                                    SUBMIT_DATE: data1.MESSAGEACK.GUID.SUBMITDATE,
+                                    ID: primaryKey,
+                                    SUBMIT_DATE: Date.now(),
                                     FROM: senderName,
                                     TO: mobileNumber,
                                     TEXT: message,
-                                    STATUS: 'Submitted'
+                                    STATUS: 'Failed',
+                                    ERROR_CODE: data1.MESSAGEACK.Err.Code,
+                                    ERROR_REASON: errorObject[data1.MESSAGEACK.Err.Code]
                                 }
                             });
                         }
