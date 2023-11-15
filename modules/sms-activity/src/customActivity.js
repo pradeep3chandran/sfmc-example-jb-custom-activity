@@ -25,6 +25,9 @@ define([
     connection.on('clickedNext', onClickedNext);
     connection.on('clickedBack', onClickedBack);
     connection.on('gotoStep', onGotoStep);
+    connection.on('requestedTriggerEventDefinition', function (data) {
+        console.log('event def', data);
+    })
     connection.on('requestedSchema', function (data) {
         schema = data.schema;
         for (let i = 0; i < schema.length; i++) {
@@ -58,6 +61,7 @@ define([
 
         connection.trigger('requestTokens');
         connection.trigger('requestEndpoints');
+        connection.trigger('requestTriggerEventDefinition');
 
         $('#dataattributes').change(function () {
             var value = $('#dataattributes').find('option:selected').attr('value');
