@@ -246,7 +246,7 @@ module.exports = function smsActivityApp(app, options) {
 
                     response1.json().then(data1 => {
                         //return res.status(200).json(data1);
-                        let date1 = new Date().toLocaleDateString()
+                        let date1 = new Date().toLocaleString()
 
                         let reqBody = [];
                         if (data1.MESSAGEACK.GUID) {
@@ -256,7 +256,7 @@ module.exports = function smsActivityApp(app, options) {
                                 },
                                 "values": {
                                     ID: data1.MESSAGEACK.GUID.ID,
-                                    SUBMIT_DATE: date1,
+                                    SUBMIT_DATE: data1.MESSAGEACK.GUID.SUBMITDATE,
                                     FROM: senderName,
                                     TO: mobileNumber,
                                     TEXT: message,
@@ -271,7 +271,7 @@ module.exports = function smsActivityApp(app, options) {
                                 reqBody[0].values.ERROR_REASON = errorObject[data1.MESSAGEACK.GUID.ERROR.CODE];
                             }
                         } else {
-                            const date = new Date();
+                            const date = new Date().toLocaleString();
                             reqBody.push({
                                 "keys": {
                                     "GUID": primaryKey + date
