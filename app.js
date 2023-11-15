@@ -3,6 +3,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 
 const js = require('./index');
+var http = require('http');
 
 const submodules = [
     require('./modules/sms-activity/app/app'),
@@ -30,6 +31,6 @@ submodules.forEach((sm) => sm(app, {
     rootDirectory: __dirname,
 }));
 
-app.listen(app.get('port'), function () {
-    console.log(`Express is running at localhost: ${app.get('port')}`);
+http.createServer(app).listen(app.get('port'), function () {
+    console.log('Express server listening on port ' + app.get('port'));
 });
