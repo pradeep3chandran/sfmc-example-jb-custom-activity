@@ -269,13 +269,14 @@ module.exports = function smsActivityApp(app, options) {
                                 reqBody[0].values.ERROR_REASON = errorObject[data1.MESSAGEACK.GUID.ERROR.CODE];
                             }
                         } else {
+                            const date = new Date();
                             reqBody.push({
                                 "keys": {
-                                    "GUID": primaryKey + Date.now()
+                                    "GUID": primaryKey + date
                                 },
                                 "values": {
                                     ID: primaryKey,
-                                    SUBMIT_DATE: Date.now(),
+                                    SUBMIT_DATE: date,
                                     FROM: senderName,
                                     TO: mobileNumber,
                                     TEXT: message,
@@ -286,6 +287,7 @@ module.exports = function smsActivityApp(app, options) {
                                 }
                             });
                         }
+                        console.log(reqBody);
 
                         activityUtils.updateData(reqBody, res);
                     })
