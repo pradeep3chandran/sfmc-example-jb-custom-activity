@@ -153,7 +153,7 @@ module.exports = function smsActivityApp(app, options) {
         //activityUtils.logData(req);
 
         console.log('req ', req);
-        return res.status(200).json('Success');
+        return res.status(200).json({ errorCode: '12345', status: 'success', GUID: 'sms-activity' });
 
         /*const request = req.body;
 
