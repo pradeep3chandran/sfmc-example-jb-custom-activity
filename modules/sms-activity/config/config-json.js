@@ -23,7 +23,7 @@ module.exports = function configJSON(req) {
         "body": "",
         "header": "",
         "format": "json",
-        "timeout": 10000,
+        "timeout": 50000,
         "concurrentRequests": 1
       }
     },
