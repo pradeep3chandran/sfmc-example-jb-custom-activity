@@ -175,6 +175,7 @@ module.exports = function smsActivityApp(app, options) {
         const mid = getInArgument('mid') || 'nothing';
         const message = getInArgument('message') || 'nothing';
         const primaryKey = getInArgument('primaryKey') || 'nothing';
+        const campaignName = getInArgument('campaignName') || 'nothing';
 
         const jsonStr = {
 
@@ -257,7 +258,8 @@ module.exports = function smsActivityApp(app, options) {
                                     FROM: senderName,
                                     TO: mobileNumber,
                                     TEXT: message,
-                                    STATUS: 'Submitted'
+                                    STATUS: 'Submitted',
+                                    CAMPAIGN_NAME: campaignName
                                 }
                             });
                             if (data1.MESSAGEACK.GUID.ERROR) {
@@ -279,7 +281,8 @@ module.exports = function smsActivityApp(app, options) {
                                     TEXT: message,
                                     STATUS: 'Failed',
                                     ERROR_CODE: data1.MESSAGEACK.Err.Code,
-                                    ERROR_REASON: errorObject[data1.MESSAGEACK.Err.Code]
+                                    ERROR_REASON: errorObject[data1.MESSAGEACK.Err.Code],
+                                    CAMPAIGN_NAME: campaignName
                                 }
                             });
                         }
