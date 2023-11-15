@@ -246,7 +246,7 @@ module.exports = function smsActivityApp(app, options) {
 
                     response1.json().then(data1 => {
                         //return res.status(200).json(data1);
-                        const date1 = new Date();
+                        let date1 = new Date().toLocaleDateString()
 
                         let reqBody = [];
                         if (data1.MESSAGEACK.GUID) {
