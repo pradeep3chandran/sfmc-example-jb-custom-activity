@@ -3,7 +3,7 @@ const webpack = require('webpack');
 const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
 
-module.exports = function(env, argv) {
+module.exports = function (env, argv) {
     const prod = argv.mode === 'production';
     return {
         mode: prod ? 'production' : 'development',
@@ -30,10 +30,7 @@ module.exports = function(env, argv) {
                     from: path.resolve(__dirname, '../../node_modules/@salesforce-ux/design-system/assets'),
                     to: path.resolve(__dirname, 'dist/design-system')
                 },
-            ]),
-            new webpack.BannerPlugin(
-                `${PACKAGE.author} - ${PACKAGE.description} - discount-code`
-            ),
+            ])
         ]
     };
 };

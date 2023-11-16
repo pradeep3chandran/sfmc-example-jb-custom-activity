@@ -18,7 +18,7 @@ module.exports = function configJSON(req) {
     },
     "arguments": {
       "execute": {
-        "url": `https://${req.headers.host}/modules/sms-activity/execute`,
+        "url": `https://${req.headers.host}/modules/whatsapp-activity/execute`,
         "verb": "POST",
         "body": "",
         "header": "",
@@ -29,19 +29,19 @@ module.exports = function configJSON(req) {
     },
     "configurationArguments": {
       "save": {
-        "url": `https://${req.headers.host}/modules/sms-activity/save`,
+        "url": `https://${req.headers.host}/modules/whatsapp-activity/save`,
         "verb": "POST"
       },
       "publish": {
-        "url": `https://${req.headers.host}/modules/sms-activity/publish`,
+        "url": `https://${req.headers.host}/modules/whatsapp-activity/publish`,
         "verb": "POST"
       },
       "stop": {
-        "url": `https://${req.headers.host}/modules/sms-activity/stop`,
+        "url": `https://${req.headers.host}/modules/whatsapp-activity/stop`,
         "verb": "POST"
       },
       "validate": {
-        "url": `https://${req.headers.host}/modules/sms-activity/validate`,
+        "url": `https://${req.headers.host}/modules/whatsapp-activity/validate`,
         "verb": "POST"
       }
     },
