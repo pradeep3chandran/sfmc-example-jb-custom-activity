@@ -7,6 +7,7 @@ var http = require('http');
 
 const submodules = [
     require('./modules/sms-activity/app/app'),
+    require('./modules/whatsapp-activity/app/app'),
 ];
 
 const app = express();
