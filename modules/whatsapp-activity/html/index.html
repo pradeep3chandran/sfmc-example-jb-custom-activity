@@ -78,15 +78,22 @@
       <label class="slds-form-element__label" for="mid">MID</label><br />
       <input class="slds-input" type="text" id="mid" />
       <br /><br />
-      <label for="senderName">Sender Name</label><br />
+      <label for="senderName">From Number</label><br />
       <input type="text" id="senderName" />
       <br /><br />
       <label for="toNumber">Select Phone Number Field</label><br />
       <select name="phonefield" id="toNumber"></select>
       <br /><br />
+      <label for="template">Select Template</label><br />
+      <select name="template" id="template">
+        <option value"">None</option>
+        <option value="Template 1">Template 1</option>
+      </select>
+      <br /><br />
       <label for="message">Message</label><br />
-      <textarea id="message"></textarea>
-      <br />
+      <textarea id="message" readonly></textarea>
+      <br /><br />
+      <label for="dataattributes">Field 1</label><br />
       <select name="dataattributes" id="dataattributes"></select>
     </div>
   </body>
