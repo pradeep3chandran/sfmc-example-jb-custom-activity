@@ -91,10 +91,12 @@
       </select>
       <br /><br />
       <label for="message">Message</label><br />
-      <textarea id="message" readonly></textarea>
+      <textarea id="message" readonly disabled></textarea>
       <br /><br />
       <label for="dataattributes">Field 1</label><br />
-      <select name="dataattributes" id="dataattributes"></select>
+      <select name="dataattributes" id="dataattributes">
+        <option value="" selected>Select to add Merge fields...</option>
+      </select>
     </div>
   </body>
 </html>
