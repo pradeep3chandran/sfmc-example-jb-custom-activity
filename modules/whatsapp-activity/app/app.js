@@ -128,7 +128,7 @@ module.exports = function smsActivityApp(app, options) {
             response.json().then(data => {
                 console.log(data);
                 console.log(reqBody);
-                fetch('https://mcv3d4v2fm7d1rqg9-fkxts8swqq.rest.marketingcloudapis.com/hub/v1/dataevents/key:CA054127-E2A5-494F-83EF-230B180A0F8E/rowset', {
+                fetch('https://mcv3d4v2fm7d1rqg9-fkxts8swqq.rest.marketingcloudapis.com/hub/v1/dataevents/key:7FF55D65-8562-409C-B37F-51810ADF3210/rowset', {
                     method: 'POST', body: JSON.stringify(reqBody), headers: { 'Authorization': 'Bearer ' + data.access_token, 'Content-Type': 'application/json' }
                 }).then(response1 => {
 
@@ -186,7 +186,7 @@ module.exports = function smsActivityApp(app, options) {
 
             "DLR": {
 
-                "@URL": "https://marketing-configuration-app-6564d07cc826.herokuapp.com/modules/sms-activity/deliveryreport?TO=%p&MSG_STATUS=%16&CLIENT_GUID=%5&STATUS_ERROR=%4&DELIVERED_DATE=%3&TEXT_STATUS=%13&MESSAGE_ID=%7&TAG=%TAG&CLIENT_SEQ_NUMBER=%6&REASON_CODE=%2"
+                "@URL": "https://marketing-configuration-app-6564d07cc826.herokuapp.com/modules/whatsapp-activity/deliveryreport?TO=%p&MSG_STATUS=%16&CLIENT_GUID=%5&STATUS_ERROR=%4&DELIVERED_DATE=%3&TEXT_STATUS=%13&MESSAGE_ID=%7&TAG=%TAG&CLIENT_SEQ_NUMBER=%6&REASON_CODE=%2"
 
             },
 
@@ -198,7 +198,9 @@ module.exports = function smsActivityApp(app, options) {
 
                     "@CODING": "1",
 
-                    "@TEXT": message,
+                    "@TEMPLATEINFO": "5525007",
+
+                    "@MSGTYPE": "1",
 
                     "@PROPERTY": "0",
 
@@ -212,10 +214,7 @@ module.exports = function smsActivityApp(app, options) {
 
                             "@TO": mobileNumber,
 
-                            "@SEQ": "12",
-
-                            "@TAG": "db1"
-
+                            "@SEQ": primaryKey,
                         }
 
                     ]
@@ -239,7 +238,7 @@ module.exports = function smsActivityApp(app, options) {
 
                 fetch('https://api.myvfirst.com/psms/api/messages/token?action=generate', {
                     method: 'POST', headers: {
-                        "Authorization": 'Basic ' + Buffer.from(fileData[0].Username + ':' + fileData[0].Password).toString('base64')
+                        "Authorization": 'Basic ' + Buffer.from('demoravir:DP@0NKoQ1%').toString('base64')
                     }
                 }).then(response => {
                     console.log(response);
@@ -314,7 +313,7 @@ module.exports = function smsActivityApp(app, options) {
                                     response2.json().then(data2 => {
                                         console.log(data2);
                                         console.log(reqBody);
-                                        fetch(fileData[0].Rest_URI + '/hub/v1/dataevents/key:CA054127-E2A5-494F-83EF-230B180A0F8E/rowset', {
+                                        fetch(fileData[0].Rest_URI + '/hub/v1/dataevents/key:7FF55D65-8562-409C-B37F-51810ADF3210/rowset', {
                                             method: 'POST', body: JSON.stringify(reqBody), headers: { 'Authorization': 'Bearer ' + data2.access_token, 'Content-Type': 'application/json' }
                                         }).then(response3 => {
 
