@@ -75,6 +75,24 @@ module.exports = function smsActivityApp(app, options) {
         return res.sendFile(`${moduleDirectory}/src/postmonger.js`);
     });
 
+    app.get('/modules/whatsapp-activity/gettemplates', function (req, res) {
+
+        fetch('https://whatsapp.myvfirst.com/waba/template/fetch?userid=demoravir&pageno=1&pagelimit=200&status=Approved', {
+            method: 'GET', headers: {
+                "Authorization": 'Basic ZGVtb3JhdmlyOkRQQDBOS29RMSU='
+            }
+        }).then(response => {
+            console.log(response);
+
+            response.json().then(data => {
+                console.log('tempdata ', data);
+                res.json(data);
+            })
+        }).catch(err => {
+            console.log('err ', err);
+        });
+    });
+
 
     app.post('/modules/whatsapp-activity/save', function (req, res) {
         console.log('debug: /modules/sms-activity/save');

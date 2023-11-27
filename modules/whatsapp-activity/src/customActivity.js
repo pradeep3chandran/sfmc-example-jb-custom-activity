@@ -16,6 +16,8 @@ define([
     var currentStep = steps[0].key;
     var schema = [];
     var eventData = {};
+    var templateData = [];
+    var fieldText = '';
 
     $(window).ready(onRender);
 
@@ -37,9 +39,7 @@ define([
             let name = schema[i].name;
             let key = schema[i].key;
 
-            $('#dataattributes').append(`<option value="${name}"> 
-                                       ${name} 
-                                  </option>`);
+            fieldText += `<option value="${name}"> ${name}</option>`;
 
             if (schema[i].type == 'Phone') {
                 $('#toNumber').append(`<option value="${key}"> 
@@ -65,6 +65,28 @@ define([
         connection.trigger('requestEndpoints');
         connection.trigger('requestTriggerEventDefinition');
 
+        fetch('gettemplates/', { method: 'GET' }).then(response =>
+            response.json().then(data => ({
+                data: data,
+                status: response.status
+            })
+            ).then(res => {
+                console.log('data', res.data);
+                let resdata = res.data;
+                console.log('resdata ', resdata);
+                templateData = resdata.templatedata.data;
+                console.log('templateData ', templateData);
+                for (let i = 0; i < templateData.length; i++) {
+
+                    let name = templateData[i].templatename;
+                    let key = templateData[i].templateid;
+
+                    $('#template').append(`<option value="${key}"> 
+                                               ${name} 
+                                          </option>`);
+                }
+            }));
+
         $('#dataattributes').change(function () {
             var value = $('#dataattributes').find('option:selected').attr('value');
             console.log('value: ', value);
@@ -74,6 +96,23 @@ define([
             var messageBody1 = $('#message').val();
             console.log('message3: ', messageBody1);
             //$('#message').html(message);
+        });
+
+        $('#template').change(function () {
+            var value = $('#template').find('option:selected').attr('value');
+            console.log('value: ', value);
+            let indx = templateData.findIndex(obj => obj.templateid == value);
+
+            $('#message').val(templateData[indx].templatetext);
+            var messageBody = $('#message').val();
+            console.log('message2: ', messageBody);
+            var searchtext = messageBody.split('.*');
+            console.log('searchtext: ', searchtext);
+
+            for (let i = 0; i < searchtext.length - 1; i++) {
+                console.log('fieldText ', fieldText);
+                $("#fields").append('<br /><br /><label for="dataattributes">Field ' + (i + 1) + '</label><br /><select name="dataattributes" id="dataattributes"><option value="" selected>Select to add Merge fields...</option>' + fieldText + '</select>');
+            }
         });
 
         $('#done').click(save);
