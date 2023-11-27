@@ -108,7 +108,7 @@ define([
             console.log('message2: ', messageBody);
             var searchtext = messageBody.split('.*');
             console.log('searchtext: ', searchtext);
-
+            $('#fields').html('');
             for (let i = 0; i < searchtext.length - 1; i++) {
                 console.log('fieldText ', fieldText);
                 $("#fields").append('<br /><br /><label for="dataattributes">Field ' + (i + 1) + '</label><br /><select name="dataattributes" id="dataattributes"><option value="" selected>Select to add Merge fields...</option>' + fieldText + '</select>');
