@@ -65,6 +65,28 @@ define([
         connection.trigger('requestEndpoints');
         connection.trigger('requestTriggerEventDefinition');
 
+        fetch('gettemplates/', { method: 'GET' }).then(response =>
+            response.json().then(data => ({
+                data: data,
+                status: response.status
+            })
+            ).then(res => {
+                console.log('data', res.data);
+                let resdata = res.data;
+                console.log('resdata ', resdata);
+                templateData = resdata.templatedata.data;
+                console.log('templateData ', templateData);
+                for (let i = 0; i < templateData.length; i++) {
+
+                    let name = templateData[i].templatename;
+                    let key = templateData[i].templateid;
+
+                    $('#templateId').append(`<option value="${key}"> 
+                                               ${name} 
+                                          </option>`);
+                }
+            }));
+
         $('#dataattributes').change(function () {
             var value = $('#dataattributes').find('option:selected').attr('value');
             console.log('value: ', value);
@@ -182,50 +204,26 @@ define([
             payload = data;
         }
 
-        fetch('gettemplates/', { method: 'GET' }).then(response =>
-            response.json().then(data => ({
-                data: data,
-                status: response.status
-            })
-            ).then(res => {
-                console.log('data', res.data);
-                let resdata = res.data;
-                console.log('resdata ', resdata);
-                templateData = resdata.templatedata.data;
-                console.log('templateData ', templateData);
-                for (let i = 0; i < templateData.length; i++) {
+        var message;
+        var hasInArguments = Boolean(
+            payload['arguments'] &&
+            payload['arguments'].execute &&
+            payload['arguments'].execute.inArguments &&
+            payload['arguments'].execute.inArguments.length > 0
+        );
 
-                    let name = templateData[i].templatename;
-                    let key = templateData[i].templateid;
+        console.log('payload ', JSON.parse(JSON.stringify(payload)));
 
-                    $('#templateId').append(`<option value="${key}"> 
-                                               ${name} 
-                                          </option>`);
-                }
+        var inArguments = hasInArguments ? payload['arguments'].execute.inArguments : {};
 
-                var message;
-                var hasInArguments = Boolean(
-                    payload['arguments'] &&
-                    payload['arguments'].execute &&
-                    payload['arguments'].execute.inArguments &&
-                    payload['arguments'].execute.inArguments.length > 0
-                );
+        $.each(inArguments, function (index, inArgument) {
+            $.each(inArgument, function (key, val) {
 
-                console.log('payload ', JSON.parse(JSON.stringify(payload)));
-
-                var inArguments = hasInArguments ? payload['arguments'].execute.inArguments : {};
-
-                $.each(inArguments, function (index, inArgument) {
-                    $.each(inArgument, function (key, val) {
-
-                        console.log('inArgument ', key, val);
-                        console.log('inputarg ', $('#' + key));
-                        $('#' + key).val(val).change();;
-                    });
-                });
-            }));
-
-
+                console.log('inArgument ', key, val);
+                console.log('inputarg ', $('#' + key));
+                $('#' + key).val(val);
+            });
+        });
 
         // If there is no message selected, disable the next button
     }
