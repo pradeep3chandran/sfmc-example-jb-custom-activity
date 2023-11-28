@@ -78,7 +78,7 @@ define([
         });
 
         $('#templateId').change(function () {
-            templateId = $('#template').find('option:selected').attr('value');
+            templateId = $('#templateId').find('option:selected').attr('value');
             console.log('templateIdchange1: ', templateId);
             templateUpdate();
         });
