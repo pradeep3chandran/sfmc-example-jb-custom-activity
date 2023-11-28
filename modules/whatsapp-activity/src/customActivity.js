@@ -46,9 +46,9 @@ define([
                                        ${name} 
                                   </option>`);
             }
-            let val = $('#message').val();
+            /*let val = $('#message').val();
             val = val.includes(schema[i].key) ? val.replace(schema[i].key, schema[i].name) : val;
-            $('#message').val(val);
+            $('#message').val(val);*/
         }
         console.log('*** Schema1 ***', schema);
     });
