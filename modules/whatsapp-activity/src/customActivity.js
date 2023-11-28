@@ -353,8 +353,8 @@ define([
             }
         }
 
-        if (bodyfield) {
-            for (let obj of bodyfield) {
+        if (bodyFields) {
+            for (let obj of bodyFields) {
                 console.log(obj.find('option:selected').attr('value'));
             }
         }
