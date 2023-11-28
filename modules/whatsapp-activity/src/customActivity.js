@@ -65,28 +65,6 @@ define([
         connection.trigger('requestEndpoints');
         connection.trigger('requestTriggerEventDefinition');
 
-        fetch('gettemplates/', { method: 'GET' }).then(response =>
-            response.json().then(data => ({
-                data: data,
-                status: response.status
-            })
-            ).then(res => {
-                console.log('data', res.data);
-                let resdata = res.data;
-                console.log('resdata ', resdata);
-                templateData = resdata.templatedata.data;
-                console.log('templateData ', templateData);
-                for (let i = 0; i < templateData.length; i++) {
-
-                    let name = templateData[i].templatename;
-                    let key = templateData[i].templateid;
-
-                    $('#template').append(`<option value="${key}"> 
-                                               ${name} 
-                                          </option>`);
-                }
-            }));
-
         $('#dataattributes').change(function () {
             var value = $('#dataattributes').find('option:selected').attr('value');
             console.log('value: ', value);
@@ -203,6 +181,28 @@ define([
         if (data) {
             payload = data;
         }
+
+        fetch('gettemplates/', { method: 'GET' }).then(response =>
+            response.json().then(data => ({
+                data: data,
+                status: response.status
+            })
+            ).then(res => {
+                console.log('data', res.data);
+                let resdata = res.data;
+                console.log('resdata ', resdata);
+                templateData = resdata.templatedata.data;
+                console.log('templateData ', templateData);
+                for (let i = 0; i < templateData.length; i++) {
+
+                    let name = templateData[i].templatename;
+                    let key = templateData[i].templateid;
+
+                    $('#template').append(`<option value="${key}"> 
+                                               ${name} 
+                                          </option>`);
+                }
+            }));
 
         var message;
         var hasInArguments = Boolean(
