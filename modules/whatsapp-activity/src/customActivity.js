@@ -176,28 +176,6 @@ define([
             connection.trigger('updateSteps', steps);
         });
 
-        fetch('gettemplates/', { method: 'GET' }).then(response =>
-            response.json().then(data => ({
-                data: data,
-                status: response.status
-            })
-            ).then(res => {
-                console.log('data', res.data);
-                let resdata = res.data;
-                console.log('resdata ', resdata);
-                templateData = resdata.templatedata.data;
-                console.log('templateData ', templateData);
-                for (let i = 0; i < templateData.length; i++) {
-
-                    let name = templateData[i].templatename;
-                    let key = templateData[i].templateid;
-
-                    $('#templateId').append(`<option value="${key}"> 
-                                               ${name} 
-                                          </option>`);
-                }
-                $('#templateId').val(templateId).change();
-            }));
     }
 
     function initialize(data) {
@@ -229,6 +207,29 @@ define([
                 }
             });
         });
+
+        fetch('gettemplates/', { method: 'GET' }).then(response =>
+            response.json().then(data => ({
+                data: data,
+                status: response.status
+            })
+            ).then(res => {
+                console.log('data', res.data);
+                let resdata = res.data;
+                console.log('resdata ', resdata);
+                templateData = resdata.templatedata.data;
+                console.log('templateData ', templateData);
+                for (let i = 0; i < templateData.length; i++) {
+
+                    let name = templateData[i].templatename;
+                    let key = templateData[i].templateid;
+
+                    $('#templateId').append(`<option value="${key}"> 
+                                               ${name} 
+                                          </option>`);
+                }
+                $('#templateId').val(templateId);
+            }));
 
         // If there is no message selected, disable the next button
     }
