@@ -79,6 +79,7 @@ define([
 
         $('#templateId').change(function () {
             templateId = $('#template').find('option:selected').attr('value');
+            console.log('templateIdchange1: ', templateId);
             templateUpdate();
         });
 
@@ -96,6 +97,7 @@ define([
     }
 
     function templateUpdate() {
+        console.log('templateIdchange: ', templateId);
         let indx = templateData.findIndex(obj => obj.templateid == templateId);
 
         let template = templateData[indx];
