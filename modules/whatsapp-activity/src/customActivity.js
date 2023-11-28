@@ -362,7 +362,7 @@ define([
         }
 
         $('.bodyfield').each(function () {
-            console.log('thiss:: ', this.find('option:selected').attr('value'));
+            console.log('thiss:: ', $('#' + this.id).find('option:selected').attr('value'));
         });
 
         payload.name = 'WhatsApp Activity';
