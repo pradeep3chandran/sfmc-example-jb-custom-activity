@@ -345,7 +345,6 @@ define([
         console.log('save');
 
         let headerFields = $('.headerfield');
-        let bodyFields = $('.bodyfield');
 
         if (headerFields) {
             for (let obj of headerFields) {
@@ -353,16 +352,12 @@ define([
             }
         }
 
-        if (bodyFields) {
-            for (let obj of bodyFields) {
-                console.log(obj);
-                console.log(obj.id);
-                console.log($('#' + obj.id).find('option:selected').attr('value'));
-            }
-        }
+        let bodyFields = [];
 
         $('.bodyfield').each(function () {
-            console.log('thiss:: ', $('#' + this.id).find('option:selected').attr('value'));
+            let fldid = this.id;
+            let fldvalue = $('#' + fldid).find('option:selected').attr('value');
+            bodyFields.push({ key: fldid, value: '{{' + fldvalue + '}}' });
         });
 
         payload.name = 'WhatsApp Activity';
@@ -374,6 +369,8 @@ define([
         payload['arguments'].execute.inArguments.push({ "senderName": $('#senderName').val() });
         payload['arguments'].execute.inArguments.push({ "campaignName": eventData.name });
         payload['arguments'].execute.inArguments.push({ "templateId": $('#templateId').find('option:selected').attr('value') });
+
+        payload['arguments'].execute.inArguments.push({ "bodyFields": bodyFields });
 
         let primaryKey = schema[schema.findIndex(obj => obj.isPrimaryKey)].key;
         payload['arguments'].execute.inArguments.push({ "primaryKey": '{{' + primaryKey + '}}' });
