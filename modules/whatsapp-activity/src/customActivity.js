@@ -18,6 +18,7 @@ define([
     var eventData = {};
     var templateData = [];
     var fieldText = '';
+    var templateId = '';
 
     $(window).ready(onRender);
 
@@ -85,6 +86,7 @@ define([
                                                ${name} 
                                           </option>`);
                 }
+                $('#templateId').val(templateId);
             }));
 
         $('#dataattributes').change(function () {
@@ -221,7 +223,10 @@ define([
 
                 console.log('inArgument ', key, val);
                 console.log('inputarg ', $('#' + key));
-                $('#' + key).val(val).change();
+                $('#' + key).val(val);
+                if (key == 'templateId') {
+                    templateId = val;
+                }
             });
         });
 
