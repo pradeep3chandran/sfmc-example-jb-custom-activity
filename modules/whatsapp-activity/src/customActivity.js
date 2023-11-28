@@ -198,7 +198,7 @@ define([
                     let name = templateData[i].templatename;
                     let key = templateData[i].templateid;
 
-                    $('#template').append(`<option value="${key}"> 
+                    $('#templateId').append(`<option value="${key}"> 
                                                ${name} 
                                           </option>`);
                 }
