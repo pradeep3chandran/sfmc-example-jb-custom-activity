@@ -188,9 +188,10 @@ module.exports = function smsActivityApp(app, options) {
             }
         }
 
-        let bodyFields = getInArgument('bodyFields') || 'nothing';
-        console.log('bodyFields ', bodyFields);
-        console.log('bodyFields str ', JSON.stringify(bodyFields));
+        let bodyFieldDetails = getInArgument('bodyFieldDetails') || 'nothing';
+        let headerFieldDetails = getInArgument('headerFieldDetails') || 'nothing';
+        console.log('bodyFieldDetails ', bodyFieldDetails);
+        console.log('headerFieldDetails ', headerFieldDetails);
 
         const mobileNumber = getInArgument('toNumber') || 'nothing';
         const senderName = getInArgument('senderName') || 'nothing';

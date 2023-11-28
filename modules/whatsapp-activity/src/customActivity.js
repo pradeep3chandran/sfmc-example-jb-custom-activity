@@ -19,6 +19,8 @@ define([
     var templateData = [];
     var fieldText = '';
     var templateId = '';
+    var bodyFieldsVar = [];
+    var headerFieldsvar = [];
 
     $(window).ready(onRender);
 
@@ -181,6 +183,9 @@ define([
             }
             $('#buttonContainer').append(buttonHtmlBody);
         }
+
+        console.log('bodyFieldsVar ', bodyFieldsVar);
+        console.log('headerFieldsVar ', headerFieldsVar);
     }
 
     function initialize(data) {
@@ -206,12 +211,19 @@ define([
 
                 console.log('inArgument ', key, val);
                 console.log('inputarg ', $('#' + key));
-                $('#' + key).val(val);
                 if (key == 'templateId') {
                     templateId = val;
+                } else if (key == 'bodyFieldDetails') {
+                    bodyFieldsVar = val;
+                } else if (key == 'headerFieldDetails') {
+                    headerFieldsVar = val;
+                } else {
+                    $('#' + key).val(val);
                 }
             });
         });
+
+
 
         fetch('gettemplates/', { method: 'GET' }).then(response =>
             response.json().then(data => ({
@@ -344,13 +356,15 @@ define([
         // may be overridden as desired.
         console.log('save');
 
-        let headerFields = $('.headerfield');
+        let headerFields = [];
 
-        if (headerFields) {
-            for (let obj of headerFields) {
-                console.log(obj.find('option:selected').attr('value'));
-            }
-        }
+        $('.headerfield').each(function () {
+            let fldid = this.id;
+            let fldvalue = $('#' + fldid).find('option:selected').attr('value');
+
+            let fldKey = schema[schema.findIndex(obj => obj.name == fldvalue)].key;
+            headerFields.push({ key: fldid, value: '{{' + fldKey + '}}' });
+        });
 
         let bodyFields = [];
 
@@ -372,7 +386,8 @@ define([
         payload['arguments'].execute.inArguments.push({ "campaignName": eventData.name });
         payload['arguments'].execute.inArguments.push({ "templateId": $('#templateId').find('option:selected').attr('value') });
 
-        payload['arguments'].execute.inArguments.push({ "bodyFields": bodyFields });
+        payload['arguments'].execute.inArguments.push({ "bodyFieldDetails": bodyFields });
+        payload['arguments'].execute.inArguments.push({ "headerFieldDetails": headerFields });
 
         let primaryKey = schema[schema.findIndex(obj => obj.isPrimaryKey)].key;
         payload['arguments'].execute.inArguments.push({ "primaryKey": '{{' + primaryKey + '}}' });
