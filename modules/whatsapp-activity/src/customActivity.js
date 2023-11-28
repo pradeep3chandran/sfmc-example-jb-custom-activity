@@ -20,7 +20,7 @@ define([
     var fieldText = '';
     var templateId = '';
     var bodyFieldsVar = [];
-    var headerFieldsvar = [];
+    var headerFieldsVar = [];
 
     $(window).ready(onRender);
 
@@ -184,7 +184,7 @@ define([
             $('#buttonContainer').append(buttonHtmlBody);
         }
 
-        console.log('bodyFieldsVar ', bodyFieldsVar);
+        //console.log('bodyFieldsVar ', bodyFieldsVar);
         console.log('headerFieldsVar ', headerFieldsVar);
     }
 
