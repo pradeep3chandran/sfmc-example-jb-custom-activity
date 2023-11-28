@@ -48,7 +48,7 @@ module.exports = function configJSON(req) {
     "wizardSteps": [{ "label": "Personalize Message", "key": "step1" }],
     "userInterfaces": {
       "configModal": {
-        "height": 450,
+        "height": 600,
         "width": 800,
         "fullscreen": false
       }
