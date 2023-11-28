@@ -345,7 +345,7 @@ define([
         console.log('save');
 
         let headerFields = $('#headerField');
-        let bodyFields = $('#bodyfield');
+        let bodyFields = $('#bodyField');
 
         if (headerFields) {
             for (let obj of headerFields) {
