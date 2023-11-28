@@ -221,7 +221,7 @@ define([
 
                 console.log('inArgument ', key, val);
                 console.log('inputarg ', $('#' + key));
-                $('#' + key).val(val);
+                $('#' + key).val(val).change();;
             });
         });
 
