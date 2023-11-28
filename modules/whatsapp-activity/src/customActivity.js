@@ -184,7 +184,7 @@ define([
             $('#buttonContainer').append(buttonHtmlBody);
         }
 
-        //console.log('bodyFieldsVar ', bodyFieldsVar);
+        console.log('bodyFieldsVar ', bodyFieldsVar);
         console.log('headerFieldsVar ', headerFieldsVar);
     }
 
