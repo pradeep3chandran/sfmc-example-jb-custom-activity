@@ -221,9 +221,7 @@ define([
 
                 console.log('inArgument ', key, val);
                 console.log('inputarg ', $('#' + key));
-                console.log('typee ', $('#' + key).type);
-
-                $('#' + key).val(val);
+                $('#' + key).val(val).change();;
             });
         });
 
