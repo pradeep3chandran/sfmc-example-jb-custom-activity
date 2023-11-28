@@ -188,6 +188,9 @@ module.exports = function smsActivityApp(app, options) {
             }
         }
 
+        let bodyFields = getInArgument('bodyFields') || 'nothing';
+        console.log('bodyFields ', bodyFields);
+        console.log('bodyFields str ', JSON.stringify(bodyFields));
 
         const mobileNumber = getInArgument('toNumber') || 'nothing';
         const senderName = getInArgument('senderName') || 'nothing';
@@ -244,8 +247,9 @@ module.exports = function smsActivityApp(app, options) {
         }
 
         console.log('jsonStr: ', JSON.stringify(jsonStr));
+        return res.status(200).json('success');
 
-        fs.createReadStream(path.join('./data/customer_data.csv'))
+        /*fs.createReadStream(path.join('./data/customer_data.csv'))
             .pipe(csv.parse({ headers: true }))
             .on('error', error => console.error('err ', error))
             .on('data', row => { if (mid == row.MID) { fileData.push(row) } })
@@ -356,7 +360,7 @@ module.exports = function smsActivityApp(app, options) {
                 }).catch(err => {
                     return res.status(400).json(err);
                 });
-            });
+            });*/
 
         /*const request = req.body;
 
