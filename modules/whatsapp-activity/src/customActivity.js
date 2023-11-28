@@ -221,7 +221,7 @@ define([
 
                 console.log('inArgument ', key, val);
                 console.log('inputarg ', $('#' + key));
-                $('#' + key).val(val).change();;
+                $('#' + key).val(val).change();
             });
         });
 
@@ -334,11 +334,6 @@ define([
 
         payload.name = 'WhatsApp Activity';
 
-        var message = $('#message').val();
-
-        for (let i = 0; i < schema.length; i++) {
-            message = message.includes(schema[i].name) ? message.replace(schema[i].name, schema[i].key) : message;
-        }
 
         payload['arguments'].execute.inArguments = [];
         payload['arguments'].execute.inArguments.push({ "toNumber": '{{' + $('#toNumber').find('option:selected').attr('value') + '}}' });
