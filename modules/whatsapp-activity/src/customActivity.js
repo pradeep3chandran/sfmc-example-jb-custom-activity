@@ -82,7 +82,7 @@ define([
         $('#templateId').change(function () {
             templateId = $('#templateId').find('option:selected').attr('value');
             console.log('templateIdchange1: ', templateId);
-            templateUpdate();
+            templateUpdate(false);
         });
 
         $('#done').click(save);
@@ -98,7 +98,7 @@ define([
 
     }
 
-    function templateUpdate() {
+    function templateUpdate(isInitialize) {
         console.log('templateIdchange: ', templateId);
         let indx = templateData.findIndex(obj => obj.templateid == templateId);
 
@@ -184,8 +184,17 @@ define([
             $('#buttonContainer').append(buttonHtmlBody);
         }
 
-        console.log('bodyFieldsVar ', bodyFieldsVar);
-        console.log('headerFieldsVar ', headerFieldsVar);
+        if (isInitialize) {
+            console.log('bodyFieldsVar ', bodyFieldsVar);
+            console.log('headerFieldsVar ', headerFieldsVar);
+
+            if (bodyFieldsVar) {
+                for (let i = 0; i < bodyFieldsVar.length; i++) {
+                    let val = schema[schema.findIndex(obj => obj.key == bodyFieldsVar[i].value)].name;
+                    $('#' + bodyFieldsVar[i].key).val(val);
+                }
+            }
+        }
     }
 
     function initialize(data) {
@@ -246,7 +255,7 @@ define([
                                           </option>`);
                 }
                 $('#templateId').val(templateId);
-                templateUpdate();
+                templateUpdate(true);
             }));
 
         // If there is no message selected, disable the next button
