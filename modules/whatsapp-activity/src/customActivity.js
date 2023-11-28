@@ -344,8 +344,20 @@ define([
         // may be overridden as desired.
         console.log('save');
 
-        console.log('header ', $(".headerfield"));
-        console.log('body ', $(".bodyfield"));
+        let headerFields = $('#headerField');
+        let bodyFields = $('#bodyfield');
+
+        if (headerFields) {
+            for (let obj of headerFields) {
+                console.log(obj.find('option:selected').attr('value'));
+            }
+        }
+
+        if (bodyfield) {
+            for (let obj of bodyfield) {
+                console.log(obj.find('option:selected').attr('value'));
+            }
+        }
 
         payload.name = 'WhatsApp Activity';
 
