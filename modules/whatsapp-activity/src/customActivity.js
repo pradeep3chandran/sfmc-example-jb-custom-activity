@@ -220,6 +220,9 @@ define([
             $.each(inArgument, function (key, val) {
 
                 console.log('inArgument ', key, val);
+                console.log('inputarg ', $('#' + key));
+                console.log('typee ', $('#' + key).type);
+
                 $('#' + key).val(val);
             });
         });
@@ -344,7 +347,7 @@ define([
         payload['arguments'].execute.inArguments.push({ "mid": $('#mid').val() });
         payload['arguments'].execute.inArguments.push({ "senderName": $('#senderName').val() });
         payload['arguments'].execute.inArguments.push({ "campaignName": eventData.name });
-        payload['arguments'].execute.inArguments.push({ "template": $('#template').find('option:selected').attr('value') });
+        payload['arguments'].execute.inArguments.push({ "templateId": $('#templateId').find('option:selected').attr('value') });
 
         let primaryKey = schema[schema.findIndex(obj => obj.isPrimaryKey)].key;
         payload['arguments'].execute.inArguments.push({ "primaryKey": '{{' + primaryKey + '}}' });
