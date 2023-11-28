@@ -190,7 +190,8 @@ define([
 
             if (bodyFieldsVar) {
                 for (let i = 0; i < bodyFieldsVar.length; i++) {
-                    let val = schema[schema.findIndex(obj => obj.key == bodyFieldsVar[i].value)].name;
+                    let bodyVal = bodyFieldsVar[i].value.replace('{{', '').replace('}}', '');
+                    let val = schema[schema.findIndex(obj => obj.key == bodyVal)].name;
                     $('#' + bodyFieldsVar[i].key).val(val);
                 }
             }
