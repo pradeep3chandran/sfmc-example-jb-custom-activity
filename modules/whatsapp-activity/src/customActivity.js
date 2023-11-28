@@ -344,8 +344,8 @@ define([
         // may be overridden as desired.
         console.log('save');
 
-        let headerFields = $('#headerField');
-        let bodyFields = $('#bodyField');
+        let headerFields = $('.headerfield');
+        let bodyFields = $('.bodyfield');
 
         if (headerFields) {
             for (let obj of headerFields) {
