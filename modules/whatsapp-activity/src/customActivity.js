@@ -113,7 +113,7 @@ define([
         if (searchtext.length > 1) {
             for (let i = 0; i < searchtext.length - 1; i++) {
                 console.log('fieldText ', fieldText);
-                fieldsBody += '<br /><br /><label for="dataattributes">Field ' + (i + 1) + '</label><br /><select name="dataattributes" id="dataattributes"><option value="" selected>Select to add Merge fields...</option>' + fieldText + '</select>';
+                fieldsBody += '<br /><br /><label for="dataattributes">Field ' + (i + 1) + '</label><br /><select name="dataattributes" class="bodyfield" id="bodyfield' + (i + 1) + '"><option value="" selected>Select to add Merge fields...</option>' + fieldText + '</select>';
             }
         }
 
@@ -129,7 +129,7 @@ define([
                 let hedFieldsBody = '';
                 if (headerSearchtext.length > 1) {
                     for (let i = 0; i < headerSearchtext.length - 1; i++) {
-                        hedFieldsBody += '<br /><br /><label for="dataattributes">Header Field ' + (i + 1) + '</label><br /><select name="dataattributes" id="dataattributes"><option value="" selected>Select to add Merge fields...</option>' + fieldText + '</select>';
+                        hedFieldsBody += '<br /><br /><label for="dataattributes">Header Field ' + (i + 1) + '</label><br /><select class="headerfield" name="dataattributes" id="headerfield' + (i + 1) + '"><option value="" selected>Select to add Merge fields...</option>' + fieldText + '</select>';
                     }
                 }
                 $('#headerContainer').append('<br /><br /><label for="message">Header Message</label><br /><textarea id="message" readonly disabled>' + headertext + '</textarea>' + hedFieldsBody);
@@ -343,6 +343,9 @@ define([
         // set by this activity's config.json file.  Any property
         // may be overridden as desired.
         console.log('save');
+
+        console.log('header ', $(".headerfield"));
+        console.log('body ', $(".bodyfield"));
 
         payload.name = 'WhatsApp Activity';
 
