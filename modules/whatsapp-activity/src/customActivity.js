@@ -77,7 +77,7 @@ define([
             //$('#message').html(message);
         });
 
-        $('#template').change(function () {
+        $('#templateId').change(function () {
             templateId = $('#template').find('option:selected').attr('value');
             templateUpdate();
         });
