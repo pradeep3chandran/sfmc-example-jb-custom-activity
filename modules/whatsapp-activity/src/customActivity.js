@@ -149,7 +149,7 @@ define([
             let footFieldsBody = '';
             if (footerSearchtext.length > 1) {
                 for (let i = 0; i < footerSearchtext.length - 1; i++) {
-                    footFieldsBody += '<br /><br /><label for="dataattributes">Footer Field ' + (i + 1) + '</label><br /><select name="dataattributes" id="dataattributes"><option value="" selected>Select to add Merge fields...</option>' + fieldText + '</select>';
+                    footFieldsBody += '<br /><br /><label for="dataattributes">Footer Field ' + (i + 1) + '</label><br /><select name="dataattributes" class="footerfield" id="footerfield' + (i + 1) + '"><option value="" selected>Select to add Merge fields...</option>' + fieldText + '</select>';
                 }
             }
             $('#footerContainer').append('<br /><br /><label for="message">Footer Message</label><br /><textarea id="message" readonly disabled>' + footertext + '</textarea>' + footFieldsBody);
@@ -175,7 +175,7 @@ define([
                     let buttonFldBody = '';
                     if (buttonSearchText.length > 1) {
                         for (let i = 0; i < buttonSearchText.length - 1; i++) {
-                            buttonFldBody += '<br /><label for="dataattributes">Button Field ' + (i + 1) + '</label><br /><select name="dataattributes" id="dataattributes"><option value="" selected>Select to add Merge fields...</option>' + fieldText + '</select>';
+                            buttonFldBody += '<br /><label for="dataattributes">Button Field ' + (i + 1) + '</label><br /><select name="dataattributes" class="buttonfield" id="buttonfield' + (i + 1) + '"><option value="" selected>Select to add Merge fields...</option>' + fieldText + '</select>';
                         }
                     }
                     buttonHtmlBody += buttonFldBody;
@@ -394,6 +394,26 @@ define([
             bodyFields.push({ key: fldid, value: '{{' + fldKey + '}}' });
         });
 
+        let footerFields = [];
+
+        $('.footerfield').each(function () {
+            let fldid = this.id;
+            let fldvalue = $('#' + fldid).find('option:selected').attr('value');
+
+            let fldKey = schema[schema.findIndex(obj => obj.name == fldvalue)].key;
+            footerFields.push({ key: fldid, value: '{{' + fldKey + '}}' });
+        });
+
+        let buttonFields = [];
+
+        $('.buttonfield').each(function () {
+            let fldid = this.id;
+            let fldvalue = $('#' + fldid).find('option:selected').attr('value');
+
+            let fldKey = schema[schema.findIndex(obj => obj.name == fldvalue)].key;
+            buttonFields.push({ key: fldid, value: '{{' + fldKey + '}}' });
+        });
+
         payload.name = 'WhatsApp Activity';
 
 
@@ -406,6 +426,8 @@ define([
 
         payload['arguments'].execute.inArguments.push({ "bodyFieldDetails": bodyFields });
         payload['arguments'].execute.inArguments.push({ "headerFieldDetails": headerFields });
+        payload['arguments'].execute.inArguments.push({ "footerFieldDetails": footerFields });
+        payload['arguments'].execute.inArguments.push({ "buttonFieldDetails": buttonFields });
 
         let primaryKey = schema[schema.findIndex(obj => obj.isPrimaryKey)].key;
         payload['arguments'].execute.inArguments.push({ "primaryKey": '{{' + primaryKey + '}}' });
