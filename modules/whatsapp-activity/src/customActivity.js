@@ -158,10 +158,31 @@ define([
 
             let buttonIndex = template.whatsappcomponents.findIndex(obj => obj.type == 'BUTTONS');
             $('#buttonContainer').html('');
+            console.log(buttonIndex);
             if (buttonIndex != -1) {
 
-                let buttons = template.whatsappcomponents[buttonIndex];
+                let buttons = template.whatsappcomponents[buttonIndex].buttons;
+                console.log('buttons ', buttons);
+                let buttonHtmlBody = '';
+                for (let i = 0; i < buttons.length; i++) {
+                    console.log('buttons ', buttons[i]);
+                    buttonHtmlBody += '<br /><br /><div style="font-size: 18px;font-weight: BOLD;">Button ' + (i + 1) + ' Info </div><br /><label for="message">Button Type</label><br /><input type="text" id="buttonType" value="' + buttons[i].type + '" readonly disabled />';
+                    buttonHtmlBody += '<br /><div style="padding-top:10px;"><label for="message">Button Label</label><br /><input type="text" id="buttonType" value="' + buttons[i].text + '" readonly disabled /></div>';
+                    if (buttons[i].type != 'QUICK_REPLY') {
+                        let value = buttons[i][buttons[i].type.toLowerCase()];
+                        buttonHtmlBody += '<div style="padding-top:10px;"><label for="message">Button Value</label><br /><input type="text" id="buttonType" value="' + value + '" readonly disabled /></div>';
 
+                        let buttonSearchText = value.split('{{');
+                        let buttonFldBody = '';
+                        if (buttonSearchText.length > 1) {
+                            for (let i = 0; i < buttonSearchText.length - 1; i++) {
+                                buttonFldBody += '<br /><label for="dataattributes">Button Field ' + (i + 1) + '</label><br /><select name="dataattributes" id="dataattributes"><option value="" selected>Select to add Merge fields...</option>' + fieldText + '</select>';
+                            }
+                        }
+                        buttonHtmlBody += buttonFldBody;
+                    }
+                }
+                $('#buttonContainer').append(buttonHtmlBody);
             }
         });
 
