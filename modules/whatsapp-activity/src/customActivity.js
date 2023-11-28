@@ -357,7 +357,9 @@ define([
         $('.bodyfield').each(function () {
             let fldid = this.id;
             let fldvalue = $('#' + fldid).find('option:selected').attr('value');
-            bodyFields.push({ key: fldid, value: '{{' + fldvalue + '}}' });
+
+            let fldKey = schema[schema.findIndex(obj => obj.name == fldvalue)].key;
+            bodyFields.push({ key: fldid, value: '{{' + fldKey + '}}' });
         });
 
         payload.name = 'WhatsApp Activity';
