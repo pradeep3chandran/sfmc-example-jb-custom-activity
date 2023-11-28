@@ -195,6 +195,14 @@ define([
                     $('#' + bodyFieldsVar[i].key).val(val);
                 }
             }
+
+            if (headerFieldsVar) {
+                for (let i = 0; i < headerFieldsVar.length; i++) {
+                    let headVal = headerFieldsVar[i].value.replace('{{', '').replace('}}', '');
+                    let val = schema[schema.findIndex(obj => obj.key == headVal)].name;
+                    $('#' + headerFieldsVar[i].key).val(val);
+                }
+            }
         }
     }
 
