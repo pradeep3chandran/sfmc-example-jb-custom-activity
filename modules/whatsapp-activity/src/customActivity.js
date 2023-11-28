@@ -356,7 +356,7 @@ define([
         if (bodyFields) {
             for (let obj of bodyFields) {
                 console.log(obj);
-                console.log(obj.Id);
+                console.log(obj.id);
                 console.log(obj.find('option:selected').attr('value'));
             }
         }
