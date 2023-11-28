@@ -202,28 +202,30 @@ define([
                                                ${name} 
                                           </option>`);
                 }
+
+                var message;
+                var hasInArguments = Boolean(
+                    payload['arguments'] &&
+                    payload['arguments'].execute &&
+                    payload['arguments'].execute.inArguments &&
+                    payload['arguments'].execute.inArguments.length > 0
+                );
+
+                console.log('payload ', JSON.parse(JSON.stringify(payload)));
+
+                var inArguments = hasInArguments ? payload['arguments'].execute.inArguments : {};
+
+                $.each(inArguments, function (index, inArgument) {
+                    $.each(inArgument, function (key, val) {
+
+                        console.log('inArgument ', key, val);
+                        console.log('inputarg ', $('#' + key));
+                        $('#' + key).val(val).change();;
+                    });
+                });
             }));
 
-        var message;
-        var hasInArguments = Boolean(
-            payload['arguments'] &&
-            payload['arguments'].execute &&
-            payload['arguments'].execute.inArguments &&
-            payload['arguments'].execute.inArguments.length > 0
-        );
 
-        console.log('payload ', JSON.parse(JSON.stringify(payload)));
-
-        var inArguments = hasInArguments ? payload['arguments'].execute.inArguments : {};
-
-        $.each(inArguments, function (index, inArgument) {
-            $.each(inArgument, function (key, val) {
-
-                console.log('inArgument ', key, val);
-                console.log('inputarg ', $('#' + key));
-                $('#' + key).val(val).change();;
-            });
-        });
 
         // If there is no message selected, disable the next button
     }
