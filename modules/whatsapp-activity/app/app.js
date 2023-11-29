@@ -200,6 +200,18 @@ module.exports = function smsActivityApp(app, options) {
         const primaryKey = getInArgument('primaryKey') || 'nothing';
         const campaignName = getInArgument('campaignName') || 'nothing';
 
+        const templateId = getInArgument('templateId') || 'nothing';
+
+        let templateInfo = templateId;
+
+        if (bodyFieldDetails && bodyFieldDetails != 'nothing') {
+            for (let i = 0; i < bodyFieldDetails.length; i++) {
+                templateInfo += '~' + bodyFieldDetails[i].value;
+            }
+        }
+
+        console.log('templateInfo ', templateInfo);
+
         const jsonStr = {
 
             "@VER": "1.2",
@@ -220,7 +232,7 @@ module.exports = function smsActivityApp(app, options) {
 
                     "@CODING": "1",
 
-                    "@TEMPLATEINFO": "5525007",
+                    "@TEMPLATEINFO": templateInfo,
 
                     "@MSGTYPE": "1",
 
