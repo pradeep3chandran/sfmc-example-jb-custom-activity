@@ -190,6 +190,7 @@ module.exports = function smsActivityApp(app, options) {
 
         let bodyFieldDetails = getInArgument('bodyFieldDetails') || 'nothing';
         let headerFieldDetails = getInArgument('headerFieldDetails') || 'nothing';
+        let buttonFieldDetails = getInArgument('buttonFieldDetails') || 'nothing';
         console.log('bodyFieldDetails ', bodyFieldDetails);
         console.log('headerFieldDetails ', headerFieldDetails);
 
@@ -257,6 +258,10 @@ module.exports = function smsActivityApp(app, options) {
 
             ]
 
+        }
+
+        if (buttonFieldDetails && buttonFieldDetails != 'nothing') {
+            jsonStr.SMS[0]['@B_URLINFO'] = buttonFieldDetails[0].value;
         }
 
         console.log('jsonStr: ', JSON.stringify(jsonStr));
