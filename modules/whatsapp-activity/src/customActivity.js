@@ -134,7 +134,7 @@ define([
                         hedFieldsBody += '<br /><br /><label for="dataattributes">Header Field ' + (i + 1) + '</label><br /><select class="headerfield" name="dataattributes" id="headerfield' + (i + 1) + '"><option value="" selected>Select to add Merge fields...</option>' + fieldText + '</select>';
                     }
                 }
-                $('#headerContainer').append('<br /><br /><label for="message">Header Message</label><br /><textarea id="message" readonly disabled>' + headertext + '</textarea>' + hedFieldsBody);
+                $('#headerContainer').append('<br /><br /><label for="message">Header Message</label><br /><input type="text" id="buttonType" value="' + headertext + '" readonly disabled />' + hedFieldsBody);
             } else {
                 $('#headerContainer').append('<br /><br /><label for="message">' + format + ' URL</label><br /><input type="text" id="headerDocURL" />');
             }
@@ -152,7 +152,7 @@ define([
                     footFieldsBody += '<br /><br /><label for="dataattributes">Footer Field ' + (i + 1) + '</label><br /><select name="dataattributes" class="footerfield" id="footerfield' + (i + 1) + '"><option value="" selected>Select to add Merge fields...</option>' + fieldText + '</select>';
                 }
             }
-            $('#footerContainer').append('<br /><br /><label for="message">Footer Message</label><br /><textarea id="message" readonly disabled>' + footertext + '</textarea>' + footFieldsBody);
+            $('#footerContainer').append('<br /><br /><label for="message">Footer Message</label><br /><input type="text" id="buttonType" value="' + footertext + '" readonly disabled />' + footFieldsBody);
         }
 
         let buttonIndex = template.whatsappcomponents.findIndex(obj => obj.type == 'BUTTONS');
