@@ -191,8 +191,9 @@ module.exports = function smsActivityApp(app, options) {
         let bodyFieldDetails = getInArgument('bodyFieldDetails') || 'nothing';
         let headerFieldDetails = getInArgument('headerFieldDetails') || 'nothing';
         let buttonFieldDetails = getInArgument('buttonFieldDetails') || 'nothing';
-        console.log('bodyFieldDetails ', bodyFieldDetails);
-        console.log('headerFieldDetails ', headerFieldDetails);
+        let selectedTemplate = getInArgument('selectedTemplate') || 'nothing';
+
+        console.log('selectedTemplate ', selectedTemplate);
 
         const mobileNumber = getInArgument('toNumber') || 'nothing';
         const senderName = getInArgument('senderName') || 'nothing';
@@ -307,9 +308,13 @@ module.exports = function smsActivityApp(app, options) {
                                             SUBMIT_DATE: data1.MESSAGEACK.GUID.SUBMITDATE,
                                             FROM: senderName,
                                             TO: mobileNumber,
-                                            TEXT: message,
+                                            TEXT: selectedTemplate.templatetext,
                                             STATUS: 'Submitted',
-                                            CAMPAIGN_NAME: campaignName
+                                            CAMPAIGN_NAME: campaignName,
+                                            TEMPLATE_NAME: selectedTemplate.templatename,
+                                            TEMPLATE_ID: selectedTemplate.templateid,
+                                            MEDIA_TYPE: selectedTemplate.mediatype
+
                                         }
                                     });
                                     if (data1.MESSAGEACK.GUID.ERROR) {

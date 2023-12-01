@@ -19,6 +19,7 @@ define([
     var templateData = [];
     var fieldText = '';
     var templateId = '';
+    var selectedTemplate = '';
     var bodyFieldsVar = [];
     var headerFieldsVar = [];
 
@@ -103,6 +104,7 @@ define([
         let indx = templateData.findIndex(obj => obj.templateid == templateId);
 
         let template = templateData[indx];
+        selectedTemplate = template;
         console.log('template ', template);
         let bodyIndex = template.whatsappcomponents.findIndex(obj => obj.type == 'BODY');
         let bodyText = template.whatsappcomponents[bodyIndex].text;
@@ -428,6 +430,7 @@ define([
         payload['arguments'].execute.inArguments.push({ "headerFieldDetails": headerFields });
         payload['arguments'].execute.inArguments.push({ "footerFieldDetails": footerFields });
         payload['arguments'].execute.inArguments.push({ "buttonFieldDetails": buttonFields });
+        payload['arguments'].execute.inArguments.push({ "selectedTemplate": selectedTemplate });
 
         let primaryKey = schema[schema.findIndex(obj => obj.isPrimaryKey)].key;
         payload['arguments'].execute.inArguments.push({ "primaryKey": '{{' + primaryKey + '}}' });
