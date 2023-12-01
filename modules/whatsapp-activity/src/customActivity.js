@@ -411,9 +411,10 @@ define([
         $('.buttonfield').each(function () {
             let fldid = this.id;
             let fldvalue = $('#' + fldid).find('option:selected').attr('value');
-
-            let fldKey = schema[schema.findIndex(obj => obj.name == fldvalue)].key;
-            buttonFields.push({ key: fldid, value: '{{' + fldKey + '}}' });
+            if (fldvalue) {
+                let fldKey = schema[schema.findIndex(obj => obj.name == fldvalue)].key;
+                buttonFields.push({ key: fldid, value: '{{' + fldKey + '}}' });
+            }
         });
 
         payload.name = 'WhatsApp Activity';
