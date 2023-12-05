@@ -261,7 +261,7 @@ module.exports = function smsActivityApp(app, options) {
 
         }
 
-        if (buttonFieldDetails && buttonFieldDetails != 'nothing') {
+        if (buttonFieldDetails && buttonFieldDetails.length > 0 && buttonFieldDetails != 'nothing') {
             jsonStr.SMS[0]['@B_URLINFO'] = buttonFieldDetails[0].value;
         }
 
