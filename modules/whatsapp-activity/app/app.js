@@ -203,7 +203,7 @@ module.exports = function smsActivityApp(app, options) {
         let primaryKey = getInArgument('primaryKey') || 'nothing';
         let campaignName = getInArgument('campaignName') || 'nothing';
 
-        const templateId = getInArgument('templateId') || 'nothing';
+        let templateId = getInArgument('templateId') || 'nothing';
 
         if (messageAction == 'Retry Message') {
             bodyFieldDetails = selectedTemplate.BODY_FIELD_DETAILS ? JSON.parse(selectedTemplate.BODY_FIELD_DETAILS) : [];
