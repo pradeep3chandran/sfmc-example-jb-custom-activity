@@ -78,16 +78,25 @@
       <label class="slds-form-element__label" for="mid">MID</label><br />
       <input class="slds-input" type="text" id="mid" />
       <br /><br />
-      <label for="senderName">From Number</label><br />
-      <input type="text" id="senderName" />
-      <br /><br />
-      <label for="toNumber">Select Phone Number Field</label><br />
-      <select name="phonefield" id="toNumber"></select>
-      <br /><br />
-      <label for="templateId">Select Template</label><br />
-      <select name="template" id="templateId">
+      <label for="messageAction">Select Message Action</label><br />
+      <select name="Select Message Action" id="messageAction">
         <option value"">None</option>
+        <option value"">New Message</option>
+        <option value"">Retry Message</option>
       </select>
+      <div id="newMessage" style="display: none;">
+        <br /><br />
+        <label for="senderName">From Number</label><br />
+        <input type="text" id="senderName" />
+        <br /><br />
+        <label for="toNumber">Select Phone Number Field</label><br />
+        <select name="phonefield" id="toNumber"></select>
+        <br /><br />
+        <label for="templateId">Select Template</label><br />
+        <select name="template" id="templateId">
+          <option value"">None</option>
+        </select>
+      </div>
 
       <div id="headerContainer">
 

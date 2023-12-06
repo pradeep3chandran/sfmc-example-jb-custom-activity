@@ -22,6 +22,7 @@ define([
     var selectedTemplate = '';
     var bodyFieldsVar = [];
     var headerFieldsVar = [];
+    var messageAction = '';
 
     $(window).ready(onRender);
 
@@ -59,8 +60,6 @@ define([
 
 
     function onRender() {
-
-
         // JB will respond the first time 'ready' is called with 'initActivity'
         connection.trigger('ready');
         connection.trigger('requestSchema');
@@ -69,15 +68,13 @@ define([
         connection.trigger('requestEndpoints');
         connection.trigger('requestTriggerEventDefinition');
 
-        $('#dataattributes').change(function () {
-            var value = $('#dataattributes').find('option:selected').attr('value');
-            console.log('value: ', value);
-            var messageBody = $('#message').val();
-            console.log('message2: ', messageBody);
-            $('#message').val(messageBody + '{{' + value + '}}');
-            var messageBody1 = $('#message').val();
-            console.log('message3: ', messageBody1);
-            //$('#message').html(message);
+
+        $('#messageAction').change(function () {
+            messageAction = $('#messageAction').find('option:selected').attr('value');
+            console.log('messageAction: ', messageAction);
+            if (messageAction == 'New Message') {
+                $('#newMessage').style.display = 'block';
+            }
         });
 
         $('#templateId').change(function () {
