@@ -193,13 +193,13 @@ module.exports = function smsActivityApp(app, options) {
         let buttonFieldDetails = getInArgument('buttonFieldDetails') || 'nothing';
         let selectedTemplate = getInArgument('selectedTemplate') || 'nothing';
         let headerDocURL = getInArgument('headerDocURL') || 'nothing';
+        let messageAction = getInArgument('messageAction') || 'nothing';
 
         console.log('selectedTemplate ', selectedTemplate);
 
         const mobileNumber = getInArgument('toNumber') || 'nothing';
         const senderName = getInArgument('senderName') || 'nothing';
         const mid = getInArgument('mid') || 'nothing';
-        const message = getInArgument('message') || 'nothing';
         const primaryKey = getInArgument('primaryKey') || 'nothing';
         const campaignName = getInArgument('campaignName') || 'nothing';
 
@@ -208,8 +208,14 @@ module.exports = function smsActivityApp(app, options) {
         let templateInfo = templateId;
 
         if (bodyFieldDetails && bodyFieldDetails != 'nothing') {
-            for (let i = 0; i < bodyFieldDetails.length; i++) {
-                templateInfo += '~' + bodyFieldDetails[i].value;
+            let bodyFlds = [];
+            if (messageAction == 'Retry Message') {
+                bodyFlds = JSON.parse(bodyFieldDetails);
+            } else {
+                bodyFlds = bodyFieldDetails;
+            }
+            for (let i = 0; i < bodyFlds.length; i++) {
+                templateInfo += '~' + bodyFlds[i].value;
             }
         }
 
@@ -318,30 +324,57 @@ module.exports = function smsActivityApp(app, options) {
                                 //return res.status(200).json(data1);
                                 let reqBody = [];
                                 if (data1.MESSAGEACK.GUID) {
-                                    reqBody.push({
-                                        "keys": {
-                                            "GUID": data1.MESSAGEACK.GUID.GUID
-                                        },
-                                        "values": {
-                                            ID: data1.MESSAGEACK.GUID.ID,
-                                            SUBMIT_DATE: data1.MESSAGEACK.GUID.SUBMITDATE,
-                                            FROM: senderName,
-                                            TO: mobileNumber,
-                                            TEXT: templatetext,
-                                            STATUS: 'Submitted',
-                                            CAMPAIGN_NAME: campaignName,
-                                            TEMPLATE_NAME: selectedTemplate.templatename,
-                                            TEMPLATE_ID: selectedTemplate.templateid,
-                                            MEDIA_TYPE: selectedTemplate.mediatype,
-                                            DOCUMENT_URL: headerDocURL,
-                                            HEADER_FIELD_DETAILS: JSON.stringify(headerFieldDetails),
-                                            BODY_FIELD_DETAILS: JSON.stringify(bodyFieldDetails),
-                                            BUTTON_FIELD_DETAILS: JSON.stringify(buttonFieldDetails),
-                                            BUTTON_INFO: JSON.stringify(buttonInfo),
-                                            FOOTER_TEXT: footerText,
-                                            HEADER_TEXT: headerText
-                                        }
-                                    });
+                                    if (messageAction == 'Retry Message') {
+                                        reqBody.push({
+                                            "keys": {
+                                                "GUID": data1.MESSAGEACK.GUID.GUID
+                                            },
+                                            "values": {
+                                                ID: data1.MESSAGEACK.GUID.ID,
+                                                SUBMIT_DATE: data1.MESSAGEACK.GUID.SUBMITDATE,
+                                                FROM: senderName,
+                                                TO: mobileNumber,
+                                                TEXT: selectedTemplate.TEXT,
+                                                STATUS: 'Submitted',
+                                                CAMPAIGN_NAME: campaignName,
+                                                TEMPLATE_NAME: selectedTemplate.TEMPLATE_NAME,
+                                                TEMPLATE_ID: selectedTemplate.TEMPLATE_ID,
+                                                MEDIA_TYPE: selectedTemplate.MEDIA_TYPE,
+                                                DOCUMENT_URL: headerDocURL,
+                                                HEADER_FIELD_DETAILS: headerFieldDetails,
+                                                BODY_FIELD_DETAILS: bodyFieldDetails,
+                                                BUTTON_FIELD_DETAILS: buttonFieldDetails,
+                                                BUTTON_INFO: selectedTemplate.BUTTON_INFO,
+                                                FOOTER_TEXT: selectedTemplate.FOOTER_TEXT,
+                                                HEADER_TEXT: selectedTemplate.HEADER_TEXT
+                                            }
+                                        });
+                                    } else {
+                                        reqBody.push({
+                                            "keys": {
+                                                "GUID": data1.MESSAGEACK.GUID.GUID
+                                            },
+                                            "values": {
+                                                ID: data1.MESSAGEACK.GUID.ID,
+                                                SUBMIT_DATE: data1.MESSAGEACK.GUID.SUBMITDATE,
+                                                FROM: senderName,
+                                                TO: mobileNumber,
+                                                TEXT: templatetext,
+                                                STATUS: 'Submitted',
+                                                CAMPAIGN_NAME: campaignName,
+                                                TEMPLATE_NAME: selectedTemplate.templatename,
+                                                TEMPLATE_ID: selectedTemplate.templateid,
+                                                MEDIA_TYPE: selectedTemplate.mediatype,
+                                                DOCUMENT_URL: headerDocURL,
+                                                HEADER_FIELD_DETAILS: JSON.stringify(headerFieldDetails),
+                                                BODY_FIELD_DETAILS: JSON.stringify(bodyFieldDetails),
+                                                BUTTON_FIELD_DETAILS: JSON.stringify(buttonFieldDetails),
+                                                BUTTON_INFO: JSON.stringify(buttonInfo),
+                                                FOOTER_TEXT: footerText,
+                                                HEADER_TEXT: headerText
+                                            }
+                                        });
+                                    }
                                     if (data1.MESSAGEACK.GUID.ERROR) {
                                         console.log('error');
                                         reqBody[0].values.STATUS = 'Failed';
@@ -350,22 +383,61 @@ module.exports = function smsActivityApp(app, options) {
                                     }
                                 } else {
                                     const date = new Date().toLocaleString();
-                                    reqBody.push({
-                                        "keys": {
-                                            "GUID": primaryKey + date
-                                        },
-                                        "values": {
-                                            ID: primaryKey,
-                                            SUBMIT_DATE: date,
-                                            FROM: senderName,
-                                            TO: mobileNumber,
-                                            TEXT: message,
-                                            STATUS: 'Failed',
-                                            ERROR_CODE: data1.MESSAGEACK.Err.Code,
-                                            ERROR_REASON: errorObject[data1.MESSAGEACK.Err.Code],
-                                            CAMPAIGN_NAME: campaignName
-                                        }
-                                    });
+                                    if (messageAction == 'Retry Message') {
+                                        reqBody.push({
+                                            "keys": {
+                                                "GUID": primaryKey + date
+                                            },
+                                            "values": {
+                                                ID: primaryKey,
+                                                SUBMIT_DATE: date,
+                                                FROM: senderName,
+                                                TO: mobileNumber,
+                                                TEXT: selectedTemplate.TEXT,
+                                                STATUS: 'Failed',
+                                                ERROR_CODE: data1.MESSAGEACK.Err.Code,
+                                                ERROR_REASON: errorObject[data1.MESSAGEACK.Err.Code],
+                                                CAMPAIGN_NAME: campaignName,
+                                                TEMPLATE_NAME: selectedTemplate.TEMPLATE_NAME,
+                                                TEMPLATE_ID: selectedTemplate.TEMPLATE_ID,
+                                                MEDIA_TYPE: selectedTemplate.MEDIA_TYPE,
+                                                DOCUMENT_URL: headerDocURL,
+                                                HEADER_FIELD_DETAILS: headerFieldDetails,
+                                                BODY_FIELD_DETAILS: bodyFieldDetails,
+                                                BUTTON_FIELD_DETAILS: buttonFieldDetails,
+                                                BUTTON_INFO: selectedTemplate.BUTTON_INFO,
+                                                FOOTER_TEXT: selectedTemplate.FOOTER_TEXT,
+                                                HEADER_TEXT: selectedTemplate.HEADER_TEXT
+                                            }
+                                        });
+                                    } else {
+                                        reqBody.push({
+                                            "keys": {
+                                                "GUID": primaryKey + date
+                                            },
+                                            "values": {
+                                                ID: primaryKey,
+                                                SUBMIT_DATE: date,
+                                                FROM: senderName,
+                                                TO: mobileNumber,
+                                                TEXT: templatetext,
+                                                STATUS: 'Failed',
+                                                ERROR_CODE: data1.MESSAGEACK.Err.Code,
+                                                ERROR_REASON: errorObject[data1.MESSAGEACK.Err.Code],
+                                                CAMPAIGN_NAME: campaignName,
+                                                TEMPLATE_NAME: selectedTemplate.templatename,
+                                                TEMPLATE_ID: selectedTemplate.templateid,
+                                                MEDIA_TYPE: selectedTemplate.mediatype,
+                                                DOCUMENT_URL: headerDocURL,
+                                                HEADER_FIELD_DETAILS: JSON.stringify(headerFieldDetails),
+                                                BODY_FIELD_DETAILS: JSON.stringify(bodyFieldDetails),
+                                                BUTTON_FIELD_DETAILS: JSON.stringify(buttonFieldDetails),
+                                                BUTTON_INFO: JSON.stringify(buttonInfo),
+                                                FOOTER_TEXT: footerText,
+                                                HEADER_TEXT: headerText
+                                            }
+                                        });
+                                    }
                                 }
                                 console.log(reqBody);
 

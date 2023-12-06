@@ -433,7 +433,6 @@ define([
 
             payload['arguments'].execute.inArguments.push({ "bodyFieldDetails": bodyFields });
             payload['arguments'].execute.inArguments.push({ "headerFieldDetails": headerFields });
-            payload['arguments'].execute.inArguments.push({ "footerFieldDetails": footerFields });
             payload['arguments'].execute.inArguments.push({ "buttonFieldDetails": buttonFields });
             payload['arguments'].execute.inArguments.push({ "selectedTemplate": selectedTemplate });
             payload['arguments'].execute.inArguments.push({ "headerDocURL": $('#headerDocURL').val() });
@@ -456,7 +455,9 @@ define([
             payload['arguments'].execute.inArguments = [];
             payload['arguments'].execute.inArguments.push({ "mid": $('#mid').val() });
             payload['arguments'].execute.inArguments.push({ "messageAction": messageAction });
+            payload['arguments'].execute.inArguments.push({ "campaignName": eventData.name });
 
+            let selTemplate = {};
             for (let i = 0; i < schema.length; i++) {
 
                 let key = '';
@@ -481,7 +482,12 @@ define([
                 if (key && key != '') {
                     payload['arguments'].execute.inArguments.push({ key: '{{' + schema[i].key + '}}' });
                 }
+
+                selTemplate[schema[i].name] = '{{' + schema[i].key + '}}';
             }
+
+            payload['arguments'].execute.inArguments.push({ "selectedTemplate": selTemplate });
+
 
             payload['metaData'].isConfigured = true;
 
