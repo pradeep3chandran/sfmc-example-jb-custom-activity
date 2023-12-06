@@ -70,11 +70,14 @@ define([
 
 
         $('#messageAction').change(function () {
-            messageAction = $('#messageAction').find('option:selected').attr('value');
-            console.log('messageAction: ', $('#messageAction').find('option:selected').attr('value'));
+            messageAction = $(this).find('option:selected').val();
+            console.log('messageAction: ', $(this).find('option:selected').val());
             console.log('messageAction1: ', messageAction);
             if (messageAction == 'New Message') {
-                $('#newMessage').style.display = 'block';
+                $('#newMessage').css({ 'display': 'block' });
+                getTemplate();
+            } else {
+                $('#newMessage').css({ 'display': 'none' });
             }
         });
 
@@ -241,8 +244,10 @@ define([
             });
         });
 
+        // If there is no message selected, disable the next button
+    }
 
-
+    function getTemplate() {
         fetch('gettemplates/', { method: 'GET' }).then(response =>
             response.json().then(data => ({
                 data: data,
@@ -266,8 +271,6 @@ define([
                 $('#templateId').val(templateId);
                 templateUpdate(true);
             }));
-
-        // If there is no message selected, disable the next button
     }
 
     function onGetTokens(tokens) {
