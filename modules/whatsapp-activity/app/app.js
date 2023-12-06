@@ -292,19 +292,27 @@ module.exports = function smsActivityApp(app, options) {
                         fetch('https://api.myvfirst.com/psms/servlet/psms.JsonEservice', {
                             method: 'POST', headers: { "Authorization": 'Bearer ' + token, "Content-Type": 'application/json' }, body: JSON.stringify(jsonStr)
                         }).then(response1 => {
-                            console.log(response1);
+                            console.log('ressss ', response1);
 
                             let bodyIndex = selectedTemplate.whatsappcomponents.findIndex(obj => obj.type == 'BODY');
+                            console.log('bodyIndex ', bodyIndex);
                             let templatetext = selectedTemplate.whatsappcomponents[bodyIndex].text;
+                            console.log('templatetext ', templatetext);
 
                             let headerIndex = selectedTemplate.whatsappcomponents.findIndex(obj => obj.type == 'HEADER' && obj.format == 'TEXT');
+                            console.log('headerIndex ', headerIndex);
                             let headerText = headerIndex >= 0 ? selectedTemplate.whatsappcomponents[headerIndex].text : '';
+                            console.log('headerText ', headerText);
 
                             let footerIndex = selectedTemplate.whatsappcomponents.findIndex(obj => obj.type == 'FOOTER');
+                            console.log('ressss ', response1);
                             let footerText = footerIndex >= 0 ? selectedTemplate.whatsappcomponents[footerIndex].text : '';
+                            console.log('footerText ', footerText);
 
                             let buttonIndex = selectedTemplate.whatsappcomponents.findIndex(obj => obj.type == 'BUTTONS');
+                            console.log('buttonIndex ', buttonIndex);
                             let buttonInfo = buttonIndex >= 0 ? selectedTemplate.whatsappcomponents[headerIndex].buttons : '';
+                            console.log('buttonInfo ', buttonInfo);
 
                             response1.json().then(data1 => {
                                 //return res.status(200).json(data1);
