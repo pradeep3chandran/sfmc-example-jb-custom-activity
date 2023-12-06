@@ -102,108 +102,110 @@ define([
 
     function templateUpdate(isInitialize) {
         console.log('templateIdchange: ', templateId);
-        let indx = templateData.findIndex(obj => obj.templateid == templateId);
+        if (templateId) {
+            let indx = templateData.findIndex(obj => obj.templateid == templateId);
 
-        let template = templateData[indx];
-        selectedTemplate = template;
-        console.log('template ', template);
-        let bodyIndex = template.whatsappcomponents.findIndex(obj => obj.type == 'BODY');
-        let bodyText = template.whatsappcomponents[bodyIndex].text;
-        console.log('bodyText ', bodyText);
+            let template = templateData[indx];
+            selectedTemplate = template;
+            console.log('template ', template);
+            let bodyIndex = template.whatsappcomponents.findIndex(obj => obj.type == 'BODY');
+            let bodyText = template.whatsappcomponents[bodyIndex].text;
+            console.log('bodyText ', bodyText);
 
-        let searchtext = bodyText.split('{{');
-        console.log('searchtext: ', searchtext);
-        let fieldsBody = '';
-        $('#bodyContainer').html('');
-        if (searchtext.length > 1) {
-            for (let i = 0; i < searchtext.length - 1; i++) {
-                console.log('fieldText ', fieldText);
-                fieldsBody += '<br /><br /><label for="dataattributes">Field ' + (i + 1) + '</label><br /><select name="dataattributes" class="bodyfield" id="bodyfield' + (i + 1) + '"><option value="" selected>Select to add Merge fields...</option>' + fieldText + '</select>';
-            }
-        }
-
-        $('#bodyContainer').append('<br /><br /><label for="message">Body Message</label><br /><textarea id="message" readonly disabled>' + bodyText + '</textarea>' + fieldsBody);
-
-        let headerIndex = template.whatsappcomponents.findIndex(obj => obj.type == 'HEADER');
-        $('#headerContainer').html('');
-        if (headerIndex != -1) {
-            let format = template.whatsappcomponents[headerIndex].format;
-            if (format == 'TEXT') {
-                let headertext = template.whatsappcomponents[headerIndex].text;
-                let headerSearchtext = headertext.split('{{');
-                let hedFieldsBody = '';
-                if (headerSearchtext.length > 1) {
-                    for (let i = 0; i < headerSearchtext.length - 1; i++) {
-                        hedFieldsBody += '<br /><br /><label for="dataattributes">Header Field ' + (i + 1) + '</label><br /><select class="headerfield" name="dataattributes" id="headerfield' + (i + 1) + '"><option value="" selected>Select to add Merge fields...</option>' + fieldText + '</select>';
-                    }
-                }
-                $('#headerContainer').append('<br /><br /><label for="message">Header Message</label><br /><input type="text" id="buttonType" value="' + headertext + '" readonly disabled />' + hedFieldsBody);
-            } else {
-                $('#headerContainer').append('<br /><br /><label for="message">' + format + ' URL</label><br /><input type="text" id="headerDocURL" />');
-            }
-        }
-
-        let footerIndex = template.whatsappcomponents.findIndex(obj => obj.type == 'FOOTER');
-        $('#footerContainer').html('');
-        if (footerIndex != -1) {
-
-            let footertext = template.whatsappcomponents[footerIndex].text;
-            let footerSearchtext = footertext.split('{{');
-            let footFieldsBody = '';
-            if (footerSearchtext.length > 1) {
-                for (let i = 0; i < footerSearchtext.length - 1; i++) {
-                    footFieldsBody += '<br /><br /><label for="dataattributes">Footer Field ' + (i + 1) + '</label><br /><select name="dataattributes" class="footerfield" id="footerfield' + (i + 1) + '"><option value="" selected>Select to add Merge fields...</option>' + fieldText + '</select>';
+            let searchtext = bodyText.split('{{');
+            console.log('searchtext: ', searchtext);
+            let fieldsBody = '';
+            $('#bodyContainer').html('');
+            if (searchtext.length > 1) {
+                for (let i = 0; i < searchtext.length - 1; i++) {
+                    console.log('fieldText ', fieldText);
+                    fieldsBody += '<br /><br /><label for="dataattributes">Field ' + (i + 1) + '</label><br /><select name="dataattributes" class="bodyfield" id="bodyfield' + (i + 1) + '"><option value="" selected>Select to add Merge fields...</option>' + fieldText + '</select>';
                 }
             }
-            $('#footerContainer').append('<br /><br /><label for="message">Footer Message</label><br /><input type="text" id="buttonType" value="' + footertext + '" readonly disabled />' + footFieldsBody);
-        }
 
-        let buttonIndex = template.whatsappcomponents.findIndex(obj => obj.type == 'BUTTONS');
-        $('#buttonContainer').html('');
-        console.log(buttonIndex);
-        if (buttonIndex != -1) {
+            $('#bodyContainer').append('<br /><br /><label for="message">Body Message</label><br /><textarea id="message" readonly disabled>' + bodyText + '</textarea>' + fieldsBody);
 
-            let buttons = template.whatsappcomponents[buttonIndex].buttons;
-            console.log('buttons ', buttons);
-            let buttonHtmlBody = '';
-            for (let i = 0; i < buttons.length; i++) {
-                console.log('buttons ', buttons[i]);
-                buttonHtmlBody += '<br /><br /><div style="font-size: 18px;font-weight: BOLD;">Button ' + (i + 1) + ' Info </div><br /><label for="message">Button Type</label><br /><input type="text" id="buttonType" value="' + buttons[i].type + '" readonly disabled />';
-                buttonHtmlBody += '<br /><div style="padding-top:10px;"><label for="message">Button Label</label><br /><input type="text" id="buttonType" value="' + buttons[i].text + '" readonly disabled /></div>';
-                if (buttons[i].type != 'QUICK_REPLY') {
-                    let value = buttons[i][buttons[i].type.toLowerCase()];
-                    buttonHtmlBody += '<div style="padding-top:10px;"><label for="message">Button Value</label><br /><input type="text" id="buttonType" value="' + value + '" readonly disabled /></div>';
-
-                    let buttonSearchText = value.split('{{');
-                    let buttonFldBody = '';
-                    if (buttonSearchText.length > 1) {
-                        for (let i = 0; i < buttonSearchText.length - 1; i++) {
-                            buttonFldBody += '<br /><label for="dataattributes">Button Field ' + (i + 1) + '</label><br /><select name="dataattributes" class="buttonfield" id="buttonfield' + (i + 1) + '"><option value="" selected>Select to add Merge fields...</option>' + fieldText + '</select>';
+            let headerIndex = template.whatsappcomponents.findIndex(obj => obj.type == 'HEADER');
+            $('#headerContainer').html('');
+            if (headerIndex != -1) {
+                let format = template.whatsappcomponents[headerIndex].format;
+                if (format == 'TEXT') {
+                    let headertext = template.whatsappcomponents[headerIndex].text;
+                    let headerSearchtext = headertext.split('{{');
+                    let hedFieldsBody = '';
+                    if (headerSearchtext.length > 1) {
+                        for (let i = 0; i < headerSearchtext.length - 1; i++) {
+                            hedFieldsBody += '<br /><br /><label for="dataattributes">Header Field ' + (i + 1) + '</label><br /><select class="headerfield" name="dataattributes" id="headerfield' + (i + 1) + '"><option value="" selected>Select to add Merge fields...</option>' + fieldText + '</select>';
                         }
                     }
-                    buttonHtmlBody += buttonFldBody;
-                }
-            }
-            $('#buttonContainer').append(buttonHtmlBody);
-        }
-
-        if (isInitialize) {
-            console.log('bodyFieldsVar ', bodyFieldsVar);
-            console.log('headerFieldsVar ', headerFieldsVar);
-
-            if (bodyFieldsVar) {
-                for (let i = 0; i < bodyFieldsVar.length; i++) {
-                    let bodyVal = bodyFieldsVar[i].value.replace('{{', '').replace('}}', '');
-                    let val = schema[schema.findIndex(obj => obj.key == bodyVal)].name;
-                    $('#' + bodyFieldsVar[i].key).val(val);
+                    $('#headerContainer').append('<br /><br /><label for="message">Header Message</label><br /><input type="text" id="buttonType" value="' + headertext + '" readonly disabled />' + hedFieldsBody);
+                } else {
+                    $('#headerContainer').append('<br /><br /><label for="message">' + format + ' URL</label><br /><input type="text" id="headerDocURL" />');
                 }
             }
 
-            if (headerFieldsVar) {
-                for (let i = 0; i < headerFieldsVar.length; i++) {
-                    let headVal = headerFieldsVar[i].value.replace('{{', '').replace('}}', '');
-                    let val = schema[schema.findIndex(obj => obj.key == headVal)].name;
-                    $('#' + headerFieldsVar[i].key).val(val);
+            let footerIndex = template.whatsappcomponents.findIndex(obj => obj.type == 'FOOTER');
+            $('#footerContainer').html('');
+            if (footerIndex != -1) {
+
+                let footertext = template.whatsappcomponents[footerIndex].text;
+                let footerSearchtext = footertext.split('{{');
+                let footFieldsBody = '';
+                if (footerSearchtext.length > 1) {
+                    for (let i = 0; i < footerSearchtext.length - 1; i++) {
+                        footFieldsBody += '<br /><br /><label for="dataattributes">Footer Field ' + (i + 1) + '</label><br /><select name="dataattributes" class="footerfield" id="footerfield' + (i + 1) + '"><option value="" selected>Select to add Merge fields...</option>' + fieldText + '</select>';
+                    }
+                }
+                $('#footerContainer').append('<br /><br /><label for="message">Footer Message</label><br /><input type="text" id="buttonType" value="' + footertext + '" readonly disabled />' + footFieldsBody);
+            }
+
+            let buttonIndex = template.whatsappcomponents.findIndex(obj => obj.type == 'BUTTONS');
+            $('#buttonContainer').html('');
+            console.log(buttonIndex);
+            if (buttonIndex != -1) {
+
+                let buttons = template.whatsappcomponents[buttonIndex].buttons;
+                console.log('buttons ', buttons);
+                let buttonHtmlBody = '';
+                for (let i = 0; i < buttons.length; i++) {
+                    console.log('buttons ', buttons[i]);
+                    buttonHtmlBody += '<br /><br /><div style="font-size: 18px;font-weight: BOLD;">Button ' + (i + 1) + ' Info </div><br /><label for="message">Button Type</label><br /><input type="text" id="buttonType" value="' + buttons[i].type + '" readonly disabled />';
+                    buttonHtmlBody += '<br /><div style="padding-top:10px;"><label for="message">Button Label</label><br /><input type="text" id="buttonType" value="' + buttons[i].text + '" readonly disabled /></div>';
+                    if (buttons[i].type != 'QUICK_REPLY') {
+                        let value = buttons[i][buttons[i].type.toLowerCase()];
+                        buttonHtmlBody += '<div style="padding-top:10px;"><label for="message">Button Value</label><br /><input type="text" id="buttonType" value="' + value + '" readonly disabled /></div>';
+
+                        let buttonSearchText = value.split('{{');
+                        let buttonFldBody = '';
+                        if (buttonSearchText.length > 1) {
+                            for (let i = 0; i < buttonSearchText.length - 1; i++) {
+                                buttonFldBody += '<br /><label for="dataattributes">Button Field ' + (i + 1) + '</label><br /><select name="dataattributes" class="buttonfield" id="buttonfield' + (i + 1) + '"><option value="" selected>Select to add Merge fields...</option>' + fieldText + '</select>';
+                            }
+                        }
+                        buttonHtmlBody += buttonFldBody;
+                    }
+                }
+                $('#buttonContainer').append(buttonHtmlBody);
+            }
+
+            if (isInitialize) {
+                console.log('bodyFieldsVar ', bodyFieldsVar);
+                console.log('headerFieldsVar ', headerFieldsVar);
+
+                if (bodyFieldsVar) {
+                    for (let i = 0; i < bodyFieldsVar.length; i++) {
+                        let bodyVal = bodyFieldsVar[i].value.replace('{{', '').replace('}}', '');
+                        let val = schema[schema.findIndex(obj => obj.key == bodyVal)].name;
+                        $('#' + bodyFieldsVar[i].key).val(val);
+                    }
+                }
+
+                if (headerFieldsVar) {
+                    for (let i = 0; i < headerFieldsVar.length; i++) {
+                        let headVal = headerFieldsVar[i].value.replace('{{', '').replace('}}', '');
+                        let val = schema[schema.findIndex(obj => obj.key == headVal)].name;
+                        $('#' + headerFieldsVar[i].key).val(val);
+                    }
                 }
             }
         }
@@ -376,73 +378,117 @@ define([
         // set by this activity's config.json file.  Any property
         // may be overridden as desired.
         console.log('save');
+        if (messageAction == 'New Message') {
 
-        let headerFields = [];
+            let headerFields = [];
 
-        $('.headerfield').each(function () {
-            let fldid = this.id;
-            let fldvalue = $('#' + fldid).find('option:selected').attr('value');
+            $('.headerfield').each(function () {
+                let fldid = this.id;
+                let fldvalue = $('#' + fldid).find('option:selected').attr('value');
 
-            let fldKey = schema[schema.findIndex(obj => obj.name == fldvalue)].key;
-            headerFields.push({ key: fldid, value: '{{' + fldKey + '}}' });
-        });
-
-        let bodyFields = [];
-
-        $('.bodyfield').each(function () {
-            let fldid = this.id;
-            let fldvalue = $('#' + fldid).find('option:selected').attr('value');
-
-            let fldKey = schema[schema.findIndex(obj => obj.name == fldvalue)].key;
-            bodyFields.push({ key: fldid, value: '{{' + fldKey + '}}' });
-        });
-
-        let footerFields = [];
-
-        $('.footerfield').each(function () {
-            let fldid = this.id;
-            let fldvalue = $('#' + fldid).find('option:selected').attr('value');
-
-            let fldKey = schema[schema.findIndex(obj => obj.name == fldvalue)].key;
-            footerFields.push({ key: fldid, value: '{{' + fldKey + '}}' });
-        });
-
-        let buttonFields = [];
-
-        $('.buttonfield').each(function () {
-            let fldid = this.id;
-            let fldvalue = $('#' + fldid).find('option:selected').attr('value');
-            if (fldvalue) {
                 let fldKey = schema[schema.findIndex(obj => obj.name == fldvalue)].key;
-                buttonFields.push({ key: fldid, value: '{{' + fldKey + '}}' });
+                headerFields.push({ key: fldid, value: '{{' + fldKey + '}}' });
+            });
+
+            let bodyFields = [];
+
+            $('.bodyfield').each(function () {
+                let fldid = this.id;
+                let fldvalue = $('#' + fldid).find('option:selected').attr('value');
+
+                let fldKey = schema[schema.findIndex(obj => obj.name == fldvalue)].key;
+                bodyFields.push({ key: fldid, value: '{{' + fldKey + '}}' });
+            });
+
+            let footerFields = [];
+
+            $('.footerfield').each(function () {
+                let fldid = this.id;
+                let fldvalue = $('#' + fldid).find('option:selected').attr('value');
+
+                let fldKey = schema[schema.findIndex(obj => obj.name == fldvalue)].key;
+                footerFields.push({ key: fldid, value: '{{' + fldKey + '}}' });
+            });
+
+            let buttonFields = [];
+
+            $('.buttonfield').each(function () {
+                let fldid = this.id;
+                let fldvalue = $('#' + fldid).find('option:selected').attr('value');
+                if (fldvalue) {
+                    let fldKey = schema[schema.findIndex(obj => obj.name == fldvalue)].key;
+                    buttonFields.push({ key: fldid, value: '{{' + fldKey + '}}' });
+                }
+            });
+
+            payload.name = 'WhatsApp Message';
+
+
+            payload['arguments'].execute.inArguments = [];
+            payload['arguments'].execute.inArguments.push({ "toNumber": '{{' + $('#toNumber').find('option:selected').attr('value') + '}}' });
+            payload['arguments'].execute.inArguments.push({ "mid": $('#mid').val() });
+            payload['arguments'].execute.inArguments.push({ "senderName": $('#senderName').val() });
+            payload['arguments'].execute.inArguments.push({ "campaignName": eventData.name });
+            payload['arguments'].execute.inArguments.push({ "templateId": $('#templateId').find('option:selected').attr('value') });
+
+            payload['arguments'].execute.inArguments.push({ "bodyFieldDetails": bodyFields });
+            payload['arguments'].execute.inArguments.push({ "headerFieldDetails": headerFields });
+            payload['arguments'].execute.inArguments.push({ "footerFieldDetails": footerFields });
+            payload['arguments'].execute.inArguments.push({ "buttonFieldDetails": buttonFields });
+            payload['arguments'].execute.inArguments.push({ "selectedTemplate": selectedTemplate });
+            payload['arguments'].execute.inArguments.push({ "headerDocURL": $('#headerDocURL').val() });
+
+            payload['arguments'].execute.inArguments.push({ "messageAction": messageAction });
+
+            let primaryKey = schema[schema.findIndex(obj => obj.isPrimaryKey)].key;
+            payload['arguments'].execute.inArguments.push({ "primaryKey": '{{' + primaryKey + '}}' });
+
+            payload['metaData'].isConfigured = true;
+
+            console.log('payload: ', JSON.stringify(payload));
+
+
+            connection.trigger('updateActivity', payload);
+        } else if (messageAction == 'Retry Message') {
+
+            payload.name = 'WhatsApp Retry Message';
+
+            payload['arguments'].execute.inArguments = [];
+            payload['arguments'].execute.inArguments.push({ "mid": $('#mid').val() });
+            payload['arguments'].execute.inArguments.push({ "messageAction": messageAction });
+
+            for (let i = 0; i < schema.length; i++) {
+
+                let key = '';
+                if (schema[i].name == 'FROM') {
+                    key = 'senderName';
+                } else if (schema[i].name == 'TO') {
+                    key = 'toNumber';
+                } else if (schema[i].name == 'TEMPLATE_ID') {
+                    key = 'templateId';
+                } else if (schema[i].name == 'DOCUMENT_URL') {
+                    key = 'headerDocURL';
+                } else if (schema[i].name == 'HEADER_FIELD_DETAILS') {
+                    key = 'headerFieldDetails';
+                } else if (schema[i].name == 'BODY_FIELD_DETAILS') {
+                    key = 'bodyFieldDetails';
+                } else if (schema[i].name == 'BUTTON_FIELD_DETAILS') {
+                    key = 'buttonFieldDetails';
+                } else if (schema[i].isPrimaryKey) {
+                    key = 'primaryKey';
+                }
+
+                if (key && key != '') {
+                    payload['arguments'].execute.inArguments.push({ key: '{{' + schema[i].key + '}}' });
+                }
             }
-        });
 
-        payload.name = 'WhatsApp Activity';
+            payload['metaData'].isConfigured = true;
 
-
-        payload['arguments'].execute.inArguments = [];
-        payload['arguments'].execute.inArguments.push({ "toNumber": '{{' + $('#toNumber').find('option:selected').attr('value') + '}}' });
-        payload['arguments'].execute.inArguments.push({ "mid": $('#mid').val() });
-        payload['arguments'].execute.inArguments.push({ "senderName": $('#senderName').val() });
-        payload['arguments'].execute.inArguments.push({ "campaignName": eventData.name });
-        payload['arguments'].execute.inArguments.push({ "templateId": $('#templateId').find('option:selected').attr('value') });
-
-        payload['arguments'].execute.inArguments.push({ "bodyFieldDetails": bodyFields });
-        payload['arguments'].execute.inArguments.push({ "headerFieldDetails": headerFields });
-        payload['arguments'].execute.inArguments.push({ "footerFieldDetails": footerFields });
-        payload['arguments'].execute.inArguments.push({ "buttonFieldDetails": buttonFields });
-        payload['arguments'].execute.inArguments.push({ "selectedTemplate": selectedTemplate });
-        payload['arguments'].execute.inArguments.push({ "headerDocURL": $('#headerDocURL').val() });
-
-        let primaryKey = schema[schema.findIndex(obj => obj.isPrimaryKey)].key;
-        payload['arguments'].execute.inArguments.push({ "primaryKey": '{{' + primaryKey + '}}' });
-
-        payload['metaData'].isConfigured = true;
-
-        console.log('payload: ', JSON.stringify(payload));
+            console.log('payload: ', JSON.stringify(payload));
 
 
-        connection.trigger('updateActivity', payload);
+            connection.trigger('updateActivity', payload);
+        }
     }
 });
