@@ -213,6 +213,7 @@ module.exports = function smsActivityApp(app, options) {
             mobileNumber = selectedTemplate.TO;
             senderName = selectedTemplate.FROM;
             templateId = selectedTemplate.TEMPLATE_ID;
+            primaryKey = selectedTemplate.GUID;
         }
 
         let templateInfo = templateId;
@@ -303,27 +304,28 @@ module.exports = function smsActivityApp(app, options) {
                             method: 'POST', headers: { "Authorization": 'Bearer ' + token, "Content-Type": 'application/json' }, body: JSON.stringify(jsonStr)
                         }).then(response1 => {
                             console.log('ressss ', response1);
+                            if (messageAction == 'New Message') {
 
-                            let bodyIndex = selectedTemplate.whatsappcomponents.findIndex(obj => obj.type == 'BODY');
-                            console.log('bodyIndex ', bodyIndex);
-                            let templatetext = selectedTemplate.whatsappcomponents[bodyIndex].text;
-                            console.log('templatetext ', templatetext);
+                                let bodyIndex = selectedTemplate.whatsappcomponents.findIndex(obj => obj.type == 'BODY');
+                                console.log('bodyIndex ', bodyIndex);
+                                let templatetext = selectedTemplate.whatsappcomponents[bodyIndex].text;
+                                console.log('templatetext ', templatetext);
 
-                            let headerIndex = selectedTemplate.whatsappcomponents.findIndex(obj => obj.type == 'HEADER' && obj.format == 'TEXT');
-                            console.log('headerIndex ', headerIndex);
-                            let headerText = headerIndex >= 0 ? selectedTemplate.whatsappcomponents[headerIndex].text : '';
-                            console.log('headerText ', headerText);
+                                let headerIndex = selectedTemplate.whatsappcomponents.findIndex(obj => obj.type == 'HEADER' && obj.format == 'TEXT');
+                                console.log('headerIndex ', headerIndex);
+                                let headerText = headerIndex >= 0 ? selectedTemplate.whatsappcomponents[headerIndex].text : '';
+                                console.log('headerText ', headerText);
 
-                            let footerIndex = selectedTemplate.whatsappcomponents.findIndex(obj => obj.type == 'FOOTER');
-                            console.log('ressss ', response1);
-                            let footerText = footerIndex >= 0 ? selectedTemplate.whatsappcomponents[footerIndex].text : '';
-                            console.log('footerText ', footerText);
+                                let footerIndex = selectedTemplate.whatsappcomponents.findIndex(obj => obj.type == 'FOOTER');
+                                console.log('ressss ', response1);
+                                let footerText = footerIndex >= 0 ? selectedTemplate.whatsappcomponents[footerIndex].text : '';
+                                console.log('footerText ', footerText);
 
-                            let buttonIndex = selectedTemplate.whatsappcomponents.findIndex(obj => obj.type == 'BUTTONS');
-                            console.log('buttonIndex ', buttonIndex);
-                            let buttonInfo = buttonIndex >= 0 ? selectedTemplate.whatsappcomponents[buttonIndex].buttons : '';
-                            console.log('buttonInfo ', buttonInfo);
-
+                                let buttonIndex = selectedTemplate.whatsappcomponents.findIndex(obj => obj.type == 'BUTTONS');
+                                console.log('buttonIndex ', buttonIndex);
+                                let buttonInfo = buttonIndex >= 0 ? selectedTemplate.whatsappcomponents[buttonIndex].buttons : '';
+                                console.log('buttonInfo ', buttonInfo);
+                            }
                             response1.json().then(data1 => {
                                 //return res.status(200).json(data1);
                                 let reqBody = [];
