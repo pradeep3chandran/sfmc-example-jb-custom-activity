@@ -117,6 +117,78 @@ module.exports = function smsActivityApp(app, options) {
     });
 
 
+    app.get('/modules/whatsapp-activity/inboundmessage', async function (req, res) {
+
+        const {
+            from,
+            text,
+            time,
+            mediatype,
+            contenttype,
+            mediadata,
+            caption,
+            latitude,
+            longitude,
+            buttonlabel
+        } = req.body;
+
+        console.log('inboundmessage');
+        console.log(req.body);
+        const date = new Date().toLocaleString();
+        let reqBody = [];
+        reqBody.push({
+            "keys": {
+                "GUID": from + ' - ' + date
+            },
+            "values": {
+                "FROM": from,
+                "TEXT": text,
+                "TIME": time,
+                "MEDIA_TYPE": mediatype,
+                "CONTENT_TYPE": contenttype,
+                "MEDIA_DATA": mediadata,
+                "CAPTION": caption,
+                "LONGITUDE": longitude,
+                "LATITUDE": latitude,
+                "BUTTON_LABEL": buttonlabel
+            }
+        });
+
+        let accessRequest = {
+            "grant_type": "client_credentials",
+            "client_id": "kduzi47837sertymgtd515v6",
+            "client_secret": "vP3OMwdzW46qSWXQXnPeJ4Bw",
+            "account_id": "546001145"
+        };
+
+        await fetch('https://mcv3d4v2fm7d1rqg9-fkxts8swqq.auth.marketingcloudapis.com/v2/token', {
+            method: 'POST', body: JSON.stringify(accessRequest), headers: { 'Content-Type': 'application/json' }
+        }).then(response => {
+
+            response.json().then(data => {
+                console.log(data);
+                console.log(reqBody);
+                fetch('https://mcv3d4v2fm7d1rqg9-fkxts8swqq.rest.marketingcloudapis.com/hub/v1/dataevents/key:FCADF690-4116-4813-BA4F-6B719E7F014D/rowset', {
+                    method: 'POST', body: JSON.stringify(reqBody), headers: { 'Authorization': 'Bearer ' + data.access_token, 'Content-Type': 'application/json' }
+                }).then(response1 => {
+
+                    response1.json().then(data1 => {
+                        console.log(data1);
+
+                        return res.status(200).json('success');
+                    })
+                }).catch(err1 => {
+                    console.log(err1);
+                });
+                //return res.status(200).json(data1);
+            })
+        }).catch(err => {
+            console.log(err);
+        });
+        //return res.status(200).json('delivery report success');
+    });
+
+
     app.get('/modules/whatsapp-activity/deliveryreport', async function (req, res) {
         console.log('delivery report');
         console.log(req.query);
