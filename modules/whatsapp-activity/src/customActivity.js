@@ -71,7 +71,8 @@ define([
 
         $('#messageAction').change(function () {
             messageAction = $('#messageAction').find('option:selected').attr('value');
-            console.log('messageAction: ', messageAction);
+            console.log('messageAction: ', $('#messageAction').find('option:selected').attr('value'));
+            console.log('messageAction1: ', messageAction);
             if (messageAction == 'New Message') {
                 $('#newMessage').style.display = 'block';
             }
