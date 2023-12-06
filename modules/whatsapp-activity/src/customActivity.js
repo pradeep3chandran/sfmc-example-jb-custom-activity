@@ -460,29 +460,6 @@ define([
             let selTemplate = {};
             for (let i = 0; i < schema.length; i++) {
 
-                let key = '';
-                if (schema[i].name == 'FROM') {
-                    key = 'senderName';
-                } else if (schema[i].name == 'TO') {
-                    key = 'toNumber';
-                } else if (schema[i].name == 'TEMPLATE_ID') {
-                    key = 'templateId';
-                } else if (schema[i].name == 'DOCUMENT_URL') {
-                    key = 'headerDocURL';
-                } else if (schema[i].name == 'HEADER_FIELD_DETAILS') {
-                    key = 'headerFieldDetails';
-                } else if (schema[i].name == 'BODY_FIELD_DETAILS') {
-                    key = 'bodyFieldDetails';
-                } else if (schema[i].name == 'BUTTON_FIELD_DETAILS') {
-                    key = 'buttonFieldDetails';
-                } else if (schema[i].isPrimaryKey) {
-                    key = 'primaryKey';
-                }
-
-                if (key && key != '') {
-                    payload['arguments'].execute.inArguments.push({ key: '{{' + schema[i].key + '}}' });
-                }
-
                 selTemplate[schema[i].name] = '{{' + schema[i].key + '}}';
             }
 

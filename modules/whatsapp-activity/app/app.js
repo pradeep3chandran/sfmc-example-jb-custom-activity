@@ -197,25 +197,29 @@ module.exports = function smsActivityApp(app, options) {
 
         console.log('selectedTemplate ', selectedTemplate);
 
-        const mobileNumber = getInArgument('toNumber') || 'nothing';
-        const senderName = getInArgument('senderName') || 'nothing';
-        const mid = getInArgument('mid') || 'nothing';
-        const primaryKey = getInArgument('primaryKey') || 'nothing';
-        const campaignName = getInArgument('campaignName') || 'nothing';
+        let mobileNumber = getInArgument('toNumber') || 'nothing';
+        let senderName = getInArgument('senderName') || 'nothing';
+        let mid = getInArgument('mid') || 'nothing';
+        let primaryKey = getInArgument('primaryKey') || 'nothing';
+        let campaignName = getInArgument('campaignName') || 'nothing';
 
         const templateId = getInArgument('templateId') || 'nothing';
+
+        if (messageAction == 'Retry Message') {
+            bodyFieldDetails = selectedTemplate.BODY_FIELD_DETAILS ? JSON.parse(selectedTemplate.BODY_FIELD_DETAILS) : [];
+            headerFieldDetails = selectedTemplate.HEADER_FIELD_DETAILS ? JSON.parse(selectedTemplate.HEADER_FIELD_DETAILS) : [];
+            buttonFieldDetails = selectedTemplate.BUTTON_FIELD_DETAILS ? JSON.parse(selectedTemplate.BUTTON_FIELD_DETAILS) : [];
+            headerDocURL = selectedTemplate.DOCUMENT_URL;
+            mobileNumber = selectedTemplate.TO;
+            senderName = selectedTemplate.FROM;
+            templateId = selectedTemplate.TEMPLATE_ID;
+        }
 
         let templateInfo = templateId;
 
         if (bodyFieldDetails && bodyFieldDetails != 'nothing') {
-            let bodyFlds = [];
-            if (messageAction == 'Retry Message') {
-                bodyFlds = JSON.parse(bodyFieldDetails);
-            } else {
-                bodyFlds = bodyFieldDetails;
-            }
-            for (let i = 0; i < bodyFlds.length; i++) {
-                templateInfo += '~' + bodyFlds[i].value;
+            for (let i = 0; i < bodyFieldDetails.length; i++) {
+                templateInfo += '~' + bodyFieldDetails[i].value;
             }
         }
 
@@ -341,9 +345,9 @@ module.exports = function smsActivityApp(app, options) {
                                                 TEMPLATE_ID: selectedTemplate.TEMPLATE_ID,
                                                 MEDIA_TYPE: selectedTemplate.MEDIA_TYPE,
                                                 DOCUMENT_URL: headerDocURL,
-                                                HEADER_FIELD_DETAILS: headerFieldDetails,
-                                                BODY_FIELD_DETAILS: bodyFieldDetails,
-                                                BUTTON_FIELD_DETAILS: buttonFieldDetails,
+                                                HEADER_FIELD_DETAILS: JSON.stringify(headerFieldDetails),
+                                                BODY_FIELD_DETAILS: JSON.stringify(bodyFieldDetails),
+                                                BUTTON_FIELD_DETAILS: JSON.stringify(buttonFieldDetails),
                                                 BUTTON_INFO: selectedTemplate.BUTTON_INFO,
                                                 FOOTER_TEXT: selectedTemplate.FOOTER_TEXT,
                                                 HEADER_TEXT: selectedTemplate.HEADER_TEXT
@@ -402,9 +406,9 @@ module.exports = function smsActivityApp(app, options) {
                                                 TEMPLATE_ID: selectedTemplate.TEMPLATE_ID,
                                                 MEDIA_TYPE: selectedTemplate.MEDIA_TYPE,
                                                 DOCUMENT_URL: headerDocURL,
-                                                HEADER_FIELD_DETAILS: headerFieldDetails,
-                                                BODY_FIELD_DETAILS: bodyFieldDetails,
-                                                BUTTON_FIELD_DETAILS: buttonFieldDetails,
+                                                HEADER_FIELD_DETAILS: JSON.stringify(headerFieldDetails),
+                                                BODY_FIELD_DETAILS: JSON.stringify(bodyFieldDetails),
+                                                BUTTON_FIELD_DETAILS: JSON.stringify(buttonFieldDetails),
                                                 BUTTON_INFO: selectedTemplate.BUTTON_INFO,
                                                 FOOTER_TEXT: selectedTemplate.FOOTER_TEXT,
                                                 HEADER_TEXT: selectedTemplate.HEADER_TEXT
