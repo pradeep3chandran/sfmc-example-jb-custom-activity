@@ -432,6 +432,7 @@ define([
         payload['arguments'].execute.inArguments.push({ "footerFieldDetails": footerFields });
         payload['arguments'].execute.inArguments.push({ "buttonFieldDetails": buttonFields });
         payload['arguments'].execute.inArguments.push({ "selectedTemplate": selectedTemplate });
+        payload['arguments'].execute.inArguments.push({ "headerDocURL": $('#headerDocURL').val() });
 
         let primaryKey = schema[schema.findIndex(obj => obj.isPrimaryKey)].key;
         payload['arguments'].execute.inArguments.push({ "primaryKey": '{{' + primaryKey + '}}' });

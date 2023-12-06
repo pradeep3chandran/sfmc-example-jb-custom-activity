@@ -192,6 +192,7 @@ module.exports = function smsActivityApp(app, options) {
         let headerFieldDetails = getInArgument('headerFieldDetails') || 'nothing';
         let buttonFieldDetails = getInArgument('buttonFieldDetails') || 'nothing';
         let selectedTemplate = getInArgument('selectedTemplate') || 'nothing';
+        let headerDocURL = getInArgument('headerDocURL') || 'nothing';
 
         console.log('selectedTemplate ', selectedTemplate);
 
@@ -275,8 +276,6 @@ module.exports = function smsActivityApp(app, options) {
             .on('end', () => {
                 console.log('dataa ', fileData);
 
-
-
                 fetch('https://api.myvfirst.com/psms/api/messages/token?action=generate', {
                     method: 'POST', headers: {
                         "Authorization": 'Basic ' + Buffer.from('demoravir:DP@0NKoQ1%').toString('base64')
@@ -295,6 +294,18 @@ module.exports = function smsActivityApp(app, options) {
                         }).then(response1 => {
                             console.log(response1);
 
+                            let bodyIndex = selectedTemplate.whatsappcomponents.findIndex(obj => obj.type == 'BODY');
+                            let templatetext = selectedTemplate.whatsappcomponents[bodyIndex].text;
+
+                            let headerIndex = selectedTemplate.whatsappcomponents.findIndex(obj => obj.type == 'HEADER' && obj.format == 'TEXT');
+                            let headerText = headerIndex >= 0 ? selectedTemplate.whatsappcomponents[headerIndex].text : '';
+
+                            let footerIndex = selectedTemplate.whatsappcomponents.findIndex(obj => obj.type == 'FOOTER');
+                            let footerText = footerIndex >= 0 ? selectedTemplate.whatsappcomponents[footerIndex].text : '';
+
+                            let buttonIndex = selectedTemplate.whatsappcomponents.findIndex(obj => obj.type == 'BUTTONS');
+                            let buttonInfo = buttonIndex >= 0 ? selectedTemplate.whatsappcomponents[headerIndex].buttons : '';
+
                             response1.json().then(data1 => {
                                 //return res.status(200).json(data1);
                                 let reqBody = [];
@@ -308,13 +319,19 @@ module.exports = function smsActivityApp(app, options) {
                                             SUBMIT_DATE: data1.MESSAGEACK.GUID.SUBMITDATE,
                                             FROM: senderName,
                                             TO: mobileNumber,
-                                            TEXT: selectedTemplate.templatetext,
+                                            TEXT: templatetext,
                                             STATUS: 'Submitted',
                                             CAMPAIGN_NAME: campaignName,
                                             TEMPLATE_NAME: selectedTemplate.templatename,
                                             TEMPLATE_ID: selectedTemplate.templateid,
-                                            MEDIA_TYPE: selectedTemplate.mediatype
-
+                                            MEDIA_TYPE: selectedTemplate.mediatype,
+                                            DOCUMENT_URL: headerDocURL,
+                                            HEADER_FIELD_DETAILS: JSON.stringify(headerFieldDetails),
+                                            BODY_FIELD_DETAILS: JSON.stringify(bodyFieldDetails),
+                                            BUTTON_FIELD_DETAILS: JSON.stringify(buttonFieldDetails),
+                                            BUTTON_INFO: JSON.stringify(buttonInfo),
+                                            FOOTER_TEXT: footerText,
+                                            HEADER_TEXT: headerText
                                         }
                                     });
                                     if (data1.MESSAGEACK.GUID.ERROR) {
