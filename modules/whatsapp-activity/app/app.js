@@ -311,7 +311,7 @@ module.exports = function smsActivityApp(app, options) {
 
                             let buttonIndex = selectedTemplate.whatsappcomponents.findIndex(obj => obj.type == 'BUTTONS');
                             console.log('buttonIndex ', buttonIndex);
-                            let buttonInfo = buttonIndex >= 0 ? selectedTemplate.whatsappcomponents[headerIndex].buttons : '';
+                            let buttonInfo = buttonIndex >= 0 ? selectedTemplate.whatsappcomponents[buttonIndex].buttons : '';
                             console.log('buttonInfo ', buttonInfo);
 
                             response1.json().then(data1 => {
