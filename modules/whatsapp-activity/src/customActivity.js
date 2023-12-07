@@ -23,6 +23,7 @@ define([
     var bodyFieldsVar = [];
     var headerFieldsVar = [];
     var messageAction = '';
+    var headerDocURL = '';
 
     $(window).ready(onRender);
 
@@ -144,7 +145,7 @@ define([
                     }
                     $('#headerContainer').append('<br /><br /><label for="message">Header Message</label><br /><input type="text" id="buttonType" value="' + headertext + '" readonly disabled />' + hedFieldsBody);
                 } else {
-                    $('#headerContainer').append('<br /><br /><label for="message">' + format + ' URL</label><br /><input type="text" id="headerDocURL" />');
+                    $('#headerContainer').append('<br /><br /><label for="message">' + format + ' URL</label><br /><input type="text" id="headerDocURL" value="' + headerDocURL + '"/>');
                 }
             }
 
@@ -244,6 +245,8 @@ define([
                     bodyFieldsVar = val;
                 } else if (key == 'headerFieldDetails') {
                     headerFieldsVar = val;
+                } else if (key == 'headerDocURL') {
+                    headerDocURL = val;
                 } else {
                     if (key == 'messageAction') {
                         messageAction = val;
