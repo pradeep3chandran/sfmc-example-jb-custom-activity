@@ -133,7 +133,7 @@ exports.deliveryReport = function (req, res) {
 
     let resBody = {};
 
-    if (req.query && req.query != {}) {
+    if (req.query && req.query.CLIENT_GUID) {
         resBody = req.query;
     } else if (req.body) {
         resBody = req.body;
