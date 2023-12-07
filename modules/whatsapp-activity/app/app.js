@@ -215,7 +215,8 @@ module.exports = function smsActivityApp(app, options) {
     app.post('/modules/whatsapp-activity/deliveryreport', async function (req, res) {
         console.log('delivery report');
         console.log(req);
-        console.log(req.query);
+        console.log('body ', req.body);
+        console.log('query ', req.query);
 
         let reqBody = [];
         reqBody.push({
