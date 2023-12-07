@@ -88,9 +88,9 @@ module.exports = function smsActivityApp(app, options) {
 
     app.get('/modules/whatsapp-activity/gettemplates', function (req, res) {
 
-        fetch('https://whatsapp.myvfirst.com/waba/template/fetch?userid=demoravir&pageno=1&pagelimit=200&status=Approved', {
+        fetch('https://whatsapp.myvfirst.com/waba/template/fetch?userid=demovkrntwa&pageno=1&pagelimit=200&status=Approved', {
             method: 'GET', headers: {
-                "Authorization": 'Basic ZGVtb3JhdmlyOkRQQDBOS29RMSU='
+                "Authorization": 'Basic ' + Buffer.from('demovkrntwa:-Nx.~1v->wqg\'').toString('base64')
             }
         }).then(response => {
             console.log(response);
@@ -372,7 +372,7 @@ module.exports = function smsActivityApp(app, options) {
 
                 fetch('https://api.myvfirst.com/psms/api/messages/token?action=generate', {
                     method: 'POST', headers: {
-                        "Authorization": 'Basic ' + Buffer.from('demoravir:DP@0NKoQ1%').toString('base64')
+                        "Authorization": 'Basic ' + Buffer.from('demovkrntwa:-Nx.~1v->wqg\'').toString('base64')
                     }
                 }).then(response => {
                     console.log(response);
