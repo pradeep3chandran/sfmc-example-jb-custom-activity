@@ -12,7 +12,12 @@ const submodules = [
 
 const app = express();
 
-app.use(bodyParser.json())
+//app.use(bodyParser.json());
+
+app.use(express.json());
+
+// parse urlencoded request body
+app.use(express.urlencoded({ extended: true }));
 
 app.set('port', (process.env.PORT || 8080));
 app.use(express.static(path.join(__dirname, 'home')));
