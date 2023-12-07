@@ -248,6 +248,8 @@ define([
 
         messageAction = $('.messageAction').find('option:selected').val();
 
+        console.log('messageAction ', messageAction)
+
         if (messageAction == 'New Message') {
             getTemplate();
         }
