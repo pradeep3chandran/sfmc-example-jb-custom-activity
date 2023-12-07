@@ -52,7 +52,7 @@ const errorObject = {
     100: "Miscellaneous",
 };
 
-module.exports = function smsActivityApp(app, options) {
+module.exports = function whatsAppActivityApp(app, options) {
     const moduleDirectory = `${options.rootDirectory}/modules/whatsapp-activity`;
 
     app.use(bodyParser.json());
@@ -211,6 +211,8 @@ module.exports = function smsActivityApp(app, options) {
         });
         //return res.status(200).json('delivery report success');
     });
+
+
     app.get('/modules/whatsapp-activity/deliveryreport', controllerjs.deliveryReport);
 
     /*app.get('/modules/whatsapp-activity/deliveryreport', async function (req, res) {
@@ -332,7 +334,7 @@ module.exports = function smsActivityApp(app, options) {
 
             "DLR": {
 
-                "@URL": "https://marketing-configuration-app-6564d07cc826.herokuapp.com/modules/whatsapp-activity/deliveryreport?TO=%p&MSG_STATUS=%16&CLIENT_GUID=%5&STATUS_ERROR=%4&DELIVERED_DATE=%3&TEXT_STATUS=%13&MESSAGE_ID=%7&TAG=%TAG&CLIENT_SEQ_NUMBER=%6&REASON_CODE=%2"
+                "@URL": "https://marketing-configuration-app-6564d07cc826.herokuapp.com/whatsapp-activity/deliveryreport?TO=%p&MSG_STATUS=%16&CLIENT_GUID=%5&STATUS_ERROR=%4&DELIVERED_DATE=%3&TEXT_STATUS=%13&MESSAGE_ID=%7&TAG=%TAG&CLIENT_SEQ_NUMBER=%6&REASON_CODE=%2"
 
             },
 

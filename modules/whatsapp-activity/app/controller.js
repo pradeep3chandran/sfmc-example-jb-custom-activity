@@ -1,9 +1,5 @@
 'use strict';
 
-const fs = require('fs');
-const path = require('path');
-const csv = require("fast-csv");
-
 const errorObject = {
     52992: "Username / Password incorrect",
     52995: "Daily Credit limit Reached",
