@@ -27,7 +27,8 @@ function onRender() {
                 $('#resturi').val(data[0].Rest_URI);
                 $('#username').val(data[0].Username);
                 $('#password').val(data[0].Password);
-
+                $('#wausername').val(data[0].WhatsApp_Username);
+                $('#wapassword').val(data[0].WhatsApp_Password);
             }
         }));
 
@@ -43,7 +44,9 @@ async function saveMC() {
         Auth_URI: $('#authuri').val(),
         Rest_URI: $('#resturi').val(),
         Username: $('#username').val(),
-        Password: $('#password').val()
+        Password: $('#password').val(),
+        WhatsApp_Username: $('#wausername').val(),
+        WhatsApp_Password: $('#wapassword').val()
     }
 
 
