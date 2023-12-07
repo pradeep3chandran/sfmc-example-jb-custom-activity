@@ -127,10 +127,7 @@ exports.login = function (req, res) {
 };
 
 exports.deliveryReport = function (req, res) {
-    console.log('deliveryReport controller');
-    console.log('req.body: ', req.query);
     console.log('delivery report');
-    console.log(req);
     console.log('body ', req.body);
     console.log('query ', req.query);
 
@@ -141,6 +138,8 @@ exports.deliveryReport = function (req, res) {
     } else if (req.body) {
         resBody = req.body;
     }
+
+    console.log('resBody ', resBody);
 
     let reqBody = [];
     reqBody.push({
