@@ -241,13 +241,13 @@ define([
                 } else if (key == 'headerFieldDetails') {
                     headerFieldsVar = val;
                 } else {
+                    if (key == 'messageAction') {
+                        messageAction = val;
+                    }
                     $('#' + key).val(val);
                 }
             });
         });
-
-        messageAction = $('.messageAction').find('option:selected').val();
-
         console.log('messageAction ', messageAction)
 
         if (messageAction == 'New Message') {
