@@ -212,7 +212,7 @@ module.exports = function smsActivityApp(app, options) {
     });
 
 
-    app.post('/modules/whatsapp-activity/deliveryreport', async function (req, res) {
+    app.get('/modules/whatsapp-activity/deliveryreport', async function (req, res) {
         console.log('delivery report');
         console.log(req);
         console.log('body ', req.body);
