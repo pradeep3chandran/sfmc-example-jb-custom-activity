@@ -48,11 +48,11 @@ exports.deliveryReport = function (req, res) {
                     return res.status(200).json('success');
                 })
             }).catch(err1 => {
-                console.log(err1);
+                return res.status(400).json(err1);
             });
             //return res.status(200).json(data1);
         })
     }).catch(err => {
-        console.log(err);
+        return res.status(400).json(err);
     });
 };
