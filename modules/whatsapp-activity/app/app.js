@@ -37,7 +37,18 @@ const errorObject = {
     28703: "Invalid DLT Content Type",
     28704: "Invalid Authorization Type(If message is rejected due to authorizationscheme other than Authorization header)",
     8448: "Message delivered successfully",
-    8449: "Message failed"
+    8449: "Message failed",
+    "000": "Read",
+    173: "Delivered but not Read",
+    401: "Contact not registered on WhatsApp",
+    402: "Sent",
+    2008: "Media format used is unsupported",
+    2009: "Required component in the Template is missing",
+    2010: "URL in button component is invalid",
+    2011: "Phone Number in button component is invalid",
+    2012: "Parameter format does not match format in the created Template",
+    2013: "Buttons are unsupported by the receiver",
+    100: "Miscellaneous",
 };
 
 module.exports = function smsActivityApp(app, options) {
@@ -199,7 +210,7 @@ module.exports = function smsActivityApp(app, options) {
                 "GUID": req.query.CLIENT_GUID
             },
             "values": {
-                "STATUS": req.query.MSG_STATUS,
+                "STATUS": errorObject[req.query.REASON_CODE],
                 "DELIVERED_DATE": req.query.DELIVERED_DATE
             }
         });

@@ -246,6 +246,12 @@ define([
             });
         });
 
+        messageAction = $('.messageAction').find('option:selected').val();
+
+        if (messageAction == 'New Message') {
+            getTemplate();
+        }
+
         // If there is no message selected, disable the next button
     }
 
