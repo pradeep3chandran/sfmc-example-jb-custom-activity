@@ -89,6 +89,7 @@ module.exports = function smsActivityApp(app, options) {
     app.get('/modules/whatsapp-activity/gettemplates', function (req, res) {
 
         let fileData = [];
+        let mid = '546001145';
 
         fs.createReadStream(path.join('./data/customer_data.csv'))
             .pipe(csv.parse({ headers: true }))
