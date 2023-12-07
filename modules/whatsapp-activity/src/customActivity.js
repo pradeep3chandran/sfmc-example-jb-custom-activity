@@ -78,6 +78,10 @@ define([
                 getTemplate();
             } else {
                 $('#newMessage').css({ 'display': 'none' });
+                $('#bodyContainer').html('');
+                $('#headerContainer').html('');
+                $('#footerContainer').html('');
+                $('#buttonContainer').html('');
             }
         });
 
@@ -251,6 +255,7 @@ define([
         console.log('messageAction ', messageAction)
 
         if (messageAction == 'New Message') {
+            $('#newMessage').css({ 'display': 'block' });
             getTemplate();
         }
 
