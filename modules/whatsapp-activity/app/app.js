@@ -384,7 +384,7 @@ module.exports = function smsActivityApp(app, options) {
 
                 fetch('https://api.myvfirst.com/psms/api/messages/token?action=generate', {
                     method: 'POST', headers: {
-                        "Authorization": 'Basic ' + Buffer.from('demovkrntwa:-Nx.~1v->wqg\'').toString('base64')
+                        "Authorization": 'Basic ' + Buffer.from(fileData[0].WhatsApp_Username + ':' + fileData[0].WhatsApp_Password).toString('base64')
                     }
                 }).then(response => {
                     console.log(response);
