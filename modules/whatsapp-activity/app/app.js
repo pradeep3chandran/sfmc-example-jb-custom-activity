@@ -88,20 +88,31 @@ module.exports = function smsActivityApp(app, options) {
 
     app.get('/modules/whatsapp-activity/gettemplates', function (req, res) {
 
-        fetch('https://whatsapp.myvfirst.com/waba/template/fetch?userid=demovkrntwa&pageno=1&pagelimit=200&status=Approved', {
-            method: 'GET', headers: {
-                "Authorization": 'Basic ' + Buffer.from('demovkrntwa:-Nx.~1v->wqg\'').toString('base64')
-            }
-        }).then(response => {
-            console.log(response);
+        let fileData = [];
 
-            response.json().then(data => {
-                console.log('tempdata ', data);
-                res.json(data);
+        fs.createReadStream(path.join('./data/customer_data.csv'))
+            .pipe(csv.parse({ headers: true }))
+            .on('error', error => console.error('err ', error))
+            .on('data', row => { if (mid == row.MID) { fileData.push(row) } })
+            .on('end', () => {
+
+                console.log('fileData::end', fileData);
+
+                fetch('https://whatsapp.myvfirst.com/waba/template/fetch?userid=' + fileData[0].WhatsApp_Username + '&pageno=1&pagelimit=200&status=Approved', {
+                    method: 'GET', headers: {
+                        "Authorization": 'Basic ' + Buffer.from(fileData[0].WhatsApp_Username + ':' + fileData[0].WhatsApp_Password).toString('base64')
+                    }
+                }).then(response => {
+                    console.log(response);
+
+                    response.json().then(data => {
+                        console.log('tempdata ', data);
+                        res.json(data);
+                    })
+                }).catch(err => {
+                    console.log('err ', err);
+                });
             })
-        }).catch(err => {
-            console.log('err ', err);
-        });
     });
 
 
