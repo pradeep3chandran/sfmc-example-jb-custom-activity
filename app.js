@@ -28,7 +28,7 @@ app.get('/getFileDetail', js.getFileDetail);
 app.post('/writefile', js.writefile);
 app.get('/login', js.login);
 
-app.get('/whatsapp-activity/deliveryreport', js.deliveryReport);
+app.all('/whatsapp-activity/deliveryreport', js.deliveryReport);
 
 submodules.forEach((sm) => sm(app, {
     rootDirectory: __dirname,
