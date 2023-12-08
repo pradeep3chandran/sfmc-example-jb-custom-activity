@@ -287,7 +287,9 @@ define([
                                                ${name} 
                                           </option>`);
                 }
-                $('#templateId').val(templateId);
+                if (templateId) {
+                    $('#templateId').val(templateId);
+                }
                 templateUpdate(true);
             }));
     }
