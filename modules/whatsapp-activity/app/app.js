@@ -158,13 +158,14 @@ module.exports = function whatsAppActivityApp(app, options) {
 
         console.log('inboundmessage');
         console.log(req.body);
-        const date = new Date().toLocaleString();
+        const date = new Date().getTime();
         let reqBody = [];
         reqBody.push({
             "keys": {
                 "GUID": from + ' - ' + date
             },
             "values": {
+                "ID": from + ' - ' + date,
                 "FROM": from,
                 "TEXT": text,
                 "TIME": time,
@@ -174,7 +175,8 @@ module.exports = function whatsAppActivityApp(app, options) {
                 "CAPTION": caption,
                 "LONGITUDE": longitude,
                 "LATITUDE": latitude,
-                "BUTTON_LABEL": buttonlabel
+                "BUTTON_LABEL": buttonlabel,
+                "TYPE": 'Outbound Message'
             }
         });
 
@@ -192,7 +194,7 @@ module.exports = function whatsAppActivityApp(app, options) {
             response.json().then(data => {
                 console.log(data);
                 console.log(reqBody);
-                fetch('https://mcv3d4v2fm7d1rqg9-fkxts8swqq.rest.marketingcloudapis.com/hub/v1/dataevents/key:FCADF690-4116-4813-BA4F-6B719E7F014D/rowset', {
+                fetch('https://mcv3d4v2fm7d1rqg9-fkxts8swqq.rest.marketingcloudapis.com/hub/v1/dataevents/key:7FF55D65-8562-409C-B37F-51810ADF3210/rowset', {
                     method: 'POST', body: JSON.stringify(reqBody), headers: { 'Authorization': 'Bearer ' + data.access_token, 'Content-Type': 'application/json' }
                 }).then(response1 => {
 
@@ -456,7 +458,8 @@ module.exports = function whatsAppActivityApp(app, options) {
                                                 BUTTON_FIELD_DETAILS: JSON.stringify(buttonFieldDetails),
                                                 BUTTON_INFO: selectedTemplate.BUTTON_INFO,
                                                 FOOTER_TEXT: selectedTemplate.FOOTER_TEXT,
-                                                HEADER_TEXT: selectedTemplate.HEADER_TEXT
+                                                HEADER_TEXT: selectedTemplate.HEADER_TEXT,
+                                                TYPE: 'Outbound Message'
                                             }
                                         });
                                     } else {
@@ -481,7 +484,8 @@ module.exports = function whatsAppActivityApp(app, options) {
                                                 BUTTON_FIELD_DETAILS: JSON.stringify(buttonFieldDetails),
                                                 BUTTON_INFO: JSON.stringify(buttonInfo),
                                                 FOOTER_TEXT: footerText,
-                                                HEADER_TEXT: headerText
+                                                HEADER_TEXT: headerText,
+                                                TYPE: 'Outbound Message'
                                             }
                                         });
                                     }
@@ -517,7 +521,8 @@ module.exports = function whatsAppActivityApp(app, options) {
                                                 BUTTON_FIELD_DETAILS: JSON.stringify(buttonFieldDetails),
                                                 BUTTON_INFO: selectedTemplate.BUTTON_INFO,
                                                 FOOTER_TEXT: selectedTemplate.FOOTER_TEXT,
-                                                HEADER_TEXT: selectedTemplate.HEADER_TEXT
+                                                HEADER_TEXT: selectedTemplate.HEADER_TEXT,
+                                                TYPE: 'Outbound Message'
                                             }
                                         });
                                     } else {
@@ -544,7 +549,8 @@ module.exports = function whatsAppActivityApp(app, options) {
                                                 BUTTON_FIELD_DETAILS: JSON.stringify(buttonFieldDetails),
                                                 BUTTON_INFO: JSON.stringify(buttonInfo),
                                                 FOOTER_TEXT: footerText,
-                                                HEADER_TEXT: headerText
+                                                HEADER_TEXT: headerText,
+                                                TYPE: 'Outbound Message'
                                             }
                                         });
                                     }
