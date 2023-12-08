@@ -171,12 +171,12 @@ module.exports = function whatsAppActivityApp(app, options) {
                 "TIME": time,
                 "MEDIA_TYPE": mediatype,
                 "CONTENT_TYPE": contenttype,
-                "MEDIA_DATA": mediadata,
-                "CAPTION": caption,
+                "DOCUMENT_URL": mediadata,
                 "LONGITUDE": longitude,
                 "LATITUDE": latitude,
                 "BUTTON_LABEL": buttonlabel,
-                "TYPE": 'Outbound Message'
+                "TYPE": 'Outbound Message',
+                "RECEIVED_DATE": time
             }
         });
 
