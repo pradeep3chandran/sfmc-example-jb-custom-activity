@@ -277,6 +277,7 @@ define([
                 console.log('resdata ', resdata);
                 templateData = resdata.templatedata.data;
                 console.log('templateData ', templateData);
+                $('#senderName').val(templateData[0].wabaumber);
                 for (let i = 0; i < templateData.length; i++) {
 
                     let name = templateData[i].templatename;
