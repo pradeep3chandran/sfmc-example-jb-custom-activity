@@ -29,7 +29,7 @@ function onRender() {
                 $('#password').val(data[0].Password);
                 $('#wausername').val(data[0].WhatsApp_Username);
                 $('#wapassword').val(data[0].WhatsApp_Password);
-                $('#fromnumber').val(data[0].WhatsApp_From_Number);
+                //$('#fromnumber').val(data[0].WhatsApp_From_Number);
             }
         }));
 
@@ -48,7 +48,7 @@ async function saveMC() {
         Password: $('#password').val(),
         WhatsApp_Username: $('#wausername').val(),
         WhatsApp_Password: $('#wapassword').val(),
-        WhatsApp_From_Number: $('#fromnumber').val(),
+        //WhatsApp_From_Number: $('#fromnumber').val(),
     }
 
 
