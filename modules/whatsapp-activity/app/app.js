@@ -328,6 +328,16 @@ module.exports = function whatsAppActivityApp(app, options) {
 
         console.log('templateInfo ', templateInfo);
 
+        let mediatype = '';
+        let msgType = 1;
+        if (messageAction == 'Retry Message') {
+            mediatype = selectedTemplate.MEDIA_TYPE;
+        } else {
+            mediatype = selectedTemplate.mediatype;
+        }
+
+        msgType = (mediatype == 'video' || mediatype == 'image' || mediatype == 'document' || mediatype == 'audio') ? 3 : 1;
+
         const jsonStr = {
 
             "@VER": "1.2",
@@ -350,7 +360,7 @@ module.exports = function whatsAppActivityApp(app, options) {
 
                     "@TEMPLATEINFO": templateInfo,
 
-                    "@MSGTYPE": "1",
+                    "@MSGTYPE": msgType,
 
                     "@PROPERTY": "0",
 
