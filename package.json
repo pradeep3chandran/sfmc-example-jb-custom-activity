@@ -35,6 +35,7 @@
     "fast-csv": "^4.3.6",
     "fs": "^0.0.1-security",
     "fs.js": "^0.0.1",
+    "mongodb": "^6.3.0",
     "postmonger": "0.0.16",
     "require": "^0.4.4",
     "requirejs": "^2.3.6"

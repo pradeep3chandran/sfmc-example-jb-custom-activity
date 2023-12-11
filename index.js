@@ -3,6 +3,8 @@
 const fs = require('fs');
 const path = require('path');
 const csv = require("fast-csv");
+const { MongoClient, ServerApiVersion } = require('mongodb');
+
 const errorObject = {
     52992: "Username / Password incorrect",
     52995: "Daily Credit limit Reached",
@@ -49,6 +51,25 @@ const errorObject = {
     100: "Miscellaneous",
 };
 
+const uri = "mongodb+srv://pradeep3chandran:Connect%231@testdb.fobjt51.mongodb.net/?retryWrites=true&w=majority";
+const client = new MongoClient(uri, {
+    serverApi: {
+        version: ServerApiVersion.v1,
+        strict: true,
+        deprecationErrors: true,
+    }
+});
+
+async function run() {
+    console.log('Starting');
+    // Connect the client to the server	(optional starting in v4.7)
+    await client.connect();
+    // Send a ping to confirm a successful connection
+    //await client.db("testdb").command({ ping: 1 });
+    //const insertManyResult = await collection.insertMany(recipes);
+    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+}
+
 const options = {
     objectMode: true,
     delimiter: ",",
@@ -87,7 +108,23 @@ exports.fileread = function (req, res) {
 };
 
 exports.getFileDetail = function (req, res) {
-    console.log('req.bodyfile: ', req.body);
+    run().then(() => {
+
+        const database = client.db("testdb");
+        const collection = database.collection("MCData");
+
+        console.log('midConst ', midConst);
+
+        const findQuery = { MID: midConst };
+        const cursor = collection.find(findQuery);
+        console.log('cursor ');
+        cursor.forEach(recipe => {
+            console.log(`${recipe.MID}`);
+            res.json(recipe);
+        });
+    });
+
+    /*console.log('req.bodyfile: ', req.body);
     let data = [];
 
     console.log('midConst: ', midConst);
@@ -98,11 +135,18 @@ exports.getFileDetail = function (req, res) {
         .on('data', row => {
             if (midConst == row.MID) { data.push(row) }
         })
-        .on('end', () => res.json(data));
+        .on('end', () => res.json(data));*/
 };
 
 exports.writefile = function (req, res) {
+
     console.log('req.bodyfile: 11 ', req.body);
+    const database = client.db("testdb");
+    const collection = database.collection("MCData");
+
+    const insertManyResult = collection.insertMany(req.body);
+
+    /*console.log('req.bodyfile: 11 ', req.body);
     let row = req.body;
 
     const csvStream = csv.format({ headers: true });
@@ -115,7 +159,7 @@ exports.writefile = function (req, res) {
 
     csvStream.end();
 
-    console.log('csv stream', csvStream);
+    console.log('csv stream', csvStream);*/
 };
 
 exports.login = function (req, res) {

@@ -20,15 +20,15 @@ function onRender() {
             console.log('data', res.data);
             let data = res.data;
             if (data) {
-                $('#mid').val(data[0].MID);
-                $('#clientid').val(data[0].Client_ID);
-                $('#clientsecret').val(data[0].Client_Secret);
-                $('#authuri').val(data[0].Auth_URI);
-                $('#resturi').val(data[0].Rest_URI);
-                $('#username').val(data[0].Username);
-                $('#password').val(data[0].Password);
-                $('#wausername').val(data[0].WhatsApp_Username);
-                $('#wapassword').val(data[0].WhatsApp_Password);
+                $('#mid').val(data.MID);
+                $('#clientid').val(data.Client_ID);
+                $('#clientsecret').val(data.Client_Secret);
+                $('#authuri').val(data.Auth_URI);
+                $('#resturi').val(data.Rest_URI);
+                $('#username').val(data.Username);
+                $('#password').val(data.Password);
+                $('#wausername').val(data.WhatsApp_Username);
+                $('#wapassword').val(data.WhatsApp_Password);
                 //$('#fromnumber').val(data[0].WhatsApp_From_Number);
             }
         }));
