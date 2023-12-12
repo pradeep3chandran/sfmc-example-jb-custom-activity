@@ -47,21 +47,28 @@ const errorObject = {
 };
 
 exports.deliveryReport = function (req, res) {
-    console.log('deliveryReport controller');
-    console.log('req.body: ', req.query);
     console.log('delivery report');
-    console.log(req);
     console.log('body ', req.body);
     console.log('query ', req.query);
+
+    let resBody = {};
+
+    if (req.query && req.query.CLIENT_GUID) {
+        resBody = req.query;
+    } else if (req.body) {
+        resBody = req.body;
+    }
+
+    console.log('resBody ', resBody);
 
     let reqBody = [];
     reqBody.push({
         "keys": {
-            "GUID": req.query.CLIENT_GUID
+            "GUID": resBody.CLIENT_GUID
         },
         "values": {
-            "STATUS": errorObject[req.query.REASON_CODE],
-            "DELIVERED_DATE": req.query.DELIVERED_DATE
+            "STATUS": errorObject[resBody.REASON_CODE],
+            "DELIVERED_DATE": resBody.DELIVERED_DATE
         }
     });
 
