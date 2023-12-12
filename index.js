@@ -144,7 +144,32 @@ exports.writefile = function (req, res) {
     const database = client.db("testdb");
     const collection = database.collection("MCData");
 
-    const insertManyResult = collection.insertMany(req.body);
+    let extData = [];
+    console.log('req.body.MID: ', req.body.MID);
+    const findQuery = { MID: req.body.MID };
+    const cursor = collection.find(findQuery);
+    console.log('cursor ', cursor);
+    cursor.forEach(recipe => {
+        console.log(`${recipe.MID}`);
+        extData.push(recipe);
+    }).then(() => {
+        console.log('extData ', extData);
+        console.log('extData len ', extData.length);
+        if (extData.length > 0) {
+            var newvalues = { $set: req.body };
+            collection.updateOne(
+                findQuery,
+                newvalues,
+                function (err, res) {
+                    if (err) throw err;
+                    console.log("1 document updated", res);
+                });
+        } else {
+            const insertManyResult = collection.insertMany(req.body);
+        }
+    });
+
+    //const insertManyResult = collection.insertMany(req.body);
 
     /*console.log('req.bodyfile: 11 ', req.body);
     let row = req.body;

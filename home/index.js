@@ -53,30 +53,14 @@ async function saveMC() {
 
 
 
-    fetch('readfile/', { method: 'GET' }).then(response =>
+    const customHeaders = {
+        "Content-Type": "application/json",
+    }
+    fetch('writefile/', { method: 'POST', body: JSON.stringify(rowData), headers: customHeaders }).then(response =>
         response.json().then(data => ({
             data: data,
             status: response.status
         })
-        ).then(res => {
-            console.log('data', res.data);
-            let data = res.data;
-            let indx = data.findIndex(data => data.MID == mid);
-            if (indx > -1) {
-                data[indx] = rowData;
-            } else {
-                data.push(rowData);
-            }
-            const customHeaders = {
-                "Content-Type": "application/json",
-            }
-            fetch('writefile/', { method: 'POST', body: JSON.stringify(data), headers: customHeaders }).then(response =>
-                response.json().then(data => ({
-                    data: data,
-                    status: response.status
-                })
-                ))
-
-        }));
+        ));
 
 }
