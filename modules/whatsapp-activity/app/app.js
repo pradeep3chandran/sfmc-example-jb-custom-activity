@@ -175,7 +175,7 @@ module.exports = function whatsAppActivityApp(app, options) {
                 "LONGITUDE": longitude,
                 "LATITUDE": latitude,
                 "BUTTON_LABEL": buttonlabel,
-                "TYPE": 'Outbound Message',
+                "TYPE": 'Inbound Message',
                 "RECEIVED_DATE": time
             }
         });

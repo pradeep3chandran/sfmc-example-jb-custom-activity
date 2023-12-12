@@ -7,6 +7,7 @@ function onRender() {
 
     var host = window.location.host;
     console.log('host: ', host);
+    $('#webhookurl').val('https://' + host + '/modules/whatsapp-activity/inboundmessage');
 
     $('#connect').click(saveMC);
     $('#save').click(saveMC);
