@@ -62,11 +62,7 @@ const client = new MongoClient(uri, {
 
 async function run() {
     console.log('Starting');
-    // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
-    // Send a ping to confirm a successful connection
-    //await client.db("testdb").command({ ping: 1 });
-    //const insertManyResult = await collection.insertMany(recipes);
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
 }
 
@@ -123,19 +119,6 @@ exports.getFileDetail = function (req, res) {
             res.json(recipe);
         });
     });
-
-    /*console.log('req.bodyfile: ', req.body);
-    let data = [];
-
-    console.log('midConst: ', midConst);
-
-    fs.createReadStream(path.join(__dirname, '/data/customer_data.csv'))
-        .pipe(csv.parse({ headers: true }))
-        .on('error', error => console.error(error))
-        .on('data', row => {
-            if (midConst == row.MID) { data.push(row) }
-        })
-        .on('end', () => res.json(data));*/
 };
 
 exports.writefile = function (req, res) {
@@ -165,26 +148,9 @@ exports.writefile = function (req, res) {
                     console.log("1 document updated", res);
                 });
         } else {
-            const insertManyResult = collection.insertMany(req.body);
+            collection.insertMany(req.body);
         }
     });
-
-    //const insertManyResult = collection.insertMany(req.body);
-
-    /*console.log('req.bodyfile: 11 ', req.body);
-    let row = req.body;
-
-    const csvStream = csv.format({ headers: true });
-
-    csvStream.pipe(fs.createWriteStream(path.join(__dirname, '/data/customer_data.csv')));
-
-    for (let i = 0; i < row.length; i++) {
-        csvStream.write(row[i]);
-    } 
-
-    csvStream.end();
-
-    console.log('csv stream', csvStream);*/
 };
 
 exports.login = function (req, res) {

@@ -5,8 +5,8 @@ $(window).ready(onRender);
 function onRender() {
     console.log('render');
 
-    let cookies = document.cookie;
-    console.log('cookies', cookies);
+    var host = window.location.host;
+    console.log('host: ', host);
 
     $('#connect').click(saveMC);
     $('#save').click(saveMC);
