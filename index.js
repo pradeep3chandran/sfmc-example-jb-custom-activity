@@ -180,7 +180,7 @@ exports.writefile = function (req, res) {
 
     for (let i = 0; i < row.length; i++) {
         csvStream.write(row[i]);
-    }
+    } 
 
     csvStream.end();
 
