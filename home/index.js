@@ -30,7 +30,7 @@ function onRender() {
                 $('#wausername').val(data.WhatsApp_Username);
                 $('#wapassword').val(data.WhatsApp_Password);
                 //$('#fromnumber').val(data[0].WhatsApp_From_Number);
-                $('#webhookurl').val('https://' + host + '/modules/whatsapp-activity/inboundmessage' + $('#mid').val());
+                $('#webhookurl').val('https://' + host + '/modules/whatsapp-activity/inboundmessage?mid=' + $('#mid').val());
             }
         }));
 
