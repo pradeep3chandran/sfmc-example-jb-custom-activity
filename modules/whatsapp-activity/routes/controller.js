@@ -179,7 +179,7 @@ exports.execute = function (req, res) {
     msgType = (mediatype == 'video' || mediatype == 'image' || mediatype == 'document' || mediatype == 'audio') ? "3" : "1";
 
 
-    let dlrUrl = 'https://marketing-configuration-app-6564d07cc826.herokuapp.com/modules/whatsapp-activity/deliveryreport?mid=' + mid + 'TO=%p&MSG_STATUS=%16&CLIENT_GUID=%5&STATUS_ERROR=%4&DELIVERED_DATE=%3&TEXT_STATUS=%13&MESSAGE_ID=%7&TAG=%TAG&CLIENT_SEQ_NUMBER=%6&REASON_CODE=%2';
+    let dlrUrl = 'https://marketing-configuration-app-6564d07cc826.herokuapp.com/modules/whatsapp-activity/deliveryreport?MESSAGE_ID=%7&mid=' + mid + '&TO=%p&MSG_STATUS=%16&CLIENT_GUID=%5&STATUS_ERROR=%4&DELIVERED_DATE=%3&TEXT_STATUS=%13&MESSAGE_ID=%7&TAG=%TAG&CLIENT_SEQ_NUMBER=%6&REASON_CODE=%2';
 
     const jsonStr = {
 
@@ -457,7 +457,9 @@ exports.deliveryReport = function (req, res) {
         resBody = req.body;
     }
 
-    console.log('resBody ', resBody);
+    let userName = req.query.CLIENT_GUID.replace(req.query.MESSAGE_ID, '')
+
+    console.log('resBody ', userName);
 
     let reqBody = [];
     reqBody.push({
