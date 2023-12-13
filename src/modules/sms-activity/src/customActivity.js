@@ -196,7 +196,7 @@ define([
 
         console.log('save');
 
-        payload.name = 'SMS Activity';
+        payload.name = 'Send VF SMS';
 
         var message = $('#message').val();
 

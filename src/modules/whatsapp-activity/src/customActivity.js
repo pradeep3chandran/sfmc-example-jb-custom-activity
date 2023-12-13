@@ -460,7 +460,7 @@ define([
                 }
             });
 
-            payload.name = 'WhatsApp Message';
+            payload.name = 'Send VF WhatsApp';
 
 
             payload['arguments'].execute.inArguments = [];

@@ -11,7 +11,7 @@ module.exports = function configJSON(req) {
     "type": "REST",
     "lang": {
       "en-US": {
-        "name": "WhatsApp Message",
+        "name": "Send VF WhatsApp",
         "description": "A Template for a custom Journey Builder activity",
         "step1Label": "Configure Activity"
       }
