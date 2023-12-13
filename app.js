@@ -1,6 +1,5 @@
 const express = require('express');
 const path = require('path');
-const bodyParser = require('body-parser');
 
 const js = require('./index');
 var http = require('http');
@@ -32,8 +31,6 @@ app.get('/readfile', js.fileread);
 app.get('/getFileDetail', js.getFileDetail);
 app.post('/writefile', js.writefile);
 app.get('/login', js.login);
-
-app.all('/whatsapp-activity/deliveryreport', js.deliveryReport);
 
 submodules.forEach((sm) => sm(app, {
     rootDirectory: __dirname,
