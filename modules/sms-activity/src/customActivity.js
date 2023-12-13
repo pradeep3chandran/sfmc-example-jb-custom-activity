@@ -16,6 +16,7 @@ define([
     var currentStep = steps[0].key;
     var schema = [];
     var eventData = {};
+    var configData = {};
 
     $(window).ready(onRender);
 
@@ -76,6 +77,10 @@ define([
             //$('#message').html(message);
         });
 
+        $('#mid').change(function () {
+            getConfigData();
+        });
+
         $('#done').click(save);
 
         // Toggle step 4 active/inactive
@@ -86,6 +91,21 @@ define([
 
             connection.trigger('updateSteps', steps);
         });
+    }
+
+    function getConfigData() {
+        let mid = $('#mid').val();
+        if (mid) {
+            fetch('getConfigData?mid=' + mid, { method: 'GET' }).then(response =>
+                response.json().then(data => ({
+                    data: data,
+                    status: response.status
+                })
+                ).then(res => {
+                    console.log('data', res.data);
+                    configData = res.data;
+                }));
+        }
     }
 
     function initialize(data) {
@@ -113,6 +133,8 @@ define([
                 $('#' + key).val(val);
             });
         });
+
+        getConfigData();
 
         // If there is no message selected, disable the next button
     }
@@ -156,49 +178,6 @@ define([
         $('.step').hide();
 
         switch (currentStep.key) {
-            /*case 'step1':
-                $('#step1').show();
-                connection.trigger('updateButton', {
-                    button: 'next',
-                    enabled: Boolean(getMessage())
-                });
-                connection.trigger('updateButton', {
-                    button: 'back',
-                    visible: false
-                });
-                break;
-            case 'step2':
-                $('#step2').show();
-                connection.trigger('updateButton', {
-                    button: 'back',
-                    visible: true
-                });
-                connection.trigger('updateButton', {
-                    button: 'next',
-                    text: 'next',
-                    visible: true
-                });
-                break;
-            case 'step3':
-                $('#step3').show();
-                connection.trigger('updateButton', {
-                    button: 'back',
-                    visible: true
-                });
-                if (lastStepEnabled) {
-                    connection.trigger('updateButton', {
-                        button: 'next',
-                        text: 'next',
-                        visible: true
-                    });
-                } else {
-                    connection.trigger('updateButton', {
-                        button: 'next',
-                        text: 'done',
-                        visible: true
-                    });
-                }
-                break;*/
             case 'step1':
                 $('#step1').show();
                 connection.trigger('updateButton', {
@@ -207,7 +186,7 @@ define([
                     visible: true
                 });
                 break;
-            case 'step2': // Only 2 steps, so the equivalent of 'done' - send off the payload
+            case 'step2':
                 save();
                 break;
         }
@@ -215,10 +194,6 @@ define([
 
     function save() {
 
-        // 'payload' is initialized on 'initActivity' above.
-        // Journey Builder sends an initial payload with defaults
-        // set by this activity's config.json file.  Any property
-        // may be overridden as desired.
         console.log('save');
 
         payload.name = 'SMS Activity';
@@ -235,6 +210,7 @@ define([
         payload['arguments'].execute.inArguments.push({ "mid": $('#mid').val() });
         payload['arguments'].execute.inArguments.push({ "senderName": $('#senderName').val() });
         payload['arguments'].execute.inArguments.push({ "campaignName": eventData.name });
+        payload['arguments'].execute.inArguments.push({ "configData": configData });
 
         let primaryKey = schema[schema.findIndex(obj => obj.isPrimaryKey)].key;
         payload['arguments'].execute.inArguments.push({ "primaryKey": '{{' + primaryKey + '}}' });

@@ -178,6 +178,9 @@ exports.execute = function (req, res) {
 
     msgType = (mediatype == 'video' || mediatype == 'image' || mediatype == 'document' || mediatype == 'audio') ? "3" : "1";
 
+
+    let dlrUrl = 'https://marketing-configuration-app-6564d07cc826.herokuapp.com/modules/whatsapp-activity/deliveryreport?mid=' + mid + 'TO=%p&MSG_STATUS=%16&CLIENT_GUID=%5&STATUS_ERROR=%4&DELIVERED_DATE=%3&TEXT_STATUS=%13&MESSAGE_ID=%7&TAG=%TAG&CLIENT_SEQ_NUMBER=%6&REASON_CODE=%2';
+
     const jsonStr = {
 
         "@VER": "1.2",
@@ -186,7 +189,7 @@ exports.execute = function (req, res) {
 
         "DLR": {
 
-            "@URL": "https://marketing-configuration-app-6564d07cc826.herokuapp.com/modules/whatsapp-activity/deliveryreport?TO=%p&MSG_STATUS=%16&CLIENT_GUID=%5&STATUS_ERROR=%4&DELIVERED_DATE=%3&TEXT_STATUS=%13&MESSAGE_ID=%7&TAG=%TAG&CLIENT_SEQ_NUMBER=%6&REASON_CODE=%2"
+            "@URL": dlrUrl
 
         },
 
@@ -443,8 +446,8 @@ exports.execute = function (req, res) {
 
 exports.deliveryReport = function (req, res) {
     console.log('delivery report');
-    console.log('body ', req.body);
-    console.log('query ', req.query);
+    console.log('WA body ', req.body);
+    console.log('WA query ', req.query);
 
     let resBody = {};
 

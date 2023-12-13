@@ -38,6 +38,40 @@ const errorObject = {
     8449: "Message failed"
 };
 
+const uri = "mongodb+srv://pradeep3chandran:Connect%231@testdb.fobjt51.mongodb.net/?retryWrites=true&w=majority";
+const client = new MongoClient(uri, {
+    serverApi: {
+        version: ServerApiVersion.v1,
+        strict: true,
+        deprecationErrors: true,
+    }
+});
+
+async function run() {
+    console.log('Starting');
+    await client.connect();
+    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+}
+
+exports.getConfigData = function (req, res) {
+    console.log('req query ', req.query);
+    run().then(() => {
+
+        const database = client.db("testdb");
+        const collection = database.collection("MCData");
+
+        console.log('midConst ', req.query.mid);
+
+        const findQuery = { MID: req.query.mid };
+        const cursor = collection.find(findQuery);
+        console.log('cursor ');
+        cursor.forEach(recipe => {
+            console.log(`${recipe.MID}`);
+            res.json(recipe);
+        });
+    });
+};
+
 exports.deliveryReport = async function (req, res) {
     console.log('delivery report');
     console.log(req.query);
@@ -88,7 +122,6 @@ exports.deliveryReport = async function (req, res) {
 exports.execute = function (req, res) {
     console.log('debug: /modules/sms-activity/execute');
     console.log('req ', req);
-    let fileData = [];
 
     const request = req.body;
 
@@ -112,6 +145,9 @@ exports.execute = function (req, res) {
     const message = getInArgument('message') || 'nothing';
     const primaryKey = getInArgument('primaryKey') || 'nothing';
     const campaignName = getInArgument('campaignName') || 'nothing';
+    const configData = getInArgument('configData') || 'nothing';
+
+    let dlrUrl = 'https://marketing-configuration-app-6564d07cc826.herokuapp.com/modules/sms-activity/deliveryreport?mid=' + mid + '&TO=%p&MSG_STATUS=%16&CLIENT_GUID=%5&STATUS_ERROR=%4&DELIVERED_DATE=%3&TEXT_STATUS=%13&MESSAGE_ID=%7&TAG=%TAG&CLIENT_SEQ_NUMBER=%6&REASON_CODE=%2';
 
     const jsonStr = {
 
@@ -121,7 +157,7 @@ exports.execute = function (req, res) {
 
         "DLR": {
 
-            "@URL": "https://marketing-configuration-app-6564d07cc826.herokuapp.com/modules/sms-activity/deliveryreport?TO=%p&MSG_STATUS=%16&CLIENT_GUID=%5&STATUS_ERROR=%4&DELIVERED_DATE=%3&TEXT_STATUS=%13&MESSAGE_ID=%7&TAG=%TAG&CLIENT_SEQ_NUMBER=%6&REASON_CODE=%2"
+            "@URL": dlrUrl
 
         },
 
@@ -163,105 +199,96 @@ exports.execute = function (req, res) {
 
     console.log('jsonStr: ', JSON.stringify(jsonStr));
 
-    fs.createReadStream(path.join('./data/customer_data.csv'))
-        .pipe(csv.parse({ headers: true }))
-        .on('error', error => console.error('err ', error))
-        .on('data', row => { if (mid == row.MID) { fileData.push(row) } })
-        .on('end', () => {
-            console.log('dataa ', fileData);
+    console.log('dataa ', configData);
 
 
 
-            fetch('https://api.myvfirst.com/psms/api/messages/token?action=generate', {
-                method: 'POST', headers: {
-                    "Authorization": 'Basic ' + Buffer.from(fileData[0].Username + ':' + fileData[0].Password).toString('base64')
-                }
-            }).then(response => {
-                console.log(response);
+    fetch('https://api.myvfirst.com/psms/api/messages/token?action=generate', {
+        method: 'POST', headers: {
+            "Authorization": 'Basic ' + Buffer.from(configData.Username + ':' + configData.Password).toString('base64')
+        }
+    }).then(response => {
+        console.log(response);
 
-                response.json().then(data => {
+        response.json().then(data => {
 
-                    console.log('data ', data.token);
-                    let token = data.token;
+            console.log('data ', data.token);
+            let token = data.token;
 
 
-                    fetch('https://api.myvfirst.com/psms/servlet/psms.JsonEservice', {
-                        method: 'POST', headers: { "Authorization": 'Bearer ' + token, "Content-Type": 'application/json' }, body: JSON.stringify(jsonStr)
-                    }).then(response1 => {
-                        console.log(response1);
+            fetch('https://api.myvfirst.com/psms/servlet/psms.JsonEservice', {
+                method: 'POST', headers: { "Authorization": 'Bearer ' + token, "Content-Type": 'application/json' }, body: JSON.stringify(jsonStr)
+            }).then(response1 => {
+                console.log(response1);
 
-                        response1.json().then(data1 => {
-                            let reqBody = [];
-                            if (data1.MESSAGEACK.GUID) {
-                                reqBody.push({
-                                    "keys": {
-                                        "GUID": data1.MESSAGEACK.GUID.GUID
-                                    },
-                                    "values": {
-                                        ID: data1.MESSAGEACK.GUID.ID,
-                                        SUBMIT_DATE: data1.MESSAGEACK.GUID.SUBMITDATE,
-                                        FROM: senderName,
-                                        TO: mobileNumber,
-                                        TEXT: message,
-                                        STATUS: 'Submitted',
-                                        CAMPAIGN_NAME: campaignName
-                                    }
-                                });
-                                if (data1.MESSAGEACK.GUID.ERROR) {
-                                    console.log('error');
-                                    reqBody[0].values.STATUS = 'Failed';
-                                    reqBody[0].values.ERROR_CODE = data1.MESSAGEACK.GUID.ERROR.CODE;
-                                    reqBody[0].values.ERROR_REASON = errorObject[data1.MESSAGEACK.GUID.ERROR.CODE];
-                                }
-                            } else {
-                                const date = new Date().toLocaleString();
-                                reqBody.push({
-                                    "keys": {
-                                        "GUID": primaryKey + date
-                                    },
-                                    "values": {
-                                        ID: primaryKey,
-                                        SUBMIT_DATE: date,
-                                        FROM: senderName,
-                                        TO: mobileNumber,
-                                        TEXT: message,
-                                        STATUS: 'Failed',
-                                        ERROR_CODE: data1.MESSAGEACK.Err.Code,
-                                        ERROR_REASON: errorObject[data1.MESSAGEACK.Err.Code],
-                                        CAMPAIGN_NAME: campaignName
-                                    }
-                                });
+                response1.json().then(data1 => {
+                    let reqBody = [];
+                    if (data1.MESSAGEACK.GUID) {
+                        reqBody.push({
+                            "keys": {
+                                "GUID": data1.MESSAGEACK.GUID.GUID
+                            },
+                            "values": {
+                                ID: data1.MESSAGEACK.GUID.ID,
+                                SUBMIT_DATE: data1.MESSAGEACK.GUID.SUBMITDATE,
+                                FROM: senderName,
+                                TO: mobileNumber,
+                                TEXT: message,
+                                STATUS: 'Submitted',
+                                CAMPAIGN_NAME: campaignName
                             }
+                        });
+                        if (data1.MESSAGEACK.GUID.ERROR) {
+                            console.log('error');
+                            reqBody[0].values.STATUS = 'Failed';
+                            reqBody[0].values.ERROR_CODE = data1.MESSAGEACK.GUID.ERROR.CODE;
+                            reqBody[0].values.ERROR_REASON = errorObject[data1.MESSAGEACK.GUID.ERROR.CODE];
+                        }
+                    } else {
+                        const date = new Date().toLocaleString();
+                        reqBody.push({
+                            "keys": {
+                                "GUID": primaryKey + date
+                            },
+                            "values": {
+                                ID: primaryKey,
+                                SUBMIT_DATE: date,
+                                FROM: senderName,
+                                TO: mobileNumber,
+                                TEXT: message,
+                                STATUS: 'Failed',
+                                ERROR_CODE: data1.MESSAGEACK.Err.Code,
+                                ERROR_REASON: errorObject[data1.MESSAGEACK.Err.Code],
+                                CAMPAIGN_NAME: campaignName
+                            }
+                        });
+                    }
+                    console.log(reqBody);
+
+                    let accessRequest = {
+                        "grant_type": "client_credentials",
+                        "client_id": configData.Client_ID,
+                        "client_secret": configData.Client_Secret,
+                        "account_id": configData.MID
+                    };
+
+                    fetch(configData.Auth_URI + '/v2/token', {
+                        method: 'POST', body: JSON.stringify(accessRequest), headers: { 'Content-Type': 'application/json' }
+                    }).then(response2 => {
+
+                        response2.json().then(data2 => {
+                            console.log(data2);
                             console.log(reqBody);
+                            fetch(configData.Rest_URI + '/hub/v1/dataevents/key:CA054127-E2A5-494F-83EF-230B180A0F8E/rowset', {
+                                method: 'POST', body: JSON.stringify(reqBody), headers: { 'Authorization': 'Bearer ' + data2.access_token, 'Content-Type': 'application/json' }
+                            }).then(response3 => {
 
-                            let accessRequest = {
-                                "grant_type": "client_credentials",
-                                "client_id": fileData[0].Client_ID,
-                                "client_secret": fileData[0].Client_Secret,
-                                "account_id": fileData[0].MID
-                            };
+                                response3.json().then(data3 => {
+                                    console.log(data3);
 
-                            fetch(fileData[0].Auth_URI + '/v2/token', {
-                                method: 'POST', body: JSON.stringify(accessRequest), headers: { 'Content-Type': 'application/json' }
-                            }).then(response2 => {
-
-                                response2.json().then(data2 => {
-                                    console.log(data2);
-                                    console.log(reqBody);
-                                    fetch(fileData[0].Rest_URI + '/hub/v1/dataevents/key:CA054127-E2A5-494F-83EF-230B180A0F8E/rowset', {
-                                        method: 'POST', body: JSON.stringify(reqBody), headers: { 'Authorization': 'Bearer ' + data2.access_token, 'Content-Type': 'application/json' }
-                                    }).then(response3 => {
-
-                                        response3.json().then(data3 => {
-                                            console.log(data3);
-
-                                            res.status(200).json({ errorCode: reqBody[0].values.ERROR_CODE, GUID: reqBody[0].keys.GUID, status: reqBody[0].values.STATUS });
-                                        })
-                                    }).catch(err1 => {
-                                        res.status(400).json(err);
-                                    });
+                                    res.status(200).json({ errorCode: reqBody[0].values.ERROR_CODE, GUID: reqBody[0].keys.GUID, status: reqBody[0].values.STATUS });
                                 })
-                            }).catch(err => {
+                            }).catch(err1 => {
                                 res.status(400).json(err);
                             });
                         })
@@ -272,5 +299,8 @@ exports.execute = function (req, res) {
             }).catch(err => {
                 res.status(400).json(err);
             });
-        });
+        })
+    }).catch(err => {
+        res.status(400).json(err);
+    });
 };
