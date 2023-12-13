@@ -113,8 +113,6 @@ exports.getTemplates = function (req, res) {
 exports.execute = function (req, res) {
     console.log('debug: /modules/sms-activity/execute');
     console.log('req ', req);
-    let fileData = [];
-
     const request = req.body;
 
     console.log('request ', request);
@@ -233,209 +231,200 @@ exports.execute = function (req, res) {
 
     console.log('jsonStr: ', JSON.stringify(jsonStr));
 
-    fs.createReadStream(path.join('./data/customer_data.csv'))
-        .pipe(csv.parse({ headers: true }))
-        .on('error', error => console.error('err ', error))
-        .on('data', row => { if (mid == row.MID) { fileData.push(row) } })
-        .on('end', () => {
-            console.log('dataa ', fileData);
+    console.log('dataa ', configData);
 
-            fetch('https://api.myvfirst.com/psms/api/messages/token?action=generate', {
-                method: 'POST', headers: {
-                    "Authorization": 'Basic ' + Buffer.from(fileData[0].WhatsApp_Username + ':' + fileData[0].WhatsApp_Password).toString('base64')
+    fetch('https://api.myvfirst.com/psms/api/messages/token?action=generate', {
+        method: 'POST', headers: {
+            "Authorization": 'Basic ' + Buffer.from(configData.WhatsApp_Username + ':' + configData.WhatsApp_Password).toString('base64')
+        }
+    }).then(response => {
+        console.log(response);
+
+        response.json().then(data => {
+
+            console.log('data ', data.token);
+            let token = data.token;
+
+
+            fetch('https://api.myvfirst.com/psms/servlet/psms.JsonEservice', {
+                method: 'POST', headers: { "Authorization": 'Bearer ' + token, "Content-Type": 'application/json' }, body: JSON.stringify(jsonStr)
+            }).then(response1 => {
+                console.log('ressss ', response1);
+                let templatetext;
+                let headerText;
+                let footerText;
+                let buttonInfo;
+                if (messageAction == 'New Message') {
+
+                    let bodyIndex = selectedTemplate.whatsappcomponents.findIndex(obj => obj.type == 'BODY');
+                    console.log('bodyIndex ', bodyIndex);
+                    templatetext = selectedTemplate.whatsappcomponents[bodyIndex].text;
+                    console.log('templatetext ', templatetext);
+
+                    let headerIndex = selectedTemplate.whatsappcomponents.findIndex(obj => obj.type == 'HEADER' && obj.format == 'TEXT');
+                    console.log('headerIndex ', headerIndex);
+                    headerText = headerIndex >= 0 ? selectedTemplate.whatsappcomponents[headerIndex].text : '';
+                    console.log('headerText ', headerText);
+
+                    let footerIndex = selectedTemplate.whatsappcomponents.findIndex(obj => obj.type == 'FOOTER');
+                    console.log('footerIndex ', footerIndex);
+                    footerText = footerIndex >= 0 ? selectedTemplate.whatsappcomponents[footerIndex].text : '';
+                    console.log('footerText ', footerText);
+
+                    let buttonIndex = selectedTemplate.whatsappcomponents.findIndex(obj => obj.type == 'BUTTONS');
+                    console.log('buttonIndex ', buttonIndex);
+                    buttonInfo = buttonIndex >= 0 ? selectedTemplate.whatsappcomponents[buttonIndex].buttons : '';
+                    console.log('buttonInfo ', buttonInfo);
                 }
-            }).then(response => {
-                console.log(response);
-
-                response.json().then(data => {
-
-                    console.log('data ', data.token);
-                    let token = data.token;
-
-
-                    fetch('https://api.myvfirst.com/psms/servlet/psms.JsonEservice', {
-                        method: 'POST', headers: { "Authorization": 'Bearer ' + token, "Content-Type": 'application/json' }, body: JSON.stringify(jsonStr)
-                    }).then(response1 => {
-                        console.log('ressss ', response1);
-                        let templatetext;
-                        let headerText;
-                        let footerText;
-                        let buttonInfo;
-                        if (messageAction == 'New Message') {
-
-                            let bodyIndex = selectedTemplate.whatsappcomponents.findIndex(obj => obj.type == 'BODY');
-                            console.log('bodyIndex ', bodyIndex);
-                            templatetext = selectedTemplate.whatsappcomponents[bodyIndex].text;
-                            console.log('templatetext ', templatetext);
-
-                            let headerIndex = selectedTemplate.whatsappcomponents.findIndex(obj => obj.type == 'HEADER' && obj.format == 'TEXT');
-                            console.log('headerIndex ', headerIndex);
-                            headerText = headerIndex >= 0 ? selectedTemplate.whatsappcomponents[headerIndex].text : '';
-                            console.log('headerText ', headerText);
-
-                            let footerIndex = selectedTemplate.whatsappcomponents.findIndex(obj => obj.type == 'FOOTER');
-                            console.log('footerIndex ', footerIndex);
-                            footerText = footerIndex >= 0 ? selectedTemplate.whatsappcomponents[footerIndex].text : '';
-                            console.log('footerText ', footerText);
-
-                            let buttonIndex = selectedTemplate.whatsappcomponents.findIndex(obj => obj.type == 'BUTTONS');
-                            console.log('buttonIndex ', buttonIndex);
-                            buttonInfo = buttonIndex >= 0 ? selectedTemplate.whatsappcomponents[buttonIndex].buttons : '';
-                            console.log('buttonInfo ', buttonInfo);
+                response1.json().then(data1 => {
+                    //return res.status(200).json(data1);
+                    let reqBody = [];
+                    if (data1.MESSAGEACK.GUID) {
+                        if (messageAction == 'Retry Message') {
+                            reqBody.push({
+                                "keys": {
+                                    "GUID": data1.MESSAGEACK.GUID.GUID
+                                },
+                                "values": {
+                                    ID: data1.MESSAGEACK.GUID.ID,
+                                    SUBMIT_DATE: data1.MESSAGEACK.GUID.SUBMITDATE,
+                                    FROM: senderName,
+                                    TO: mobileNumber,
+                                    TEXT: selectedTemplate.TEXT,
+                                    STATUS: 'Submitted',
+                                    CAMPAIGN_NAME: campaignName,
+                                    TEMPLATE_NAME: selectedTemplate.TEMPLATE_NAME,
+                                    TEMPLATE_ID: selectedTemplate.TEMPLATE_ID,
+                                    MEDIA_TYPE: selectedTemplate.MEDIA_TYPE,
+                                    DOCUMENT_URL: headerDocURL,
+                                    HEADER_FIELD_DETAILS: JSON.stringify(headerFieldDetails),
+                                    BODY_FIELD_DETAILS: JSON.stringify(bodyFieldDetails),
+                                    BUTTON_FIELD_DETAILS: JSON.stringify(buttonFieldDetails),
+                                    BUTTON_INFO: selectedTemplate.BUTTON_INFO,
+                                    FOOTER_TEXT: selectedTemplate.FOOTER_TEXT,
+                                    HEADER_TEXT: selectedTemplate.HEADER_TEXT,
+                                    TYPE: 'Outbound Message'
+                                }
+                            });
+                        } else {
+                            reqBody.push({
+                                "keys": {
+                                    "GUID": data1.MESSAGEACK.GUID.GUID
+                                },
+                                "values": {
+                                    ID: data1.MESSAGEACK.GUID.ID,
+                                    SUBMIT_DATE: data1.MESSAGEACK.GUID.SUBMITDATE,
+                                    FROM: senderName,
+                                    TO: mobileNumber,
+                                    TEXT: templatetext,
+                                    STATUS: 'Submitted',
+                                    CAMPAIGN_NAME: campaignName,
+                                    TEMPLATE_NAME: selectedTemplate.templatename,
+                                    TEMPLATE_ID: selectedTemplate.templateid,
+                                    MEDIA_TYPE: selectedTemplate.mediatype,
+                                    DOCUMENT_URL: headerDocURL,
+                                    HEADER_FIELD_DETAILS: JSON.stringify(headerFieldDetails),
+                                    BODY_FIELD_DETAILS: JSON.stringify(bodyFieldDetails),
+                                    BUTTON_FIELD_DETAILS: JSON.stringify(buttonFieldDetails),
+                                    BUTTON_INFO: JSON.stringify(buttonInfo),
+                                    FOOTER_TEXT: footerText,
+                                    HEADER_TEXT: headerText,
+                                    TYPE: 'Outbound Message'
+                                }
+                            });
                         }
-                        response1.json().then(data1 => {
-                            //return res.status(200).json(data1);
-                            let reqBody = [];
-                            if (data1.MESSAGEACK.GUID) {
-                                if (messageAction == 'Retry Message') {
-                                    reqBody.push({
-                                        "keys": {
-                                            "GUID": data1.MESSAGEACK.GUID.GUID
-                                        },
-                                        "values": {
-                                            ID: data1.MESSAGEACK.GUID.ID,
-                                            SUBMIT_DATE: data1.MESSAGEACK.GUID.SUBMITDATE,
-                                            FROM: senderName,
-                                            TO: mobileNumber,
-                                            TEXT: selectedTemplate.TEXT,
-                                            STATUS: 'Submitted',
-                                            CAMPAIGN_NAME: campaignName,
-                                            TEMPLATE_NAME: selectedTemplate.TEMPLATE_NAME,
-                                            TEMPLATE_ID: selectedTemplate.TEMPLATE_ID,
-                                            MEDIA_TYPE: selectedTemplate.MEDIA_TYPE,
-                                            DOCUMENT_URL: headerDocURL,
-                                            HEADER_FIELD_DETAILS: JSON.stringify(headerFieldDetails),
-                                            BODY_FIELD_DETAILS: JSON.stringify(bodyFieldDetails),
-                                            BUTTON_FIELD_DETAILS: JSON.stringify(buttonFieldDetails),
-                                            BUTTON_INFO: selectedTemplate.BUTTON_INFO,
-                                            FOOTER_TEXT: selectedTemplate.FOOTER_TEXT,
-                                            HEADER_TEXT: selectedTemplate.HEADER_TEXT,
-                                            TYPE: 'Outbound Message'
-                                        }
-                                    });
-                                } else {
-                                    reqBody.push({
-                                        "keys": {
-                                            "GUID": data1.MESSAGEACK.GUID.GUID
-                                        },
-                                        "values": {
-                                            ID: data1.MESSAGEACK.GUID.ID,
-                                            SUBMIT_DATE: data1.MESSAGEACK.GUID.SUBMITDATE,
-                                            FROM: senderName,
-                                            TO: mobileNumber,
-                                            TEXT: templatetext,
-                                            STATUS: 'Submitted',
-                                            CAMPAIGN_NAME: campaignName,
-                                            TEMPLATE_NAME: selectedTemplate.templatename,
-                                            TEMPLATE_ID: selectedTemplate.templateid,
-                                            MEDIA_TYPE: selectedTemplate.mediatype,
-                                            DOCUMENT_URL: headerDocURL,
-                                            HEADER_FIELD_DETAILS: JSON.stringify(headerFieldDetails),
-                                            BODY_FIELD_DETAILS: JSON.stringify(bodyFieldDetails),
-                                            BUTTON_FIELD_DETAILS: JSON.stringify(buttonFieldDetails),
-                                            BUTTON_INFO: JSON.stringify(buttonInfo),
-                                            FOOTER_TEXT: footerText,
-                                            HEADER_TEXT: headerText,
-                                            TYPE: 'Outbound Message'
-                                        }
-                                    });
+                        if (data1.MESSAGEACK.GUID.ERROR) {
+                            console.log('error');
+                            reqBody[0].values.STATUS = 'Failed';
+                            reqBody[0].values.ERROR_CODE = data1.MESSAGEACK.GUID.ERROR.CODE;
+                            reqBody[0].values.ERROR_REASON = errorObject[data1.MESSAGEACK.GUID.ERROR.CODE];
+                        }
+                    } else {
+                        const date = new Date().toLocaleString();
+                        if (messageAction == 'Retry Message') {
+                            reqBody.push({
+                                "keys": {
+                                    "GUID": primaryKey + date
+                                },
+                                "values": {
+                                    ID: primaryKey,
+                                    SUBMIT_DATE: date,
+                                    FROM: senderName,
+                                    TO: mobileNumber,
+                                    TEXT: selectedTemplate.TEXT,
+                                    STATUS: 'Failed',
+                                    ERROR_CODE: data1.MESSAGEACK.Err.Code,
+                                    ERROR_REASON: errorObject[data1.MESSAGEACK.Err.Code],
+                                    CAMPAIGN_NAME: campaignName,
+                                    TEMPLATE_NAME: selectedTemplate.TEMPLATE_NAME,
+                                    TEMPLATE_ID: selectedTemplate.TEMPLATE_ID,
+                                    MEDIA_TYPE: selectedTemplate.MEDIA_TYPE,
+                                    DOCUMENT_URL: headerDocURL,
+                                    HEADER_FIELD_DETAILS: JSON.stringify(headerFieldDetails),
+                                    BODY_FIELD_DETAILS: JSON.stringify(bodyFieldDetails),
+                                    BUTTON_FIELD_DETAILS: JSON.stringify(buttonFieldDetails),
+                                    BUTTON_INFO: selectedTemplate.BUTTON_INFO,
+                                    FOOTER_TEXT: selectedTemplate.FOOTER_TEXT,
+                                    HEADER_TEXT: selectedTemplate.HEADER_TEXT,
+                                    TYPE: 'Outbound Message'
                                 }
-                                if (data1.MESSAGEACK.GUID.ERROR) {
-                                    console.log('error');
-                                    reqBody[0].values.STATUS = 'Failed';
-                                    reqBody[0].values.ERROR_CODE = data1.MESSAGEACK.GUID.ERROR.CODE;
-                                    reqBody[0].values.ERROR_REASON = errorObject[data1.MESSAGEACK.GUID.ERROR.CODE];
+                            });
+                        } else {
+                            reqBody.push({
+                                "keys": {
+                                    "GUID": primaryKey + date
+                                },
+                                "values": {
+                                    ID: primaryKey,
+                                    SUBMIT_DATE: date,
+                                    FROM: senderName,
+                                    TO: mobileNumber,
+                                    TEXT: templatetext,
+                                    STATUS: 'Failed',
+                                    ERROR_CODE: data1.MESSAGEACK.Err.Code,
+                                    ERROR_REASON: errorObject[data1.MESSAGEACK.Err.Code],
+                                    CAMPAIGN_NAME: campaignName,
+                                    TEMPLATE_NAME: selectedTemplate.templatename,
+                                    TEMPLATE_ID: selectedTemplate.templateid,
+                                    MEDIA_TYPE: selectedTemplate.mediatype,
+                                    DOCUMENT_URL: headerDocURL,
+                                    HEADER_FIELD_DETAILS: JSON.stringify(headerFieldDetails),
+                                    BODY_FIELD_DETAILS: JSON.stringify(bodyFieldDetails),
+                                    BUTTON_FIELD_DETAILS: JSON.stringify(buttonFieldDetails),
+                                    BUTTON_INFO: JSON.stringify(buttonInfo),
+                                    FOOTER_TEXT: footerText,
+                                    HEADER_TEXT: headerText,
+                                    TYPE: 'Outbound Message'
                                 }
-                            } else {
-                                const date = new Date().toLocaleString();
-                                if (messageAction == 'Retry Message') {
-                                    reqBody.push({
-                                        "keys": {
-                                            "GUID": primaryKey + date
-                                        },
-                                        "values": {
-                                            ID: primaryKey,
-                                            SUBMIT_DATE: date,
-                                            FROM: senderName,
-                                            TO: mobileNumber,
-                                            TEXT: selectedTemplate.TEXT,
-                                            STATUS: 'Failed',
-                                            ERROR_CODE: data1.MESSAGEACK.Err.Code,
-                                            ERROR_REASON: errorObject[data1.MESSAGEACK.Err.Code],
-                                            CAMPAIGN_NAME: campaignName,
-                                            TEMPLATE_NAME: selectedTemplate.TEMPLATE_NAME,
-                                            TEMPLATE_ID: selectedTemplate.TEMPLATE_ID,
-                                            MEDIA_TYPE: selectedTemplate.MEDIA_TYPE,
-                                            DOCUMENT_URL: headerDocURL,
-                                            HEADER_FIELD_DETAILS: JSON.stringify(headerFieldDetails),
-                                            BODY_FIELD_DETAILS: JSON.stringify(bodyFieldDetails),
-                                            BUTTON_FIELD_DETAILS: JSON.stringify(buttonFieldDetails),
-                                            BUTTON_INFO: selectedTemplate.BUTTON_INFO,
-                                            FOOTER_TEXT: selectedTemplate.FOOTER_TEXT,
-                                            HEADER_TEXT: selectedTemplate.HEADER_TEXT,
-                                            TYPE: 'Outbound Message'
-                                        }
-                                    });
-                                } else {
-                                    reqBody.push({
-                                        "keys": {
-                                            "GUID": primaryKey + date
-                                        },
-                                        "values": {
-                                            ID: primaryKey,
-                                            SUBMIT_DATE: date,
-                                            FROM: senderName,
-                                            TO: mobileNumber,
-                                            TEXT: templatetext,
-                                            STATUS: 'Failed',
-                                            ERROR_CODE: data1.MESSAGEACK.Err.Code,
-                                            ERROR_REASON: errorObject[data1.MESSAGEACK.Err.Code],
-                                            CAMPAIGN_NAME: campaignName,
-                                            TEMPLATE_NAME: selectedTemplate.templatename,
-                                            TEMPLATE_ID: selectedTemplate.templateid,
-                                            MEDIA_TYPE: selectedTemplate.mediatype,
-                                            DOCUMENT_URL: headerDocURL,
-                                            HEADER_FIELD_DETAILS: JSON.stringify(headerFieldDetails),
-                                            BODY_FIELD_DETAILS: JSON.stringify(bodyFieldDetails),
-                                            BUTTON_FIELD_DETAILS: JSON.stringify(buttonFieldDetails),
-                                            BUTTON_INFO: JSON.stringify(buttonInfo),
-                                            FOOTER_TEXT: footerText,
-                                            HEADER_TEXT: headerText,
-                                            TYPE: 'Outbound Message'
-                                        }
-                                    });
-                                }
-                            }
+                            });
+                        }
+                    }
+                    console.log(reqBody);
+
+                    let accessRequest = {
+                        "grant_type": "client_credentials",
+                        "client_id": configData.Client_ID,
+                        "client_secret": configData.Client_Secret,
+                        "account_id": configData.MID
+                    };
+
+                    fetch(configData.Auth_URI + '/v2/token', {
+                        method: 'POST', body: JSON.stringify(accessRequest), headers: { 'Content-Type': 'application/json' }
+                    }).then(response2 => {
+
+                        response2.json().then(data2 => {
+                            console.log(data2);
                             console.log(reqBody);
+                            fetch(configData.Rest_URI + '/hub/v1/dataevents/key:7FF55D65-8562-409C-B37F-51810ADF3210/rowset', {
+                                method: 'POST', body: JSON.stringify(reqBody), headers: { 'Authorization': 'Bearer ' + data2.access_token, 'Content-Type': 'application/json' }
+                            }).then(response3 => {
 
-                            let accessRequest = {
-                                "grant_type": "client_credentials",
-                                "client_id": fileData[0].Client_ID,
-                                "client_secret": fileData[0].Client_Secret,
-                                "account_id": fileData[0].MID
-                            };
+                                response3.json().then(data3 => {
+                                    console.log(data3);
 
-                            fetch(fileData[0].Auth_URI + '/v2/token', {
-                                method: 'POST', body: JSON.stringify(accessRequest), headers: { 'Content-Type': 'application/json' }
-                            }).then(response2 => {
-
-                                response2.json().then(data2 => {
-                                    console.log(data2);
-                                    console.log(reqBody);
-                                    fetch(fileData[0].Rest_URI + '/hub/v1/dataevents/key:7FF55D65-8562-409C-B37F-51810ADF3210/rowset', {
-                                        method: 'POST', body: JSON.stringify(reqBody), headers: { 'Authorization': 'Bearer ' + data2.access_token, 'Content-Type': 'application/json' }
-                                    }).then(response3 => {
-
-                                        response3.json().then(data3 => {
-                                            console.log(data3);
-
-                                            res.status(200).json({ errorCode: reqBody[0].values.ERROR_CODE, GUID: reqBody[0].keys.GUID, status: reqBody[0].values.STATUS });
-                                        })
-                                    }).catch(err1 => {
-                                        res.status(400).json(err);
-                                    });
+                                    res.status(200).json({ errorCode: reqBody[0].values.ERROR_CODE, GUID: reqBody[0].keys.GUID, status: reqBody[0].values.STATUS });
                                 })
-                            }).catch(err => {
+                            }).catch(err1 => {
                                 res.status(400).json(err);
                             });
                         })
@@ -446,7 +435,10 @@ exports.execute = function (req, res) {
             }).catch(err => {
                 res.status(400).json(err);
             });
-        });
+        })
+    }).catch(err => {
+        res.status(400).json(err);
+    });
 };
 
 exports.deliveryReport = function (req, res) {
