@@ -58,6 +58,7 @@ module.exports = function smsActivityApp(app, options) {
         return res.status(200).json({});
     });
 
+    app.get('/modules/sms-activity/getConfigData', controllerjs.getConfigData);
     app.get('/modules/sms-activity/deliveryreport', controllerjs.deliveryReport);
     app.post('/modules/sms-activity/execute', controllerjs.execute);
 

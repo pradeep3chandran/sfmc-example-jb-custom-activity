@@ -48,6 +48,7 @@ const errorObject = {
 
 exports.getConfigData = async function (req, res) {
     const configData = await mongodbServiceInstance.getData(req.query.mid);
+    console.log(configData);
     res.json(configData.body);
 };
 
