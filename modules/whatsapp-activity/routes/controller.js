@@ -457,9 +457,8 @@ exports.deliveryReport = function (req, res) {
         resBody = req.body;
     }
 
-    let userName = req.query.CLIENT_GUID.replace(req.query.MESSAGE_ID, '')
-
-    console.log('resBody ', userName);
+    let mid = req.query.mid;
+    console.log('resBody ', mid);
 
     let reqBody = [];
     reqBody.push({
@@ -472,36 +471,53 @@ exports.deliveryReport = function (req, res) {
         }
     });
 
-    let accessRequest = {
-        "grant_type": "client_credentials",
-        "client_id": "kduzi47837sertymgtd515v6",
-        "client_secret": "vP3OMwdzW46qSWXQXnPeJ4Bw",
-        "account_id": "546001145"
-    };
+    run().then(() => {
 
-    fetch('https://mcv3d4v2fm7d1rqg9-fkxts8swqq.auth.marketingcloudapis.com/v2/token', {
-        method: 'POST', body: JSON.stringify(accessRequest), headers: { 'Content-Type': 'application/json' }
-    }).then(response => {
+        const database = client.db("testdb");
+        const collection = database.collection("MCData");
 
-        response.json().then(data => {
-            console.log(data);
-            console.log(reqBody);
-            fetch('https://mcv3d4v2fm7d1rqg9-fkxts8swqq.rest.marketingcloudapis.com/hub/v1/dataevents/key:7FF55D65-8562-409C-B37F-51810ADF3210/rowset', {
-                method: 'POST', body: JSON.stringify(reqBody), headers: { 'Authorization': 'Bearer ' + data.access_token, 'Content-Type': 'application/json' }
-            }).then(response1 => {
+        const findQuery = { MID: mid };
+        const cursor = collection.find(findQuery);
+        console.log('cursor ');
+        let configData = {};
+        cursor.forEach(recipe => {
+            console.log(`${recipe.MID}`);
+            //res.json(recipe);
+            configData = recipe;
+        }).then(() => {
+            console.log('configData', configData);
+            let accessRequest = {
+                "grant_type": "client_credentials",
+                "client_id": configData.Client_ID,
+                "client_secret": configData.Client_Secret,
+                "account_id": configData.MID
+            };
 
-                response1.json().then(data1 => {
-                    console.log(data1);
+            fetch(configData.Auth_URI + '/v2/token', {
+                method: 'POST', body: JSON.stringify(accessRequest), headers: { 'Content-Type': 'application/json' }
+            }).then(response => {
 
-                    return res.status(200).json('success');
+                response.json().then(data => {
+                    console.log(data);
+                    console.log(reqBody);
+                    fetch(configData.Rest_URI + '/hub/v1/dataevents/key:7FF55D65-8562-409C-B37F-51810ADF3210/rowset', {
+                        method: 'POST', body: JSON.stringify(reqBody), headers: { 'Authorization': 'Bearer ' + data.access_token, 'Content-Type': 'application/json' }
+                    }).then(response1 => {
+
+                        response1.json().then(data1 => {
+                            console.log(data1);
+
+                            return res.status(200).json('success');
+                        })
+                    }).catch(err1 => {
+                        return res.status(400).json(err1);
+                    });
+                    //return res.status(200).json(data1);
                 })
-            }).catch(err1 => {
-                return res.status(400).json(err1);
+            }).catch(err => {
+                return res.status(400).json(err);
             });
-            //return res.status(200).json(data1);
-        })
-    }).catch(err => {
-        return res.status(400).json(err);
+        });
     });
 };
 
@@ -520,7 +536,7 @@ exports.inboundMessage = async function (req, res) {
         buttonlabel
     } = req.body;
 
-    console.log('inboundmessage');
+    console.log('inboundmessage', req.query);
     console.log(req.body);
     const date = new Date().getTime();
     let reqBody = [];
@@ -544,34 +560,53 @@ exports.inboundMessage = async function (req, res) {
         }
     });
 
-    let accessRequest = {
-        "grant_type": "client_credentials",
-        "client_id": "kduzi47837sertymgtd515v6",
-        "client_secret": "vP3OMwdzW46qSWXQXnPeJ4Bw",
-        "account_id": "546001145"
-    };
 
-    await fetch('https://mcv3d4v2fm7d1rqg9-fkxts8swqq.auth.marketingcloudapis.com/v2/token', {
-        method: 'POST', body: JSON.stringify(accessRequest), headers: { 'Content-Type': 'application/json' }
-    }).then(response => {
+    run().then(() => {
 
-        response.json().then(data => {
-            console.log(data);
-            console.log(reqBody);
-            fetch('https://mcv3d4v2fm7d1rqg9-fkxts8swqq.rest.marketingcloudapis.com/hub/v1/dataevents/key:7FF55D65-8562-409C-B37F-51810ADF3210/rowset', {
-                method: 'POST', body: JSON.stringify(reqBody), headers: { 'Authorization': 'Bearer ' + data.access_token, 'Content-Type': 'application/json' }
-            }).then(response1 => {
+        const database = client.db("testdb");
+        const collection = database.collection("MCData");
 
-                response1.json().then(data1 => {
-                    console.log(data1);
+        const findQuery = { MID: req.query.mid };
+        const cursor = collection.find(findQuery);
+        console.log('cursor ');
+        let configData = {};
+        cursor.forEach(recipe => {
+            console.log(`${recipe.MID}`);
+            //res.json(recipe);
+            configData = recipe;
+        }).then(() => {
+            console.log('configData', configData);
+            let accessRequest = {
+                "grant_type": "client_credentials",
+                "client_id": configData.Client_ID,
+                "client_secret": configData.Client_Secret,
+                "account_id": configData.MID
+            };
 
-                    res.status(200).json('success');
+            fetch(configData.Auth_URI + '/v2/token', {
+                method: 'POST', body: JSON.stringify(accessRequest), headers: { 'Content-Type': 'application/json' }
+            }).then(response => {
+
+                response.json().then(data => {
+                    console.log(data);
+                    console.log(reqBody);
+                    fetch(configData.Rest_URI + '/hub/v1/dataevents/key:7FF55D65-8562-409C-B37F-51810ADF3210/rowset', {
+                        method: 'POST', body: JSON.stringify(reqBody), headers: { 'Authorization': 'Bearer ' + data.access_token, 'Content-Type': 'application/json' }
+                    }).then(response1 => {
+
+                        response1.json().then(data1 => {
+                            console.log(data1);
+
+                            return res.status(200).json('success');
+                        })
+                    }).catch(err1 => {
+                        return res.status(400).json(err1);
+                    });
+                    //return res.status(200).json(data1);
                 })
-            }).catch(err1 => {
-                console.log(err1);
+            }).catch(err => {
+                return res.status(400).json(err);
             });
-        })
-    }).catch(err => {
-        console.log(err);
+        });
     });
 };

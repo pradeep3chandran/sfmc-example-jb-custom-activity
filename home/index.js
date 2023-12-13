@@ -7,7 +7,6 @@ function onRender() {
 
     var host = window.location.host;
     console.log('host: ', host);
-    $('#webhookurl').val('https://' + host + '/modules/whatsapp-activity/inboundmessage');
 
     $('#connect').click(saveMC);
     $('#save').click(saveMC);
@@ -31,6 +30,7 @@ function onRender() {
                 $('#wausername').val(data.WhatsApp_Username);
                 $('#wapassword').val(data.WhatsApp_Password);
                 //$('#fromnumber').val(data[0].WhatsApp_From_Number);
+                $('#webhookurl').val('https://' + host + '/modules/whatsapp-activity/inboundmessage' + $('#mid').val());
             }
         }));
 

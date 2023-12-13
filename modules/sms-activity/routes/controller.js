@@ -89,35 +89,54 @@ exports.deliveryReport = async function (req, res) {
         }
     });
 
-    let accessRequest = {
-        "grant_type": "client_credentials",
-        "client_id": "kduzi47837sertymgtd515v6",
-        "client_secret": "vP3OMwdzW46qSWXQXnPeJ4Bw",
-        "account_id": "546001145"
-    };
+    let mid = req.query.mid;
 
-    await fetch('https://mcv3d4v2fm7d1rqg9-fkxts8swqq.auth.marketingcloudapis.com/v2/token', {
-        method: 'POST', body: JSON.stringify(accessRequest), headers: { 'Content-Type': 'application/json' }
-    }).then(response => {
+    run().then(() => {
 
-        response.json().then(data => {
-            console.log(data);
-            console.log(reqBody);
-            fetch('https://mcv3d4v2fm7d1rqg9-fkxts8swqq.rest.marketingcloudapis.com/hub/v1/dataevents/key:CA054127-E2A5-494F-83EF-230B180A0F8E/rowset', {
-                method: 'POST', body: JSON.stringify(reqBody), headers: { 'Authorization': 'Bearer ' + data.access_token, 'Content-Type': 'application/json' }
-            }).then(response1 => {
+        const database = client.db("testdb");
+        const collection = database.collection("MCData");
 
-                response1.json().then(data1 => {
-                    console.log(data1);
+        const findQuery = { MID: mid };
+        const cursor = collection.find(findQuery);
+        console.log('cursor ');
+        let configData = {};
+        cursor.forEach(recipe => {
+            console.log(`${recipe.MID}`);
+            //res.json(recipe);
+            configData = recipe;
+        }).then(() => {
+            console.log('configData', configData);
+            let accessRequest = {
+                "grant_type": "client_credentials",
+                "client_id": configData.Client_ID,
+                "client_secret": configData.Client_Secret,
+                "account_id": configData.MID
+            };
 
-                    res.status(200).json('success');
+            fetch(configData.Auth_URI + '/v2/token', {
+                method: 'POST', body: JSON.stringify(accessRequest), headers: { 'Content-Type': 'application/json' }
+            }).then(response => {
+
+                response.json().then(data => {
+                    console.log(data);
+                    console.log(reqBody);
+                    fetch(configData.Rest_URI + '/hub/v1/dataevents/key:CA054127-E2A5-494F-83EF-230B180A0F8E/rowset', {
+                        method: 'POST', body: JSON.stringify(reqBody), headers: { 'Authorization': 'Bearer ' + data.access_token, 'Content-Type': 'application/json' }
+                    }).then(response1 => {
+
+                        response1.json().then(data1 => {
+                            console.log(data1);
+
+                            res.status(200).json('success');
+                        })
+                    }).catch(err1 => {
+                        res.status(200).json(err1);
+                    });
                 })
-            }).catch(err1 => {
-                res.status(200).json(err1);
+            }).catch(err => {
+                res.status(200).json(err);
             });
-        })
-    }).catch(err => {
-        res.status(200).json(err);
+        });
     });
 };
 
