@@ -137,6 +137,7 @@ exports.execute = function (req, res) {
     let headerDocURL = getInArgument('headerDocURL') || 'nothing';
     let messageAction = getInArgument('messageAction') || 'nothing';
     let configData = getInArgument('configData') || 'nothing';
+    console.log('configData', configData);
 
     console.log('selectedTemplate ', selectedTemplate);
 
