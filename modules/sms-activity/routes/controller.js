@@ -38,6 +38,8 @@ const errorObject = {
     8449: "Message failed"
 };
 
+const { MongoClient, ServerApiVersion } = require('mongodb');
+
 const uri = "mongodb+srv://pradeep3chandran:Connect%231@testdb.fobjt51.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(uri, {
     serverApi: {
