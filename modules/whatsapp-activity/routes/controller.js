@@ -50,34 +50,64 @@ const errorObject = {
     100: "Miscellaneous",
 };
 
+const { MongoClient, ServerApiVersion } = require('mongodb');
+
+const uri = "mongodb+srv://pradeep3chandran:Connect%231@testdb.fobjt51.mongodb.net/?retryWrites=true&w=majority";
+const client = new MongoClient(uri, {
+    serverApi: {
+        version: ServerApiVersion.v1,
+        strict: true,
+        deprecationErrors: true,
+    }
+});
+
+async function run() {
+    console.log('Starting');
+    await client.connect();
+    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+}
+
+exports.getConfigData = function (req, res) {
+    console.log('req query ', req.query);
+    run().then(() => {
+
+        const database = client.db("testdb");
+        const collection = database.collection("MCData");
+
+        console.log('midConst ', req.query.mid);
+
+        const findQuery = { MID: req.query.mid };
+        const cursor = collection.find(findQuery);
+        console.log('cursor ');
+        cursor.forEach(recipe => {
+            console.log(`${recipe.MID}`);
+            res.json(recipe);
+        });
+    });
+};
+
 exports.getTemplates = function (req, res) {
 
-    let fileData = [];
-    let mid = '546001145';
+    console.log('req ', req.body);
+    console.log('req query ', req.query);
 
-    fs.createReadStream(path.join('./data/customer_data.csv'))
-        .pipe(csv.parse({ headers: true }))
-        .on('error', error => console.error('err ', error))
-        .on('data', row => { if (mid == row.MID) { fileData.push(row) } })
-        .on('end', () => {
+    let configData = req.body;
+    console.log('fileData::end', configData);
 
-            console.log('fileData::end', fileData);
+    fetch('https://whatsapp.myvfirst.com/waba/template/fetch?userid=' + configData.WhatsApp_Username + '&pageno=1&pagelimit=200&status=Approved', {
+        method: 'GET', headers: {
+            "Authorization": 'Basic ' + Buffer.from(configData.WhatsApp_Username + ':' + configData.WhatsApp_Password).toString('base64')
+        }
+    }).then(response => {
+        console.log(response);
 
-            fetch('https://whatsapp.myvfirst.com/waba/template/fetch?userid=' + fileData[0].WhatsApp_Username + '&pageno=1&pagelimit=200&status=Approved', {
-                method: 'GET', headers: {
-                    "Authorization": 'Basic ' + Buffer.from(fileData[0].WhatsApp_Username + ':' + fileData[0].WhatsApp_Password).toString('base64')
-                }
-            }).then(response => {
-                console.log(response);
-
-                response.json().then(data => {
-                    console.log('tempdata ', data);
-                    res.json(data);
-                })
-            }).catch(err => {
-                console.log('err ', err);
-            });
+        response.json().then(data => {
+            console.log('tempdata ', data);
+            res.json(data);
         })
+    }).catch(err => {
+        console.log('err ', err);
+    });
 }
 
 exports.execute = function (req, res) {
@@ -106,6 +136,7 @@ exports.execute = function (req, res) {
     let selectedTemplate = getInArgument('selectedTemplate') || 'nothing';
     let headerDocURL = getInArgument('headerDocURL') || 'nothing';
     let messageAction = getInArgument('messageAction') || 'nothing';
+    let configData = getInArgument('configData') || 'nothing';
 
     console.log('selectedTemplate ', selectedTemplate);
 

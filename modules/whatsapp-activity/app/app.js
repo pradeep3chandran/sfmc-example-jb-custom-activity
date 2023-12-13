@@ -37,8 +37,6 @@ module.exports = function whatsAppActivityApp(app, options) {
         return res.sendFile(`${moduleDirectory}/src/postmonger.js`);
     });
 
-    app.get('/modules/whatsapp-activity/gettemplates', controllerjs.getTemplates);
-
 
     app.post('/modules/whatsapp-activity/save', function (req, res) {
         console.log('debug: /modules/sms-activity/save');
@@ -62,7 +60,8 @@ module.exports = function whatsAppActivityApp(app, options) {
         return res.status(200).json({});
     });
 
-
+    app.get('/modules/whatsapp-activity/getConfigData', controllerjs.getConfigData);
+    app.post('/modules/whatsapp-activity/gettemplates', controllerjs.getTemplates);
     app.get('/modules/whatsapp-activity/inboundmessage', controllerjs.inboundMessage);
     app.all('/modules/whatsapp-activity/deliveryreport', controllerjs.deliveryReport);
     app.post('/modules/whatsapp-activity/execute', controllerjs.execute);

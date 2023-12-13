@@ -24,6 +24,7 @@ define([
     var headerFieldsVar = [];
     var messageAction = '';
     var headerDocURL = '';
+    var configData = {};
 
     $(window).ready(onRender);
 
@@ -52,9 +53,6 @@ define([
                                        ${name} 
                                   </option>`);
             }
-            /*let val = $('#message').val();
-            val = val.includes(schema[i].key) ? val.replace(schema[i].key, schema[i].name) : val;
-            $('#message').val(val);*/
         }
         console.log('*** Schema1 ***', schema);
     });
@@ -84,6 +82,10 @@ define([
                 $('#footerContainer').html('');
                 $('#buttonContainer').html('');
             }
+        });
+
+        $('#mid').change(function () {
+            getConfigData();
         });
 
         $('#templateId').change(function () {
@@ -256,7 +258,7 @@ define([
             });
         });
         console.log('messageAction ', messageAction)
-
+        getConfigData();
         if (messageAction == 'New Message') {
             $('#newMessage').css({ 'display': 'block' });
             getTemplate();
@@ -265,8 +267,26 @@ define([
         // If there is no message selected, disable the next button
     }
 
+    function getConfigData() {
+        let mid = $('#mid').val();
+        if (mid) {
+            fetch('getConfigData?mid=' + mid, { method: 'GET' }).then(response =>
+                response.json().then(data => ({
+                    data: data,
+                    status: response.status
+                })
+                ).then(res => {
+                    console.log('data', res.data);
+                    configData = res.data;
+                }));
+        }
+    }
+
     function getTemplate() {
-        fetch('gettemplates/', { method: 'GET' }).then(response =>
+        const customHeaders = {
+            "Content-Type": "application/json",
+        }
+        fetch('gettemplates/', { method: 'POST', body: JSON.stringify(configData), headers: customHeaders }).then(response =>
             response.json().then(data => ({
                 data: data,
                 status: response.status
@@ -455,6 +475,8 @@ define([
             payload['arguments'].execute.inArguments.push({ "buttonFieldDetails": buttonFields });
             payload['arguments'].execute.inArguments.push({ "selectedTemplate": selectedTemplate });
             payload['arguments'].execute.inArguments.push({ "headerDocURL": $('#headerDocURL').val() });
+
+            payload['arguments'].execute.inArguments.push({ "configData": configData });
 
             payload['arguments'].execute.inArguments.push({ "messageAction": messageAction });
 
