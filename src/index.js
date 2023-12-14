@@ -3,10 +3,7 @@ var path = require('path');
 const mongoose = require('mongoose');
 const dotenv = require("dotenv")
 
-//dotenv.config({ path: path.join(__dirname, `../config/${process.env.NODE_ENV}.env`) })
-
-console.log(require('dotenv').config({ path: path.join(__dirname, `../config/${process.env.NODE_ENV}.env`) }));
-console.log(`Database name is ${process.env.MONGO_URL}`);
+dotenv.config({ path: path.join(__dirname, `../config/${process.env.NODE_ENV}.env`) })
 
 let server;
 mongoose.connect(process.env.MONGO_URL).then(() => {
