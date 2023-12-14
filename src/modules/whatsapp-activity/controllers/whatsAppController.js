@@ -99,6 +99,7 @@ exports.execute = async function (req, res) {
     let campaignName = getInArgument('campaignName') || 'nothing';
 
     let templateId = getInArgument('templateId') || 'nothing';
+    const host = getInArgument('host') || 'nothing';
 
     if (messageAction == 'Retry Message') {
         bodyFieldDetails = selectedTemplate.BODY_FIELD_DETAILS ? JSON.parse(selectedTemplate.BODY_FIELD_DETAILS) : [];
@@ -130,7 +131,7 @@ exports.execute = async function (req, res) {
     msgType = (mediatype == 'video' || mediatype == 'image' || mediatype == 'document' || mediatype == 'audio') ? "3" : "1";
 
 
-    let dlrUrl = 'https://marketing-configuration-app-6564d07cc826.herokuapp.com/modules/whatsapp-activity/deliveryreport?MESSAGE_ID=%7&mid=' + mid + '&TO=%p&MSG_STATUS=%16&CLIENT_GUID=%5&STATUS_ERROR=%4&DELIVERED_DATE=%3&TEXT_STATUS=%13&MESSAGE_ID=%7&TAG=%TAG&CLIENT_SEQ_NUMBER=%6&REASON_CODE=%2';
+    let dlrUrl = 'https://' + host + '/modules/whatsapp-activity/deliveryreport?MESSAGE_ID=%7&mid=' + mid + '&TO=%p&MSG_STATUS=%16&CLIENT_GUID=%5&STATUS_ERROR=%4&DELIVERED_DATE=%3&TEXT_STATUS=%13&MESSAGE_ID=%7&TAG=%TAG&CLIENT_SEQ_NUMBER=%6&REASON_CODE=%2';
 
     const jsonStr = {
 

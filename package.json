@@ -7,8 +7,8 @@
     "node": "18.16.0"
   },
   "scripts": {
-    "start": "node src/index.js",
-    "dev": "set NODE_ENV=development && node src/index.js"
+    "start": "set NODE_ENV=production&& node src/index.js",
+    "dev": "set NODE_ENV=development&& node src/index.js"
   },
   "repository": {
     "type": "git",

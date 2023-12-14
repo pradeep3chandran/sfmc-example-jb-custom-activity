@@ -3,14 +3,16 @@ var path = require('path');
 const mongoose = require('mongoose');
 const dotenv = require("dotenv")
 
-dotenv.config({ path: path.join(__dirname, `../config/${process.env.NODE_ENV}.env`) })
+//dotenv.config({ path: path.join(__dirname, `../config/${process.env.NODE_ENV}.env`) })
 
+console.log(require('dotenv').config({ path: path.join(__dirname, `../config/${process.env.NODE_ENV}.env`) }));
+console.log(`Database name is ${process.env.MONGO_URL}`);
 
 let server;
-mongoose.connect('mongodb+srv://pradeep3chandran:Connect%231@testdb.fobjt51.mongodb.net/testdb?retryWrites=true&w=majority').then(() => {
+mongoose.connect(process.env.MONGO_URL).then(() => {
     console.log("Connected to MongoDB")
-    server = app.listen(app.get('port'), function () {
-        console.log('Express server listening on port ' + app.get('port') + ' ENV ' + process.env.NODE_ENV);
+    server = app.listen(process.env.PORT, function () {
+        console.log('Express server listening on port ' + process.env.PORT + ' ENV ' + process.env.NODE_ENV);
     });
 });
 

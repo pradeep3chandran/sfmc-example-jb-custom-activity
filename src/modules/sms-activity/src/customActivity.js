@@ -195,6 +195,7 @@ define([
     function save() {
 
         console.log('save');
+        let host = window.location.host;
 
         payload.name = 'Send VF SMS';
 
@@ -211,6 +212,7 @@ define([
         payload['arguments'].execute.inArguments.push({ "senderName": $('#senderName').val() });
         payload['arguments'].execute.inArguments.push({ "campaignName": eventData.name });
         payload['arguments'].execute.inArguments.push({ "configData": configData });
+        payload['arguments'].execute.inArguments.push({ "host": host });
 
         let primaryKey = schema[schema.findIndex(obj => obj.isPrimaryKey)].key;
         payload['arguments'].execute.inArguments.push({ "primaryKey": '{{' + primaryKey + '}}' });

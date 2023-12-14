@@ -106,8 +106,9 @@ exports.execute = async function (req, res) {
     const primaryKey = getInArgument('primaryKey') || 'nothing';
     const campaignName = getInArgument('campaignName') || 'nothing';
     const configData = getInArgument('configData') || 'nothing';
+    const host = getInArgument('host') || 'nothing';
 
-    let dlrUrl = 'https://marketing-configuration-app-6564d07cc826.herokuapp.com/modules/sms-activity/deliveryreport?mid=' + mid + '&TO=%p&MSG_STATUS=%16&CLIENT_GUID=%5&STATUS_ERROR=%4&DELIVERED_DATE=%3&TEXT_STATUS=%13&MESSAGE_ID=%7&TAG=%TAG&CLIENT_SEQ_NUMBER=%6&REASON_CODE=%2';
+    let dlrUrl = 'https://' + host + '/modules/sms-activity/deliveryreport?mid=' + mid + '&TO=%p&MSG_STATUS=%16&CLIENT_GUID=%5&STATUS_ERROR=%4&DELIVERED_DATE=%3&TEXT_STATUS=%13&MESSAGE_ID=%7&TAG=%TAG&CLIENT_SEQ_NUMBER=%6&REASON_CODE=%2';
 
     const jsonStr = {
 

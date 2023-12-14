@@ -369,7 +369,7 @@ define([
 
     function save() {
 
-        console.log('host ' + window.location.host);
+        let host = window.location.host;
         console.log('save');
         if (messageAction == 'New Message') {
 
@@ -429,6 +429,8 @@ define([
             payload['arguments'].execute.inArguments.push({ "buttonFieldDetails": buttonFields });
             payload['arguments'].execute.inArguments.push({ "selectedTemplate": selectedTemplate });
             payload['arguments'].execute.inArguments.push({ "headerDocURL": $('#headerDocURL').val() });
+
+            payload['arguments'].execute.inArguments.push({ "host": host });
 
             payload['arguments'].execute.inArguments.push({ "configData": configData });
 
