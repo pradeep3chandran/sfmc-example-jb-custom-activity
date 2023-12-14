@@ -5,11 +5,12 @@ const dotenv = require("dotenv")
 
 dotenv.config({ path: path.join(__dirname, `../config/${process.env.NODE_ENV}.env`) })
 
+
 let server;
 mongoose.connect('mongodb+srv://pradeep3chandran:Connect%231@testdb.fobjt51.mongodb.net/testdb?retryWrites=true&w=majority').then(() => {
     console.log("Connected to MongoDB")
     server = app.listen(app.get('port'), function () {
-        console.log('Express server listening on port ' + app.get('port'));
+        console.log('Express server listening on port ' + app.get('port') + ' ENV ' + process.env.NODE_ENV);
     });
 });
 
