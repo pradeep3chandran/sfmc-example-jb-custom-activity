@@ -65,10 +65,8 @@ exports.getTemplates = async function (req, res) {
 
     let configData = req.body;
     const templates = await valueFirstServiceInstance.getTemplates(configData);
-    templates.body.json().then(data => {
-        console.log('data.json;', data);
-        res.json(data);
-    });
+    console.log('data.json;', templates.body.data);
+    res.json(templates.body.data);
 }
 
 exports.execute = async function (req, res) {
@@ -186,161 +184,157 @@ exports.execute = async function (req, res) {
 
 
     const tokenResult = await valueFirstServiceInstance.getToken(configData);
-    tokenResult.body.json().then(async (data) => {
+    let data = tokenResult.body.data;
+    console.log('data ', data.token);
+    let token = data.token;
+    const sendMessageResult = await valueFirstServiceInstance.sendMessage(token, jsonStr);
+    let messageData = sendMessageResult.body.data;
+    let templatetext;
+    let headerText;
+    let footerText;
+    let buttonInfo;
+    if (messageAction == 'New Message') {
 
-        console.log('data ', data.token);
-        let token = data.token;
-        const sendMessageResult = await valueFirstServiceInstance.sendMessage(token, jsonStr);
-        sendMessageResult.body.json().then(async (data1) => {
-            let templatetext;
-            let headerText;
-            let footerText;
-            let buttonInfo;
-            if (messageAction == 'New Message') {
+        let bodyIndex = selectedTemplate.whatsappcomponents.findIndex(obj => obj.type == 'BODY');
+        templatetext = selectedTemplate.whatsappcomponents[bodyIndex].text;
 
-                let bodyIndex = selectedTemplate.whatsappcomponents.findIndex(obj => obj.type == 'BODY');
-                templatetext = selectedTemplate.whatsappcomponents[bodyIndex].text;
+        let headerIndex = selectedTemplate.whatsappcomponents.findIndex(obj => obj.type == 'HEADER' && obj.format == 'TEXT');
+        headerText = headerIndex >= 0 ? selectedTemplate.whatsappcomponents[headerIndex].text : '';
 
-                let headerIndex = selectedTemplate.whatsappcomponents.findIndex(obj => obj.type == 'HEADER' && obj.format == 'TEXT');
-                headerText = headerIndex >= 0 ? selectedTemplate.whatsappcomponents[headerIndex].text : '';
+        let footerIndex = selectedTemplate.whatsappcomponents.findIndex(obj => obj.type == 'FOOTER');
+        footerText = footerIndex >= 0 ? selectedTemplate.whatsappcomponents[footerIndex].text : '';
 
-                let footerIndex = selectedTemplate.whatsappcomponents.findIndex(obj => obj.type == 'FOOTER');
-                footerText = footerIndex >= 0 ? selectedTemplate.whatsappcomponents[footerIndex].text : '';
-
-                let buttonIndex = selectedTemplate.whatsappcomponents.findIndex(obj => obj.type == 'BUTTONS');
-                buttonInfo = buttonIndex >= 0 ? selectedTemplate.whatsappcomponents[buttonIndex].buttons : '';
-            }
-            let reqBody = [];
-            if (data1.MESSAGEACK.GUID) {
-                if (messageAction == 'Retry Message') {
-                    reqBody.push({
-                        "keys": {
-                            "GUID": data1.MESSAGEACK.GUID.GUID
-                        },
-                        "values": {
-                            ID: data1.MESSAGEACK.GUID.ID,
-                            SUBMIT_DATE: data1.MESSAGEACK.GUID.SUBMITDATE,
-                            FROM: senderName,
-                            TO: mobileNumber,
-                            TEXT: selectedTemplate.TEXT,
-                            STATUS: 'Submitted',
-                            CAMPAIGN_NAME: campaignName,
-                            TEMPLATE_NAME: selectedTemplate.TEMPLATE_NAME,
-                            TEMPLATE_ID: selectedTemplate.TEMPLATE_ID,
-                            MEDIA_TYPE: selectedTemplate.MEDIA_TYPE,
-                            DOCUMENT_URL: headerDocURL,
-                            HEADER_FIELD_DETAILS: JSON.stringify(headerFieldDetails),
-                            BODY_FIELD_DETAILS: JSON.stringify(bodyFieldDetails),
-                            BUTTON_FIELD_DETAILS: JSON.stringify(buttonFieldDetails),
-                            BUTTON_INFO: selectedTemplate.BUTTON_INFO,
-                            FOOTER_TEXT: selectedTemplate.FOOTER_TEXT,
-                            HEADER_TEXT: selectedTemplate.HEADER_TEXT,
-                            TYPE: 'Outbound Message'
-                        }
-                    });
-                } else {
-                    reqBody.push({
-                        "keys": {
-                            "GUID": data1.MESSAGEACK.GUID.GUID
-                        },
-                        "values": {
-                            ID: data1.MESSAGEACK.GUID.ID,
-                            SUBMIT_DATE: data1.MESSAGEACK.GUID.SUBMITDATE,
-                            FROM: senderName,
-                            TO: mobileNumber,
-                            TEXT: templatetext,
-                            STATUS: 'Submitted',
-                            CAMPAIGN_NAME: campaignName,
-                            TEMPLATE_NAME: selectedTemplate.templatename,
-                            TEMPLATE_ID: selectedTemplate.templateid,
-                            MEDIA_TYPE: selectedTemplate.mediatype,
-                            DOCUMENT_URL: headerDocURL,
-                            HEADER_FIELD_DETAILS: JSON.stringify(headerFieldDetails),
-                            BODY_FIELD_DETAILS: JSON.stringify(bodyFieldDetails),
-                            BUTTON_FIELD_DETAILS: JSON.stringify(buttonFieldDetails),
-                            BUTTON_INFO: JSON.stringify(buttonInfo),
-                            FOOTER_TEXT: footerText,
-                            HEADER_TEXT: headerText,
-                            TYPE: 'Outbound Message'
-                        }
-                    });
+        let buttonIndex = selectedTemplate.whatsappcomponents.findIndex(obj => obj.type == 'BUTTONS');
+        buttonInfo = buttonIndex >= 0 ? selectedTemplate.whatsappcomponents[buttonIndex].buttons : '';
+    }
+    let reqBody = [];
+    if (messageData.MESSAGEACK.GUID) {
+        if (messageAction == 'Retry Message') {
+            reqBody.push({
+                "keys": {
+                    "GUID": messageData.MESSAGEACK.GUID.GUID
+                },
+                "values": {
+                    ID: messageData.MESSAGEACK.GUID.ID,
+                    SUBMIT_DATE: messageData.MESSAGEACK.GUID.SUBMITDATE,
+                    FROM: senderName,
+                    TO: mobileNumber,
+                    TEXT: selectedTemplate.TEXT,
+                    STATUS: 'Submitted',
+                    CAMPAIGN_NAME: campaignName,
+                    TEMPLATE_NAME: selectedTemplate.TEMPLATE_NAME,
+                    TEMPLATE_ID: selectedTemplate.TEMPLATE_ID,
+                    MEDIA_TYPE: selectedTemplate.MEDIA_TYPE,
+                    DOCUMENT_URL: headerDocURL,
+                    HEADER_FIELD_DETAILS: JSON.stringify(headerFieldDetails),
+                    BODY_FIELD_DETAILS: JSON.stringify(bodyFieldDetails),
+                    BUTTON_FIELD_DETAILS: JSON.stringify(buttonFieldDetails),
+                    BUTTON_INFO: selectedTemplate.BUTTON_INFO,
+                    FOOTER_TEXT: selectedTemplate.FOOTER_TEXT,
+                    HEADER_TEXT: selectedTemplate.HEADER_TEXT,
+                    TYPE: 'Outbound Message'
                 }
-                if (data1.MESSAGEACK.GUID.ERROR) {
-                    console.log('error');
-                    reqBody[0].values.STATUS = 'Failed';
-                    reqBody[0].values.ERROR_CODE = data1.MESSAGEACK.GUID.ERROR.CODE;
-                    reqBody[0].values.ERROR_REASON = errorObject[data1.MESSAGEACK.GUID.ERROR.CODE];
-                }
-            } else {
-                const date = new Date().toLocaleString();
-                if (messageAction == 'Retry Message') {
-                    reqBody.push({
-                        "keys": {
-                            "GUID": primaryKey + date
-                        },
-                        "values": {
-                            ID: primaryKey,
-                            SUBMIT_DATE: date,
-                            FROM: senderName,
-                            TO: mobileNumber,
-                            TEXT: selectedTemplate.TEXT,
-                            STATUS: 'Failed',
-                            ERROR_CODE: data1.MESSAGEACK.Err.Code,
-                            ERROR_REASON: errorObject[data1.MESSAGEACK.Err.Code],
-                            CAMPAIGN_NAME: campaignName,
-                            TEMPLATE_NAME: selectedTemplate.TEMPLATE_NAME,
-                            TEMPLATE_ID: selectedTemplate.TEMPLATE_ID,
-                            MEDIA_TYPE: selectedTemplate.MEDIA_TYPE,
-                            DOCUMENT_URL: headerDocURL,
-                            HEADER_FIELD_DETAILS: JSON.stringify(headerFieldDetails),
-                            BODY_FIELD_DETAILS: JSON.stringify(bodyFieldDetails),
-                            BUTTON_FIELD_DETAILS: JSON.stringify(buttonFieldDetails),
-                            BUTTON_INFO: selectedTemplate.BUTTON_INFO,
-                            FOOTER_TEXT: selectedTemplate.FOOTER_TEXT,
-                            HEADER_TEXT: selectedTemplate.HEADER_TEXT,
-                            TYPE: 'Outbound Message'
-                        }
-                    });
-                } else {
-                    reqBody.push({
-                        "keys": {
-                            "GUID": primaryKey + date
-                        },
-                        "values": {
-                            ID: primaryKey,
-                            SUBMIT_DATE: date,
-                            FROM: senderName,
-                            TO: mobileNumber,
-                            TEXT: templatetext,
-                            STATUS: 'Failed',
-                            ERROR_CODE: data1.MESSAGEACK.Err.Code,
-                            ERROR_REASON: errorObject[data1.MESSAGEACK.Err.Code],
-                            CAMPAIGN_NAME: campaignName,
-                            TEMPLATE_NAME: selectedTemplate.templatename,
-                            TEMPLATE_ID: selectedTemplate.templateid,
-                            MEDIA_TYPE: selectedTemplate.mediatype,
-                            DOCUMENT_URL: headerDocURL,
-                            HEADER_FIELD_DETAILS: JSON.stringify(headerFieldDetails),
-                            BODY_FIELD_DETAILS: JSON.stringify(bodyFieldDetails),
-                            BUTTON_FIELD_DETAILS: JSON.stringify(buttonFieldDetails),
-                            BUTTON_INFO: JSON.stringify(buttonInfo),
-                            FOOTER_TEXT: footerText,
-                            HEADER_TEXT: headerText,
-                            TYPE: 'Outbound Message'
-                        }
-                    });
-                }
-            }
-
-            const sfmcTokenResult = await sfmcServiceInstance.getToken(configData);
-            sfmcTokenResult.body.json().then(async (data2) => {
-                const sfmcResult = await sfmcServiceInstance.updateReportData(configData, data2.access_token, reqBody, '7FF55D65-8562-409C-B37F-51810ADF3210');
-                sfmcResult.body.json().then(data3 => {
-                    res.status(200).json({ errorCode: reqBody[0].values.ERROR_CODE, GUID: reqBody[0].keys.GUID, status: reqBody[0].values.STATUS });
-                })
             });
-        });
-    });
+        } else {
+            reqBody.push({
+                "keys": {
+                    "GUID": messageData.MESSAGEACK.GUID.GUID
+                },
+                "values": {
+                    ID: messageData.MESSAGEACK.GUID.ID,
+                    SUBMIT_DATE: messageData.MESSAGEACK.GUID.SUBMITDATE,
+                    FROM: senderName,
+                    TO: mobileNumber,
+                    TEXT: templatetext,
+                    STATUS: 'Submitted',
+                    CAMPAIGN_NAME: campaignName,
+                    TEMPLATE_NAME: selectedTemplate.templatename,
+                    TEMPLATE_ID: selectedTemplate.templateid,
+                    MEDIA_TYPE: selectedTemplate.mediatype,
+                    DOCUMENT_URL: headerDocURL,
+                    HEADER_FIELD_DETAILS: JSON.stringify(headerFieldDetails),
+                    BODY_FIELD_DETAILS: JSON.stringify(bodyFieldDetails),
+                    BUTTON_FIELD_DETAILS: JSON.stringify(buttonFieldDetails),
+                    BUTTON_INFO: JSON.stringify(buttonInfo),
+                    FOOTER_TEXT: footerText,
+                    HEADER_TEXT: headerText,
+                    TYPE: 'Outbound Message'
+                }
+            });
+        }
+        if (messageData.MESSAGEACK.GUID.ERROR) {
+            console.log('error');
+            reqBody[0].values.STATUS = 'Failed';
+            reqBody[0].values.ERROR_CODE = messageData.MESSAGEACK.GUID.ERROR.CODE;
+            reqBody[0].values.ERROR_REASON = errorObject[messageData.MESSAGEACK.GUID.ERROR.CODE];
+        }
+    } else {
+        const date = new Date().toLocaleString();
+        if (messageAction == 'Retry Message') {
+            reqBody.push({
+                "keys": {
+                    "GUID": primaryKey + date
+                },
+                "values": {
+                    ID: primaryKey,
+                    SUBMIT_DATE: date,
+                    FROM: senderName,
+                    TO: mobileNumber,
+                    TEXT: selectedTemplate.TEXT,
+                    STATUS: 'Failed',
+                    ERROR_CODE: messageData.MESSAGEACK.Err.Code,
+                    ERROR_REASON: errorObject[messageData.MESSAGEACK.Err.Code],
+                    CAMPAIGN_NAME: campaignName,
+                    TEMPLATE_NAME: selectedTemplate.TEMPLATE_NAME,
+                    TEMPLATE_ID: selectedTemplate.TEMPLATE_ID,
+                    MEDIA_TYPE: selectedTemplate.MEDIA_TYPE,
+                    DOCUMENT_URL: headerDocURL,
+                    HEADER_FIELD_DETAILS: JSON.stringify(headerFieldDetails),
+                    BODY_FIELD_DETAILS: JSON.stringify(bodyFieldDetails),
+                    BUTTON_FIELD_DETAILS: JSON.stringify(buttonFieldDetails),
+                    BUTTON_INFO: selectedTemplate.BUTTON_INFO,
+                    FOOTER_TEXT: selectedTemplate.FOOTER_TEXT,
+                    HEADER_TEXT: selectedTemplate.HEADER_TEXT,
+                    TYPE: 'Outbound Message'
+                }
+            });
+        } else {
+            reqBody.push({
+                "keys": {
+                    "GUID": primaryKey + date
+                },
+                "values": {
+                    ID: primaryKey,
+                    SUBMIT_DATE: date,
+                    FROM: senderName,
+                    TO: mobileNumber,
+                    TEXT: templatetext,
+                    STATUS: 'Failed',
+                    ERROR_CODE: messageData.MESSAGEACK.Err.Code,
+                    ERROR_REASON: errorObject[messageData.MESSAGEACK.Err.Code],
+                    CAMPAIGN_NAME: campaignName,
+                    TEMPLATE_NAME: selectedTemplate.templatename,
+                    TEMPLATE_ID: selectedTemplate.templateid,
+                    MEDIA_TYPE: selectedTemplate.mediatype,
+                    DOCUMENT_URL: headerDocURL,
+                    HEADER_FIELD_DETAILS: JSON.stringify(headerFieldDetails),
+                    BODY_FIELD_DETAILS: JSON.stringify(bodyFieldDetails),
+                    BUTTON_FIELD_DETAILS: JSON.stringify(buttonFieldDetails),
+                    BUTTON_INFO: JSON.stringify(buttonInfo),
+                    FOOTER_TEXT: footerText,
+                    HEADER_TEXT: headerText,
+                    TYPE: 'Outbound Message'
+                }
+            });
+        }
+    }
+
+    const sfmcTokenResult = await sfmcServiceInstance.getToken(configData);
+    let sfmcTokenData = sfmcTokenResult.body.data;
+    const sfmcResult = await sfmcServiceInstance.updateReportData(configData, sfmcTokenData.access_token, reqBody, '7FF55D65-8562-409C-B37F-51810ADF3210');
+    if (sfmcResult.body) {
+        res.status(200).json({ errorCode: reqBody[0].values.ERROR_CODE, GUID: reqBody[0].keys.GUID, status: reqBody[0].values.STATUS });
+    }
 };
 
 exports.deliveryReport = async function (req, res) {
@@ -371,12 +365,11 @@ exports.deliveryReport = async function (req, res) {
 
     const sfmcTokenResult = await sfmcServiceInstance.getToken(configData.body);
     console.log('tokenResult', sfmcTokenResult);
-    sfmcTokenResult.body.json().then(async (data) => {
-        const sfmcResult = await sfmcServiceInstance.updateReportData(configData.body, data.access_token, reqBody, '7FF55D65-8562-409C-B37F-51810ADF3210');
-        sfmcResult.body.json().then(data1 => {
-            return res.status(200).json('success');
-        })
-    });
+    let data = sfmcTokenResult.body.data;
+    const sfmcResult = await sfmcServiceInstance.updateReportData(configData.body, data.access_token, reqBody, '7FF55D65-8562-409C-B37F-51810ADF3210');
+    if (sfmcResult.body) {
+        return res.status(200).json('success');
+    }
 };
 
 exports.inboundMessage = async function (req, res) {
@@ -421,10 +414,9 @@ exports.inboundMessage = async function (req, res) {
     const configData = await mongodbServiceInstance.getData(req.query.mid);
     const sfmcTokenResult = await sfmcServiceInstance.getToken(configData.body);
     console.log('tokenResult', sfmcTokenResult);
-    sfmcTokenResult.body.json().then(async (data) => {
-        const sfmcResult = await sfmcServiceInstance.updateReportData(configData.body, data.access_token, reqBody, '7FF55D65-8562-409C-B37F-51810ADF3210');
-        sfmcResult.body.json().then(data1 => {
-            return res.status(200).json('success');
-        })
-    });
+    let data = sfmcTokenResult.body.data;
+    const sfmcResult = await sfmcServiceInstance.updateReportData(configData.body, data.access_token, reqBody, '7FF55D65-8562-409C-B37F-51810ADF3210');
+    if (sfmcResult.body) {
+        return res.status(200).json('success');
+    }
 };

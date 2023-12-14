@@ -71,12 +71,11 @@ exports.deliveryReport = async function (req, res) {
 
     const sfmcTokenResult = await sfmcServiceInstance.getToken(configData.body);
     console.log('tokenResult', sfmcTokenResult);
-    sfmcTokenResult.body.json().then(async (data) => {
-        const sfmcResult = await sfmcServiceInstance.updateReportData(configData.body, data.access_token, reqBody, 'CA054127-E2A5-494F-83EF-230B180A0F8E');
-        sfmcResult.body.json().then(data1 => {
-            return res.status(200).json('success');
-        })
-    });
+    let data = sfmcTokenResult.body.data;
+    const sfmcResult = await sfmcServiceInstance.updateReportData(configData.body, data.access_token, reqBody, 'CA054127-E2A5-494F-83EF-230B180A0F8E');
+    if (sfmcResult.body) {
+        return res.status(200).json('success');
+    }
 };
 
 exports.execute = async function (req, res) {
@@ -164,63 +163,58 @@ exports.execute = async function (req, res) {
 
 
     const tokenResult = await valueFirstServiceInstance.getToken(configData);
-    tokenResult.body.json().then(async (data) => {
-
-        console.log('data ', data.token);
-        let token = data.token;
-        const sendMessageResult = await valueFirstServiceInstance.sendMessage(token, jsonStr);
-        sendMessageResult.body.json().then(async (data1) => {
-            let reqBody = [];
-            if (data1.MESSAGEACK.GUID) {
-                reqBody.push({
-                    "keys": {
-                        "GUID": data1.MESSAGEACK.GUID.GUID
-                    },
-                    "values": {
-                        ID: data1.MESSAGEACK.GUID.ID,
-                        SUBMIT_DATE: data1.MESSAGEACK.GUID.SUBMITDATE,
-                        FROM: senderName,
-                        TO: mobileNumber,
-                        TEXT: message,
-                        STATUS: 'Submitted',
-                        CAMPAIGN_NAME: campaignName
-                    }
-                });
-                if (data1.MESSAGEACK.GUID.ERROR) {
-                    console.log('error');
-                    reqBody[0].values.STATUS = 'Failed';
-                    reqBody[0].values.ERROR_CODE = data1.MESSAGEACK.GUID.ERROR.CODE;
-                    reqBody[0].values.ERROR_REASON = errorObject[data1.MESSAGEACK.GUID.ERROR.CODE];
-                }
-            } else {
-                const date = new Date().toLocaleString();
-                reqBody.push({
-                    "keys": {
-                        "GUID": primaryKey + date
-                    },
-                    "values": {
-                        ID: primaryKey,
-                        SUBMIT_DATE: date,
-                        FROM: senderName,
-                        TO: mobileNumber,
-                        TEXT: message,
-                        STATUS: 'Failed',
-                        ERROR_CODE: data1.MESSAGEACK.Err.Code,
-                        ERROR_REASON: errorObject[data1.MESSAGEACK.Err.Code],
-                        CAMPAIGN_NAME: campaignName
-                    }
-                });
+    let data = tokenResult.body.data;
+    console.log('data ', data.token);
+    let token = data.token;
+    const sendMessageResult = await valueFirstServiceInstance.sendMessage(token, jsonStr);
+    let data1 = sendMessageResult.body.data;
+    let reqBody = [];
+    if (data1.MESSAGEACK.GUID) {
+        reqBody.push({
+            "keys": {
+                "GUID": data1.MESSAGEACK.GUID.GUID
+            },
+            "values": {
+                ID: data1.MESSAGEACK.GUID.ID,
+                SUBMIT_DATE: data1.MESSAGEACK.GUID.SUBMITDATE,
+                FROM: senderName,
+                TO: mobileNumber,
+                TEXT: message,
+                STATUS: 'Submitted',
+                CAMPAIGN_NAME: campaignName
             }
-            console.log(reqBody);
+        });
+        if (data1.MESSAGEACK.GUID.ERROR) {
+            console.log('error');
+            reqBody[0].values.STATUS = 'Failed';
+            reqBody[0].values.ERROR_CODE = data1.MESSAGEACK.GUID.ERROR.CODE;
+            reqBody[0].values.ERROR_REASON = errorObject[data1.MESSAGEACK.GUID.ERROR.CODE];
+        }
+    } else {
+        const date = new Date().toLocaleString();
+        reqBody.push({
+            "keys": {
+                "GUID": primaryKey + date
+            },
+            "values": {
+                ID: primaryKey,
+                SUBMIT_DATE: date,
+                FROM: senderName,
+                TO: mobileNumber,
+                TEXT: message,
+                STATUS: 'Failed',
+                ERROR_CODE: data1.MESSAGEACK.Err.Code,
+                ERROR_REASON: errorObject[data1.MESSAGEACK.Err.Code],
+                CAMPAIGN_NAME: campaignName
+            }
+        });
+    }
+    console.log(reqBody);
 
-            const sfmcTokenResult = await sfmcServiceInstance.getToken(configData);
-            sfmcTokenResult.body.json().then(async (data2) => {
-                const sfmcResult = await sfmcServiceInstance.updateReportData(configData, data2.access_token, reqBody, 'CA054127-E2A5-494F-83EF-230B180A0F8E');
-                sfmcResult.body.json().then(data3 => {
-                    res.status(200).json({ errorCode: reqBody[0].values.ERROR_CODE, GUID: reqBody[0].keys.GUID, status: reqBody[0].values.STATUS });
-                })
-            });
-        })
-    })
-
+    const sfmcTokenResult = await sfmcServiceInstance.getToken(configData);
+    let data2 = sfmcTokenResult.body.data;
+    const sfmcResult = await sfmcServiceInstance.updateReportData(configData, data2.access_token, reqBody, 'CA054127-E2A5-494F-83EF-230B180A0F8E');
+    if (sfmcResult.body) {
+        res.status(200).json({ errorCode: reqBody[0].values.ERROR_CODE, GUID: reqBody[0].keys.GUID, status: reqBody[0].values.STATUS });
+    }
 };

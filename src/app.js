@@ -24,6 +24,7 @@ app.use('/assets', express.static(path.join(__dirname, '../node_modules/@salesfo
 app.get('/jquery.min.js', js.jsmin);
 app.get('/require.js', js.reqjs);
 app.get('/index.js', js.index);
+app.get('/axios.js', js.axiosjs);
 
 app.get('/getConfigData', js.getConfigData);
 app.post('/updateConfigData', js.updateConfigData);

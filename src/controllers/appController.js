@@ -9,11 +9,15 @@ exports.jsmin = function (req, res) {
 };
 
 exports.reqjs = function (req, res) {
-    res.sendFile(path.resolve('src/js/require.js'));
+    res.sendFile(path.resolve('node_modules/requirejs/bin/r.js'));
 };
 
 exports.index = function (req, res) {
     res.sendFile(path.resolve('src/js/index.js'));
+};
+
+exports.axiosjs = function (req, res) {
+    res.sendFile(path.resolve('node_modules/axios/lib/axios.js'));
 };
 
 exports.getConfigData = async function (req, res) {
