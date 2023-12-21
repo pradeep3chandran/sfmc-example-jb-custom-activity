@@ -183,7 +183,7 @@ exports.execute = async function (req, res) {
     }
 
 
-    const tokenResult = await valueFirstServiceInstance.getToken(configData);
+    const tokenResult = await valueFirstServiceInstance.getToken(configData.WhatsApp_Username, configData.WhatsApp_Password);
     let data = tokenResult.body.data;
     console.log('data ', data.token);
     let token = data.token;

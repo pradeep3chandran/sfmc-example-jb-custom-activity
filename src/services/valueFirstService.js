@@ -19,13 +19,13 @@ class valueFirstService {
         }
     }
 
-    async getToken(configData) {
+    async getToken(username, password) {
         try {
             const result = await axios({
                 url: 'https://api.myvfirst.com/psms/api/messages/token?action=generate',
                 method: 'POST',
                 headers: {
-                    "Authorization": 'Basic ' + Buffer.from(configData.WhatsApp_Username + ':' + configData.WhatsApp_Password).toString('base64')
+                    "Authorization": 'Basic ' + Buffer.from(username + ':' + password).toString('base64')
                 }
             });
             return { success: true, body: result };

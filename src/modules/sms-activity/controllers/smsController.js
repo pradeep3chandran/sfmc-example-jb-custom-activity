@@ -162,7 +162,7 @@ exports.execute = async function (req, res) {
     console.log('dataa ', configData);
 
 
-    const tokenResult = await valueFirstServiceInstance.getToken(configData);
+    const tokenResult = await valueFirstServiceInstance.getToken(configData.Username, configData.Password);
     let data = tokenResult.body.data;
     console.log('data ', data.token);
     let token = data.token;
