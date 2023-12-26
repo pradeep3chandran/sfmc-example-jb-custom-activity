@@ -68,11 +68,7 @@ define([
 
         console.log($('.next-btn'));
         console.log('renderr');
-        $('.next-btn').css("background-color", "#eb5c0b");
-        $('.next-btn').css("border", "1px #d1dfe4");
-        $('.next-btn').css("color", "white");
-        $('.next-btn').css("height", "35px");
-        $('.next-btn').css("width", "100px");
+
 
         $('#done').hover(function () {
             $(this).css("background-color", "#2c2d6c");
@@ -180,6 +176,11 @@ define([
         console.log('go to step ');
         showStep(step);
         connection.trigger('ready');
+        $('.next-btn').css("background-color", "#eb5c0b");
+        $('.next-btn').css("border", "1px #d1dfe4");
+        $('.next-btn').css("color", "white");
+        $('.next-btn').css("height", "35px");
+        $('.next-btn').css("width", "100px");
     }
 
     function showStep(step, stepIndex) {
