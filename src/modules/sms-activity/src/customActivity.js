@@ -66,8 +66,8 @@ define([
         connection.trigger('requestEndpoints');
         connection.trigger('requestTriggerEventDefinition');
 
-        console.log($('.next-btn').css());
-        console.log($('.modal-footer').css());
+        console.log($('.next-btn'));
+        console.log($('.modal-footer'));
         $('.next-btn').css("background-color", "#eb5c0b");
         $('.next-btn').css("border", "1px #d1dfe4");
         $('.next-btn').css("color", "white");
