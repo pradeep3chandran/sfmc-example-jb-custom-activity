@@ -67,7 +67,7 @@ define([
         connection.trigger('requestTriggerEventDefinition');
 
         console.log($('.next-btn'));
-        console.log($('.modal-footer'));
+        console.log('renderr');
         $('.next-btn').css("background-color", "#eb5c0b");
         $('.next-btn').css("border", "1px #d1dfe4");
         $('.next-btn').css("color", "white");
@@ -177,6 +177,7 @@ define([
     }
 
     function onGotoStep(step) {
+        console.log('go to step ');
         showStep(step);
         connection.trigger('ready');
     }
