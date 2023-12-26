@@ -71,15 +71,15 @@ define([
 
 
         $('#done').ready(function () {
+
+        });
+
+        $('#done').hover(function () {
             $(this).css("background-color", "#eb5c0b");
             $(this).css("border", "1px #d1dfe4");
             $(this).css("color", "white");
             $(this).css("height", "35px");
             $(this).css("width", "100px");
-        });
-
-        $('#done').hover(function () {
-            $(this).css("background-color", "#2c2d6c");
         });
 
         $('#dataattributes').change(function () {
