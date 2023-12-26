@@ -66,6 +66,16 @@ define([
         connection.trigger('requestEndpoints');
         connection.trigger('requestTriggerEventDefinition');
 
+        $('#done').css("background-color", "#eb5c0b");
+        $('#done').css("border", "1px #d1dfe4");
+        $('#done').css("color", "white");
+        $('#done').css("height", "35px");
+        $('#done').css("width", "100px");
+
+        $('#done').hover(function () {
+            $(this).css("background-color", "#2c2d6c");
+        });
+
         $('#dataattributes').change(function () {
             var value = $('#dataattributes').find('option:selected').attr('value');
             console.log('value: ', value);
@@ -82,6 +92,7 @@ define([
         });
 
         $('#done').click(save);
+
 
         // Toggle step 4 active/inactive
         // If inactive, wizard hides it and skips over it during navigation
