@@ -19,121 +19,167 @@
     <script type="text/javascript" src="index.js"></script>
   </head>
   <body>
-    <div class="container">
-      <div
-        class="slds-brand-band slds-brand-band_cover slds-brand-band_medium slds-template_profile"
-      >
-        <div class="slds-m-bottom_large">
-          <div class="slds-text-heading_large slds-align_absolute-center">
-            SMS and WhatsApp Configuration
-          </div>
+    <div class="slds-brand" style="padding: 30px">
+      <div class="slds-m-bottom_large">
+        <div
+          class="slds-text-heading_large slds-align_absolute-center"
+          style="color: #2b2d6c; font-weight: 700"
+        >
+          SMS and WhatsApp Configuration
         </div>
-        <div class="slds-grid slds-wrap slds-gutters">
-          <main class="slds-col slds-size_1-of-2">
-            <article class="slds-card slds-card-activity">
-              <div class="slds-card__header slds-grid">
-                <header
-                  class="slds-media slds-media_center slds-has-flexi-truncate"
-                >
-                  <div class="slds-media__body">
-                    <h2 class="slds-card__header-title">
-                      <span>Marketing Cloud Credentials</span>
-                    </h2>
-                  </div>
-                </header>
-              </div>
-              <div
-                class="slds-card__body slds-card__body_inner"
-                style="height: 350px"
+      </div>
+      <div class="slds-grid slds-wrap slds-gutters" style="padding-top: 10px">
+        <main class="slds-col slds-size_1-of-2">
+          <article class="slds-card slds-card-activity">
+            <div class="slds-card__header slds-grid" style="padding-top: 16px">
+              <header
+                class="slds-media slds-media_center slds-has-flexi-truncate"
               >
-                <label class="slds-form-element__label" for="mid">MID</label
-                ><br />
-                <input class="slds-input" type="text" id="mid" />
-                <br /><br />
+                <div class="slds-media__body">
+                  <h2
+                    class="slds-card__header-title"
+                    style="
+                      text-align: center;
+                      margin: 0;
+                      color: #2b2d6c;
+                      font-weight: 700;
+                    "
+                  >
+                    <span>Marketing Cloud Credentials</span>
+                  </h2>
+                </div>
+              </header>
+            </div>
+            <div
+              class="slds-card__body slds-card__body_inner"
+              style="height: 370px"
+            >
+              <label class="slds-form-element__label" for="mid">MID</label
+              ><br />
+              <input
+                class="slds-input"
+                style="color: black"
+                type="text"
+                id="mid"
+              />
+              <br /><br />
 
-                <label class="slds-form-element__label" for="clientid"
-                  >Client Id</label
-                ><br />
-                <input class="slds-input" type="text" id="clientid" />
-                <br /><br />
-                <label class="slds-form-element__label" for="clientsecret"
-                  >Client Secret</label
-                ><br />
-                <input type="text" id="clientsecret" class="slds-input" />
-                <br /><br />
-                <label class="slds-form-element__label" for="authuri"
-                  >Authentication Base URI</label
-                ><br />
-                <input type="text" id="authuri" class="slds-input" />
-                <br /><br />
-                <label class="slds-form-element__label" for="resturi"
-                  >REST Base URI</label
-                ><br />
-                <input type="text" id="resturi" class="slds-input" />
-              </div>
-              <footer class="slds-card__footer">
-                <button id="connect" class="slds-button slds-button_brand">
-                  Connect
-                </button>
-              </footer>
-            </article>
-          </main>
-          <aside class="slds-col slds-size_1-of-2">
-            <article class="slds-card slds-card-activity">
-              <div class="slds-card__header slds-grid">
-                <header
-                  class="slds-media slds-media_center slds-has-flexi-truncate"
-                >
-                  <div class="slds-media__body">
-                    <h2 class="slds-card__header-title">
-                      <span>SMS and WhatsApp Details</span>
-                    </h2>
-                  </div>
-                </header>
-              </div>
-              <div
-                class="slds-card__body slds-card__body_inner"
-                style="height: 350px"
+              <label class="slds-form-element__label" for="clientid"
+                >Client Id</label
+              ><br />
+              <input class="slds-input" type="text" id="clientid" />
+              <br /><br />
+              <label class="slds-form-element__label" for="clientsecret"
+                >Client Secret</label
+              ><br />
+              <input type="text" id="clientsecret" class="slds-input" />
+              <br /><br />
+              <label class="slds-form-element__label" for="authuri"
+                >Authentication Base URI</label
+              ><br />
+              <input type="text" id="authuri" class="slds-input" />
+              <br /><br />
+              <label class="slds-form-element__label" for="resturi"
+                >REST Base URI</label
+              ><br />
+              <input type="text" id="resturi" class="slds-input" />
+            </div>
+            <footer
+              class="slds-card__footer"
+              style="padding-top: 16px; padding-bottom: 16px"
+            >
+              <button
+                id="connect"
+                class="slds-button slds-button_brand"
+                style="
+                  background-color: #eb5c0b;
+                  border: 1px #d1dfe4;
+                  color: white;
+                  height: 35px;
+                  width: 100px;
+                "
               >
-                <label class="slds-form-element__label" for="username"
-                  >SMS Username</label
-                ><br />
-                <input type="text" id="username" class="slds-input" />
-                <br /><br />
-                <label class="slds-form-element__label" for="password"
-                  >SMS Password</label
-                ><br />
-                <input type="text" id="password" class="slds-input" />
-                <br /><br />
-                <label class="slds-form-element__label" for="wausername"
-                  >WhatsApp Username</label
-                ><br />
-                <input type="text" id="wausername" class="slds-input" />
-                <br /><br />
-                <label class="slds-form-element__label" for="wapassword"
-                  >WhatsApp Password</label
-                ><br />
-                <input type="text" id="wapassword" class="slds-input" />
-                <br /><br />
-                <label class="slds-form-element__label" for="wapassword"
-                  >Whatsapp Inbound Webhook URL</label
-                ><br />
-                <input
-                  type="text"
-                  id="webhookurl"
-                  class="slds-input"
-                  readonly
-                  disabled
-                />
-              </div>
-              <footer class="slds-card__footer">
-                <button id="save" class="slds-button slds-button_brand">
-                  Save
-                </button>
-              </footer>
-            </article>
-          </aside>
-        </div>
+                Connect
+              </button>
+            </footer>
+          </article>
+        </main>
+        <aside class="slds-col slds-size_1-of-2">
+          <article class="slds-card slds-card-activity">
+            <div class="slds-card__header slds-grid" style="padding-top: 16px">
+              <header
+                class="slds-media slds-media_center slds-has-flexi-truncate"
+              >
+                <div class="slds-media__body">
+                  <h2
+                    class="slds-card__header-title"
+                    style="
+                      text-align: center;
+                      margin: 0;
+                      color: #2b2d6c;
+                      font-weight: 700;
+                    "
+                  >
+                    <span>SMS and WhatsApp Details</span>
+                  </h2>
+                </div>
+              </header>
+            </div>
+            <div
+              class="slds-card__body slds-card__body_inner"
+              style="height: 370px"
+            >
+              <label class="slds-form-element__label" for="username"
+                >SMS Username</label
+              ><br />
+              <input type="text" id="username" class="slds-input" />
+              <br /><br />
+              <label class="slds-form-element__label" for="password"
+                >SMS Password</label
+              ><br />
+              <input type="text" id="password" class="slds-input" />
+              <br /><br />
+              <label class="slds-form-element__label" for="wausername"
+                >WhatsApp Username</label
+              ><br />
+              <input type="text" id="wausername" class="slds-input" />
+              <br /><br />
+              <label class="slds-form-element__label" for="wapassword"
+                >WhatsApp Password</label
+              ><br />
+              <input type="text" id="wapassword" class="slds-input" />
+              <br /><br />
+              <label class="slds-form-element__label" for="wapassword"
+                >Whatsapp Inbound Webhook URL</label
+              ><br />
+              <input
+                type="text"
+                id="webhookurl"
+                class="slds-input"
+                readonly
+                disabled
+              />
+            </div>
+            <footer
+              class="slds-card__footer"
+              style="padding-top: 16px; padding-bottom: 16px"
+            >
+              <button
+                style="
+                  background-color: #eb5c0b;
+                  border: 1px #d1dfe4;
+                  color: white;
+                  height: 35px;
+                  width: 100px;
+                "
+                id="save"
+                class="slds-button slds-button_brand"
+              >
+                Save
+              </button>
+            </footer>
+          </article>
+        </aside>
       </div>
     </div>
   </body>

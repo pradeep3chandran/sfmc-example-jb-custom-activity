@@ -10,6 +10,23 @@ function onRender() {
     $('#connect').click(saveMC);
     $('#save').click(saveMC);
 
+    $('#connect').hover(function () {
+        $(this).css("background-color", "#2c2d6c");
+        $(this).css("color", "white");
+    });
+
+    $("#connect").mouseover(function () {
+        $(this).css("background-color", "#2c2d6c");
+    }).mouseout(function () {
+        $(this).css("background-color", "#eb5c0b");
+    });
+
+    $("#save").mouseover(function () {
+        $(this).css("background-color", "#2c2d6c");
+    }).mouseout(function () {
+        $(this).css("background-color", "#eb5c0b");
+    });
+
     fetch('getConfigData/?mid=' + mid, { method: 'GET' }).then(response =>
         response.json().then(data => ({
             data: data,

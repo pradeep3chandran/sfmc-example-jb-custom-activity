@@ -24,7 +24,7 @@ module.exports = function configJSON(req) {
         "header": "",
         "format": "json",
         "timeout": 50000,
-        "concurrentRequests": 1
+        "concurrentRequests": Number(process.env.CONCURRENT_REQUESTS)
       }
     },
     "configurationArguments": {

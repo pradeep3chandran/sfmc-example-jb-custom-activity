@@ -7,6 +7,7 @@ module.exports = function smsActivityApp(app, options) {
     const moduleDirectory = `${options.rootDirectory}/modules/sms-activity`;
 
     app.use('/modules/sms-activity/images', express.static(`${moduleDirectory}/images`));
+    app.use('/assets', express.static(path.resolve('node_modules/@salesforce-ux/design-system/assets')));
 
     app.get('/modules/sms-activity/', function (req, res) {
         return res.redirect('/modules/sms-activity/index.html');
