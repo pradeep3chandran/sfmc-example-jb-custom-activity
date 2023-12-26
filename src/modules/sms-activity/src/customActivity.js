@@ -66,11 +66,11 @@ define([
         connection.trigger('requestEndpoints');
         connection.trigger('requestTriggerEventDefinition');
 
-        $('#done').css("background-color", "#eb5c0b");
-        $('#done').css("border", "1px #d1dfe4");
-        $('#done').css("color", "white");
-        $('#done').css("height", "35px");
-        $('#done').css("width", "100px");
+        $('.next-btn').css("background-color", "#eb5c0b");
+        $('.next-btn').css("border", "1px #d1dfe4");
+        $('.next-btn').css("color", "white");
+        $('.next-btn').css("height", "35px");
+        $('.next-btn').css("width", "100px");
 
         $('#done').hover(function () {
             $(this).css("background-color", "#2c2d6c");
