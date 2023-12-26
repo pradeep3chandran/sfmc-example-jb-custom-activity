@@ -259,11 +259,6 @@ define([
         });
         console.log('messageAction ', messageAction)
         getConfigData();
-        if (messageAction == 'New Message') {
-            $('#newMessage').css({ 'display': 'block' });
-            getTemplate();
-        }
-
         // If there is no message selected, disable the next button
     }
 
@@ -278,6 +273,10 @@ define([
                 ).then(res => {
                     console.log('data', res.data);
                     configData = res.data;
+                    if (messageAction == 'New Message') {
+                        $('#newMessage').css({ 'display': 'block' });
+                        getTemplate();
+                    }
                 }));
         }
     }
