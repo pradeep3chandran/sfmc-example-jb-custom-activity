@@ -19,6 +19,29 @@
     <script type="text/javascript" src="index.js"></script>
   </head>
   <body>
+    <div
+      class="demo-only"
+      id="spinner"
+      style="
+        display: block;
+        position: fixed;
+        height: 100%;
+        width: 100%;
+        z-index: 10;
+      "
+    >
+      <div class="slds-spinner_container">
+        <div
+          role="status"
+          class="slds-spinner slds-spinner_medium slds-spinner_brand"
+        >
+          <span class="slds-assistive-text">Loading</span>
+          <div class="slds-spinner__dot-a"></div>
+          <div class="slds-spinner__dot-b"></div>
+        </div>
+      </div>
+    </div>
+
     <div class="slds-brand" style="padding: 30px">
       <div class="slds-m-bottom_large">
         <div
@@ -57,22 +80,33 @@
               <label class="slds-form-element__label" for="mid">MID</label
               ><br />
               <input
-                class="slds-input"
+                class="slds-input mcrequired"
                 style="color: black"
                 type="text"
                 id="mid"
+                required="true"
               />
               <br /><br />
 
               <label class="slds-form-element__label" for="clientid"
                 >Client Id</label
               ><br />
-              <input class="slds-input" type="text" id="clientid" />
+              <input
+                required="true"
+                class="slds-input mcrequired"
+                type="text"
+                id="clientid"
+              />
               <br /><br />
               <label class="slds-form-element__label" for="clientsecret"
                 >Client Secret</label
               ><br />
-              <input type="text" id="clientsecret" class="slds-input" />
+              <input
+                required="true"
+                type="text"
+                id="clientsecret"
+                class="slds-input mcrequired"
+              />
               <br /><br />
               <label class="slds-form-element__label" for="authuri"
                 >Authentication Base URI</label

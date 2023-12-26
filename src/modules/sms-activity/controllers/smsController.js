@@ -67,12 +67,17 @@ exports.deliveryReport = async function (req, res) {
         }
     });
 
+    if (req.query.MSG_STATUS == 'Failed') {
+        reqBody[0].values.ERROR_CODE = req.query.REASON_CODE;
+        reqBody[0].values.ERROR_REASON = errorObject[req.query.REASON_CODE];
+    }
+
     const configData = await mongodbServiceInstance.getData(req.query.mid);
 
     const sfmcTokenResult = await sfmcServiceInstance.getToken(configData.body);
     console.log('tokenResult', sfmcTokenResult);
     let data = sfmcTokenResult.body.data;
-    const sfmcResult = await sfmcServiceInstance.updateReportData(configData.body, data.access_token, reqBody, 'CA054127-E2A5-494F-83EF-230B180A0F8E');
+    const sfmcResult = await sfmcServiceInstance.updateReportData(configData.body, data.access_token, reqBody, 'SMS_Delivery_Reports_Data_Extension');
     if (sfmcResult.body) {
         return res.status(200).json('success');
     }
@@ -213,7 +218,7 @@ exports.execute = async function (req, res) {
 
     const sfmcTokenResult = await sfmcServiceInstance.getToken(configData);
     let data2 = sfmcTokenResult.body.data;
-    const sfmcResult = await sfmcServiceInstance.updateReportData(configData, data2.access_token, reqBody, 'CA054127-E2A5-494F-83EF-230B180A0F8E');
+    const sfmcResult = await sfmcServiceInstance.updateReportData(configData, data2.access_token, reqBody, 'SMS_Delivery_Reports_Data_Extension');
     if (sfmcResult.body) {
         res.status(200).json({ errorCode: reqBody[0].values.ERROR_CODE, GUID: reqBody[0].keys.GUID, status: reqBody[0].values.STATUS });
     }

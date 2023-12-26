@@ -10,11 +10,6 @@ function onRender() {
     $('#connect').click(saveMC);
     $('#save').click(saveMC);
 
-    $('#connect').hover(function () {
-        $(this).css("background-color", "#2c2d6c");
-        $(this).css("color", "white");
-    });
-
     $("#connect").mouseover(function () {
         $(this).css("background-color", "#2c2d6c");
     }).mouseout(function () {
@@ -46,11 +41,13 @@ function onRender() {
                 $('#wapassword').val(data.WhatsApp_Password);
                 $('#webhookurl').val('https://' + host + '/modules/whatsapp-activity/inboundmessage?mid=' + $('#mid').val());
             }
+            $('#spinner').css('display', 'none');
         }));
 
 }
 
 async function saveMC() {
+    $('#spinner').css('display', 'block');
     var mid = $('#mid').val();
 
     var rowData = {
@@ -75,7 +72,13 @@ async function saveMC() {
             data: data,
             status: response.status
         })
-        ));
+        ).then(res => {
+            let data = res.data;
+            if (data) {
+                $('#spinner').css('display', 'none');
+            }
+
+        }));
 
 }
 
