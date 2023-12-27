@@ -97,8 +97,44 @@
   </head>
   <body>
     <div id="step1" class="step">
-      <label class="slds-form-element__label" for="mid">MID</label><br />
+      <label class="slds-form-element__label" style="padding-right: 0" for="mid"
+        >MID</label
+      >
+      <div style="display: inline">
+        <button
+          class="slds-button slds-button_icon slds-button slds-button_icon"
+          aria-describedby="help"
+          aria-disabled="true"
+          title="Help"
+          style="margin-top: -3px"
+        >
+          <svg
+            style="width: 12px; height: 12px"
+            class="slds-button__icon"
+            aria-hidden="true"
+          >
+            <use
+              xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#info"
+            ></use>
+          </svg>
+          <span class="slds-assistive-text">Help</span>
+        </button>
+        <div
+          class="slds-popover slds-popover_tooltip slds-nubbin_bottom-left"
+          role="tooltip"
+          id="help"
+          style="position: absolute; top: -4px; left: 15px"
+        >
+          <div class="slds-popover__body">
+            Navigate to the top right corner where your login name appears,
+            hover over your account name to the left of your login name, and
+            you'll see the MID.
+          </div>
+        </div>
+      </div>
+      <br />
       <input class="slds-input" type="text" id="mid" />
+
       <br /><br />
       <label class="slds-form-element__label" for="senderName"
         >Sender Name</label

@@ -30,6 +30,10 @@ app.get('/getConfigData', js.getConfigData);
 app.post('/updateConfigData', js.updateConfigData);
 app.get('/login', js.login);
 
+app.get('/health', (req, res) => {
+    return res.status(200).json({ status: 'ok' });
+})
+
 submodules.forEach((sm) => sm(app, {
     rootDirectory: __dirname,
 }));

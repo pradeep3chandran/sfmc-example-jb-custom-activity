@@ -42,6 +42,49 @@
       </div>
     </div>
 
+    <div
+      id="successToast"
+      style="display: none"
+      class="slds-notify_container slds-is-fixed"
+    >
+      <div
+        class="slds-notify slds-notify_toast slds-theme_success"
+        role="status"
+      >
+        <span class="slds-assistive-text">success</span>
+        <span
+          class="slds-icon_container slds-icon-utility-success slds-m-right_small slds-no-flex slds-align-top"
+          title="Description of icon when needed"
+        >
+          <svg class="slds-icon slds-icon_small" aria-hidden="true">
+            <use
+              xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#success"
+            ></use>
+          </svg>
+        </span>
+        <div class="slds-notify__content">
+          <h2 class="slds-text-heading_small" id="successToastMessage"></h2>
+        </div>
+        <div class="slds-notify__close">
+          <button
+            id="successToastClose"
+            class="slds-button slds-button_icon slds-button_icon-inverse"
+            title="Close"
+          >
+            <svg
+              class="slds-button__icon slds-button__icon_large"
+              aria-hidden="true"
+            >
+              <use
+                xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close"
+              ></use>
+            </svg>
+            <span class="slds-assistive-text">Close</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
     <div class="slds-brand" style="padding: 30px">
       <div class="slds-m-bottom_large">
         <div
@@ -75,7 +118,7 @@
             </div>
             <div
               class="slds-card__body slds-card__body_inner"
-              style="height: 370px"
+              style="min-height: 370px"
             >
               <label class="slds-form-element__label" for="mid">MID</label
               ><br />
@@ -84,39 +127,47 @@
                 style="color: black"
                 type="text"
                 id="mid"
-                required="true"
               />
+              <span style="display: none; color: red" id="midError"
+                >This field is required</span
+              >
               <br /><br />
 
               <label class="slds-form-element__label" for="clientid"
                 >Client Id</label
               ><br />
-              <input
-                required="true"
-                class="slds-input mcrequired"
-                type="text"
-                id="clientid"
-              />
+              <input class="slds-input mcrequired" type="text" id="clientid" />
+              <span style="display: none; color: red" id="clientidError"
+                >This field is required</span
+              >
               <br /><br />
               <label class="slds-form-element__label" for="clientsecret"
                 >Client Secret</label
               ><br />
               <input
-                required="true"
                 type="text"
                 id="clientsecret"
                 class="slds-input mcrequired"
               />
+              <span style="display: none; color: red" id="clientsecretError"
+                >This field is required</span
+              >
               <br /><br />
               <label class="slds-form-element__label" for="authuri"
                 >Authentication Base URI</label
               ><br />
-              <input type="text" id="authuri" class="slds-input" />
+              <input type="text" id="authuri" class="slds-input mcrequired" />
+              <span style="display: none; color: red" id="authuriError"
+                >This field is required</span
+              >
               <br /><br />
               <label class="slds-form-element__label" for="resturi"
                 >REST Base URI</label
               ><br />
-              <input type="text" id="resturi" class="slds-input" />
+              <input type="text" id="resturi" class="slds-input mcrequired" />
+              <span style="display: none; color: red" id="resturiError"
+                >This field is required</span
+              >
             </div>
             <footer
               class="slds-card__footer"
@@ -161,27 +212,47 @@
             </div>
             <div
               class="slds-card__body slds-card__body_inner"
-              style="height: 370px"
+              style="min-height: 370px"
             >
               <label class="slds-form-element__label" for="username"
                 >SMS Username</label
               ><br />
-              <input type="text" id="username" class="slds-input" />
+              <input type="text" id="username" class="slds-input vfrequired" />
+              <span style="display: none; color: red" id="usernameError"
+                >This field is required</span
+              >
               <br /><br />
               <label class="slds-form-element__label" for="password"
                 >SMS Password</label
               ><br />
-              <input type="text" id="password" class="slds-input" />
+              <input type="text" id="password" class="slds-input vfrequired" />
+              <span style="display: none; color: red" id="passwordError"
+                >This field is required</span
+              >
               <br /><br />
               <label class="slds-form-element__label" for="wausername"
                 >WhatsApp Username</label
               ><br />
-              <input type="text" id="wausername" class="slds-input" />
+              <input
+                type="text"
+                id="wausername"
+                class="slds-input vfrequired"
+              />
+              <span style="display: none; color: red" id="wausernameError"
+                >This field is required</span
+              >
               <br /><br />
               <label class="slds-form-element__label" for="wapassword"
                 >WhatsApp Password</label
               ><br />
-              <input type="text" id="wapassword" class="slds-input" />
+              <input
+                type="text"
+                id="wapassword"
+                class="slds-input vfrequired"
+              />
+              <span style="display: none; color: red" id="wapasswordError"
+                >This field is required</span
+              >
               <br /><br />
               <label class="slds-form-element__label" for="wapassword"
                 >Whatsapp Inbound Webhook URL</label
