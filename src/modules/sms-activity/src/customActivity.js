@@ -70,8 +70,8 @@ define([
         console.log('renderr');
 
 
-        $('#done').ready(function () {
-
+        $('#helpButton').click(function () {
+            $('#help').css("display", "block");
         });
 
         $('#done').hover(function () {
