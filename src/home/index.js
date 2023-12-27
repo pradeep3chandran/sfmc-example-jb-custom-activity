@@ -56,6 +56,14 @@ function onRender() {
         })
     });
 
+    $('#helpButton').mouseover(function () {
+        $('#help').css("display", "block");
+    });
+
+    $('#helpButton').mouseout(function () {
+        $('#help').css("display", "none");
+    });
+
     fetch('getConfigData/?mid=' + mid, { method: 'GET' }).then(response =>
         response.json().then(data => ({
             data: data,

@@ -39,7 +39,8 @@ module.exports = function smsActivityApp(app, options) {
     });
 
     app.post('/modules/sms-activity/save', function (req, res) {
-        console.log('debug: /modules/sms-activity/save');
+        console.log('debug:save', req);
+        console.log('debug: /modules/sms-activity/save', req.body);
         return res.status(200).json('save');
     });
 

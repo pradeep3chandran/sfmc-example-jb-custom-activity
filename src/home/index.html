@@ -120,8 +120,50 @@
               class="slds-card__body slds-card__body_inner"
               style="min-height: 370px"
             >
-              <label class="slds-form-element__label" for="mid">MID</label
-              ><br />
+              <label
+                class="slds-form-element__label"
+                style="padding-right: 0"
+                for="mid"
+                >MID</label
+              >
+              <div style="display: inline">
+                <button
+                  class="slds-button slds-button_icon slds-button slds-button_icon"
+                  aria-describedby="help"
+                  aria-disabled="true"
+                  style="margin-top: -3px"
+                  id="helpButton"
+                >
+                  <svg
+                    style="width: 12px; height: 12px"
+                    class="slds-button__icon"
+                    aria-hidden="true"
+                  >
+                    <use
+                      xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#info"
+                    ></use>
+                  </svg>
+                  <span class="slds-assistive-text">Help</span>
+                </button>
+                <div
+                  class="slds-popover slds-popover_tooltip slds-nubbin_left-bottom"
+                  role="tooltip"
+                  id="help"
+                  style="
+                    position: absolute;
+                    top: 36px;
+                    left: 70px;
+                    display: none;
+                  "
+                >
+                  <div class="slds-popover__body">
+                    Navigate to the top right corner where your login name
+                    appears, hover over your account name to the left of your
+                    login name, and you'll see the MID.
+                  </div>
+                </div>
+              </div>
+              <br />
               <input
                 class="slds-input mcrequired"
                 style="color: black"
