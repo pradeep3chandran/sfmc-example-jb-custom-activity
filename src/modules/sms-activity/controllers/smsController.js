@@ -112,6 +112,7 @@ exports.execute = async function (req, res) {
             } else if (e in 'mid') {
                 mid = e['mid'];
             } else if (e in 'message') {
+                console.log('msg ', e['message']);
                 message = e['message'];
             } else if (e in 'primaryKey') {
                 primaryKey = e['primaryKey'];
