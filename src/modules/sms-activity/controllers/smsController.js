@@ -104,23 +104,23 @@ exports.execute = async function (req, res) {
         for (let i = 0; i < request.inArguments.length; i++) {
             let e = request.inArguments[i];
             console.log('e ', e);
-            if (e in 'toNumber') {
+            if (e['toNumber']) {
                 console.log('mob ', e['toNumber']);
                 mobileNumber = e['toNumber'];
-            } else if (e in 'senderName') {
+            } else if (e['senderName']) {
                 senderName = e['senderName'];
-            } else if (e in 'mid') {
+            } else if (e['mid']) {
                 mid = e['mid'];
             } else if (e['message']) {
                 console.log('msg ', e['message']);
                 message = e['message'];
-            } else if (e in 'primaryKey') {
+            } else if (e['primaryKey']) {
                 primaryKey = e['primaryKey'];
-            } else if (e in 'campaignName') {
+            } else if (e['campaignName']) {
                 campaignName = e['campaignName'];
-            } else if (e in 'configData') {
+            } else if (e['configData']) {
                 configData = e['configData'];
-            } else if (e in 'host') {
+            } else if (e['host']) {
                 host = e['host'];
             }
         }
