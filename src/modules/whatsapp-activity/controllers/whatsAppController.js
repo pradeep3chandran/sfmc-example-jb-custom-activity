@@ -71,33 +71,58 @@ exports.getTemplates = async function (req, res) {
 
 exports.execute = async function (req, res) {
     const request = req.body;
-    function getInArgument(k) {
-        if (request && request.inArguments) {
-            for (let i = 0; i < request.inArguments.length; i++) {
-                let e = request.inArguments[i];
-                if (k in e) {
-                    return e[k];
-                }
+
+    let bodyFieldDetails = [];
+    let headerFieldDetails = [];
+    let buttonFieldDetails = [];
+    let selectedTemplate = {};
+    let headerDocURL = '';
+    let messageAction = '';
+    let configData = {};
+
+    let mobileNumber = '';
+    let senderName = '';
+    let mid = '';
+    let primaryKey = '';
+    let campaignName = '';
+
+    let templateId = '';
+    let host = '';
+
+    if (request && request.inArguments) {
+        for (let i = 0; i < request.inArguments.length; i++) {
+            let e = request.inArguments[i];
+            if (e['bodyFieldDetails']) {
+                bodyFieldDetails = e['bodyFieldDetails'];
+            } else if (e['headerFieldDetails']) {
+                headerFieldDetails = e['headerFieldDetails'];
+            } else if (e['buttonFieldDetails']) {
+                buttonFieldDetails = e['buttonFieldDetails'];
+            } else if (e['selectedTemplate']) {
+                selectedTemplate = e['selectedTemplate'];
+            } else if (e['headerDocURL']) {
+                headerDocURL = e['headerDocURL'];
+            } else if (e['messageAction']) {
+                messageAction = e['messageAction'];
+            } else if (e['configData']) {
+                configData = e['configData'];
+            } else if (e['toNumber']) {
+                mobileNumber = e['toNumber'];
+            } else if (e['senderName']) {
+                senderName = e['senderName'];
+            } else if (e['mid']) {
+                mid = e['mid'];
+            } else if (e['primaryKey']) {
+                primaryKey = e['primaryKey'];
+            } else if (e['campaignName']) {
+                campaignName = e['campaignName'];
+            } else if (e['templateId']) {
+                templateId = e['templateId'];
+            } else if (e['host']) {
+                host = e['host'];
             }
         }
     }
-
-    let bodyFieldDetails = getInArgument('bodyFieldDetails') || 'nothing';
-    let headerFieldDetails = getInArgument('headerFieldDetails') || 'nothing';
-    let buttonFieldDetails = getInArgument('buttonFieldDetails') || 'nothing';
-    let selectedTemplate = getInArgument('selectedTemplate') || 'nothing';
-    let headerDocURL = getInArgument('headerDocURL') || 'nothing';
-    let messageAction = getInArgument('messageAction') || 'nothing';
-    let configData = getInArgument('configData') || 'nothing';
-
-    let mobileNumber = getInArgument('toNumber') || 'nothing';
-    let senderName = getInArgument('senderName') || 'nothing';
-    let mid = getInArgument('mid') || 'nothing';
-    let primaryKey = getInArgument('primaryKey') || 'nothing';
-    let campaignName = getInArgument('campaignName') || 'nothing';
-
-    let templateId = getInArgument('templateId') || 'nothing';
-    const host = getInArgument('host') || 'nothing';
 
     if (messageAction == 'Retry Message') {
         bodyFieldDetails = selectedTemplate.BODY_FIELD_DETAILS ? JSON.parse(selectedTemplate.BODY_FIELD_DETAILS) : [];

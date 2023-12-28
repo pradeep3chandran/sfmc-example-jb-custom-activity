@@ -97,22 +97,19 @@ exports.execute = async function (req, res) {
     let message = '';
     let primaryKey = '';
     let campaignName = '';
-    let configData = '';
+    let configData = {};
     let host = '';
 
     if (request && request.inArguments) {
         for (let i = 0; i < request.inArguments.length; i++) {
             let e = request.inArguments[i];
-            console.log('e ', e);
             if (e['toNumber']) {
-                console.log('mob ', e['toNumber']);
                 mobileNumber = e['toNumber'];
             } else if (e['senderName']) {
                 senderName = e['senderName'];
             } else if (e['mid']) {
                 mid = e['mid'];
             } else if (e['message']) {
-                console.log('msg ', e['message']);
                 message = e['message'];
             } else if (e['primaryKey']) {
                 primaryKey = e['primaryKey'];
