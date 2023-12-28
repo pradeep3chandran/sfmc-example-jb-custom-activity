@@ -72,12 +72,24 @@ exports.deliveryReport = async function (req, res) {
         reqBody[0].values.ERROR_REASON = errorObject[req.query.REASON_CODE];
     }
 
-    const configData = await mongodbServiceInstance.getData(req.query.mid);
+    const configDataRes = await mongodbServiceInstance.getData(req.query.mid);
+    let configData = configDataRes.body;
 
-    const sfmcTokenResult = await sfmcServiceInstance.getToken(configData.body);
-    console.log('tokenResult', sfmcTokenResult);
-    let data = sfmcTokenResult.body.data;
-    const sfmcResult = await sfmcServiceInstance.updateReportData(configData.body, data.access_token, reqBody, 'SMS_Delivery_Reports_Data_Extension');
+    let accessToken = '';
+    if (configData.SFMC_TokenExp > Date.now()) {
+        accessToken = configData.SFMC_Token;
+    } else {
+        const sfmcTokenResult = await sfmcServiceInstance.getToken(configData);
+        let data = sfmcTokenResult.body.data;
+        accessToken = data.access_token;
+
+        let expDate = new Date();
+        expDate.setMinutes(expDate.getMinutes() + 15);
+
+        await mongodbServiceInstance.updateData({ MID: mid, SFMC_TokenExp: expDate, SFMC_Token: accessToken });
+    }
+
+    const sfmcResult = await sfmcServiceInstance.updateReportData(configData.body, accessToken, reqBody, 'SMS_Delivery_Reports_Data_Extension');
     if (sfmcResult.body) {
         return res.status(200).json('success');
     }
