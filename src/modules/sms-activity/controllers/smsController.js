@@ -103,7 +103,9 @@ exports.execute = async function (req, res) {
     if (request && request.inArguments) {
         for (let i = 0; i < request.inArguments.length; i++) {
             let e = request.inArguments[i];
+            console.log('e ', e);
             if (e in 'toNumber') {
+                console.log('mob ', e['toNumber']);
                 mobileNumber = e['toNumber'];
             } else if (e in 'senderName') {
                 senderName = e['senderName'];
