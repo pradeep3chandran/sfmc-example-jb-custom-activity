@@ -90,27 +90,38 @@ exports.execute = async function (req, res) {
     const request = req.body;
 
     console.log('request ', request);
-    // Find the in argument
-    function getInArgument(k) {
-        if (request && request.inArguments) {
-            for (let i = 0; i < request.inArguments.length; i++) {
-                let e = request.inArguments[i];
-                if (k in e) {
-                    return e[k];
-                }
+
+    let mobileNumber = '';
+    let senderName = '';
+    let mid = '';
+    let message = '';
+    let primaryKey = '';
+    let campaignName = '';
+    let configData = '';
+    let host = '';
+
+    if (request && request.inArguments) {
+        for (let i = 0; i < request.inArguments.length; i++) {
+            let e = request.inArguments[i];
+            if (e in 'toNumber') {
+                mobileNumber = e['toNumber'];
+            } else if (e in 'senderName') {
+                senderName = e['senderName'];
+            } else if (e in 'mid') {
+                mid = e['mid'];
+            } else if (e in 'message') {
+                message = e['message'];
+            } else if (e in 'primaryKey') {
+                primaryKey = e['primaryKey'];
+            } else if (e in 'campaignName') {
+                campaignName = e['campaignName'];
+            } else if (e in 'configData') {
+                configData = e['configData'];
+            } else if (e in 'host') {
+                host = e['host'];
             }
         }
     }
-
-
-    const mobileNumber = getInArgument('toNumber') || 'nothing';
-    const senderName = getInArgument('senderName') || 'nothing';
-    const mid = getInArgument('mid') || 'nothing';
-    const message = getInArgument('message') || 'nothing';
-    const primaryKey = getInArgument('primaryKey') || 'nothing';
-    const campaignName = getInArgument('campaignName') || 'nothing';
-    const configData = getInArgument('configData') || 'nothing';
-    const host = getInArgument('host') || 'nothing';
 
     let dlrUrl = 'https://' + host + '/modules/sms-activity/deliveryreport?mid=' + mid + '&TO=%p&MSG_STATUS=%16&CLIENT_GUID=%5&STATUS_ERROR=%4&DELIVERED_DATE=%3&TEXT_STATUS=%13&MESSAGE_ID=%7&TAG=%TAG&CLIENT_SEQ_NUMBER=%6&REASON_CODE=%2';
 
