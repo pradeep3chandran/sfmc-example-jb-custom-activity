@@ -111,7 +111,7 @@ exports.execute = async function (req, res) {
                 senderName = e['senderName'];
             } else if (e in 'mid') {
                 mid = e['mid'];
-            } else if (e in 'message') {
+            } else if (e['message']) {
                 console.log('msg ', e['message']);
                 message = e['message'];
             } else if (e in 'primaryKey') {
