@@ -10,7 +10,11 @@ const dataSchema = new Schema({
     Username: String,
     Password: String,
     WhatsApp_Username: String,
-    WhatsApp_Password: String
+    WhatsApp_Password: String,
+    VF_SMSToken: String,
+    VF_SMSTokenExp: Date,
+    SFMC_Token: String,
+    SFMC_TokenExp: Date
 });
 
 const MCData = model('MCData', dataSchema);

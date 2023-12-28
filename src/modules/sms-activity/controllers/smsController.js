@@ -84,12 +84,7 @@ exports.deliveryReport = async function (req, res) {
 };
 
 exports.execute = async function (req, res) {
-    console.log('debug: /modules/sms-activity/execute');
-    console.log('req ', req);
-
     const request = req.body;
-
-    console.log('request ', request);
 
     let mobileNumber = '';
     let senderName = '';
@@ -97,7 +92,6 @@ exports.execute = async function (req, res) {
     let message = '';
     let primaryKey = '';
     let campaignName = '';
-    let configData = {};
     let host = '';
 
     if (request && request.inArguments) {
@@ -115,8 +109,6 @@ exports.execute = async function (req, res) {
                 primaryKey = e['primaryKey'];
             } else if (e['campaignName']) {
                 campaignName = e['campaignName'];
-            } else if (e['configData']) {
-                configData = e['configData'];
             } else if (e['host']) {
                 host = e['host'];
             }
@@ -175,13 +167,19 @@ exports.execute = async function (req, res) {
 
     console.log('jsonStr: ', JSON.stringify(jsonStr));
 
-    console.log('dataa ', configData);
+    const configDataRes = await mongodbServiceInstance.getData(mid);
+    let configData = configDataRes.body;
 
+    let token = '';
+    if (configData.VF_SMSTokenExp > Date.now()) {
+        token = configData.VF_SMSToken;
+    } else {
+        const tokenResult = await valueFirstServiceInstance.getToken(configData.Username, configData.Password);
+        let data = tokenResult.body.data;
+        token = data.token;
+        const result = await mongodbServiceInstance.updateData({ MID: mid, VF_SMSTokenExp: data.expiryDate, VF_SMSToken: token });
+    }
 
-    const tokenResult = await valueFirstServiceInstance.getToken(configData.Username, configData.Password);
-    let data = tokenResult.body.data;
-    console.log('data ', data.token);
-    let token = data.token;
     const sendMessageResult = await valueFirstServiceInstance.sendMessage(token, jsonStr);
     let data1 = sendMessageResult.body.data;
     let reqBody = [];
@@ -225,11 +223,22 @@ exports.execute = async function (req, res) {
             }
         });
     }
-    console.log(reqBody);
 
-    const sfmcTokenResult = await sfmcServiceInstance.getToken(configData);
-    let data2 = sfmcTokenResult.body.data;
-    const sfmcResult = await sfmcServiceInstance.updateReportData(configData, data2.access_token, reqBody, 'SMS_Delivery_Reports_Data_Extension');
+    let accessToken = '';
+    if (configData.SFMC_TokenExp > Date.now()) {
+        accessToken = configData.SFMC_Token;
+    } else {
+        const sfmcTokenResult = await sfmcServiceInstance.getToken(configData);
+        let data2 = sfmcTokenResult.body.data;
+        accessToken = data2.access_token;
+
+        let expDate = new Date();
+        expDate.setMinutes(expDate.getMinutes() + 15);
+
+        await mongodbServiceInstance.updateData({ MID: mid, SFMC_TokenExp: expDate, SFMC_Token: accessToken });
+    }
+
+    const sfmcResult = await sfmcServiceInstance.updateReportData(configData, accessToken, reqBody, 'SMS_Delivery_Reports_Data_Extension');
     if (sfmcResult.body) {
         res.status(200).json({ errorCode: reqBody[0].values.ERROR_CODE, GUID: reqBody[0].keys.GUID, status: reqBody[0].values.STATUS });
     }

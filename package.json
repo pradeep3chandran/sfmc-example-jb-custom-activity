@@ -40,6 +40,7 @@
     "fs.js": "^0.0.1",
     "mongodb": "^6.3.0",
     "mongoose": "^8.0.3",
+    "morgan": "^1.10.0",
     "postmonger": "0.0.16",
     "require": "^0.4.4",
     "requirejs": "^2.3.6"
